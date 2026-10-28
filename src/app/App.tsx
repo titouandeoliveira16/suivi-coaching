@@ -1,20 +1,114 @@
+import { useEffect, useState } from 'react'
+import { chargerProfil, messageErreur, useSession, type Profil } from '../core/compte'
+import {
+  ecrireInvitationEnAttente,
+  effacerInvitationEnAttente,
+  jetonDepuisAdresse,
+  lireInvitationEnAttente,
+} from '../core/invitation'
+import { supabase, type Client } from '../core/supabase'
+import { Bouton, Carte, Message, Page } from '../core/ui'
+import { MesEleves } from '../modules/coach/MesEleves'
+import { Aujourdhui } from '../modules/eleve/Aujourdhui'
+import { Connexion } from './Connexion'
+import { Inscription } from './Inscription'
+
 export default function App() {
-  return (
-    <main className="pt-sur pb-sur mx-auto flex min-h-full max-w-md flex-col px-4">
-      <header className="py-6">
-        <p className="text-sm text-texte-3">Suivi Coaching</p>
-        <h1 className="text-3xl font-bold">Bienvenue</h1>
-      </header>
+  if (!supabase)
+    return (
+      <Page surtitre="Suivi Coaching" titre="Bienvenue">
+        <Carte>
+          <Message>L’appli n’est pas encore reliée à son serveur. Ton coach finit de l’installer.</Message>
+        </Carte>
+      </Page>
+    )
+  return <AppConnectee client={supabase} />
+}
 
-      <section className="rounded-2xl border border-bordure bg-surface p-5">
-        <div className="mb-3 h-1 w-10 rounded-full bg-accent" />
-        <h2 className="text-lg font-semibold">L’appli arrive bientôt</h2>
-        <p className="mt-2 text-texte-2">
-          Ton coach prépare ton espace. Tu recevras un lien d’invitation pour créer ton compte.
-        </p>
-      </section>
+type Etat = { profil: Profil | null; erreur: string }
 
-      <footer className="mt-auto py-6 text-center text-xs text-texte-3">version {__VERSION__}</footer>
-    </main>
+function AppConnectee({ client }: { client: Client }) {
+  const [hash, setHash] = useState(() => location.hash)
+  const [voirConnexion, setVoirConnexion] = useState(false)
+  const session = useSession(client)
+  const [etat, setEtat] = useState<Etat | undefined>(undefined)
+  const jetonAdresse = jetonDepuisAdresse(hash)
+  const userId = session?.user.id
+
+  useEffect(() => {
+    const suivre = () => setHash(location.hash)
+    addEventListener('hashchange', suivre)
+    return () => removeEventListener('hashchange', suivre)
+  }, [])
+
+  useEffect(() => {
+    if (jetonAdresse && lireInvitationEnAttente()?.jeton !== jetonAdresse) ecrireInvitationEnAttente({ jeton: jetonAdresse, nom: '' })
+  }, [jetonAdresse])
+
+  useEffect(() => {
+    if (!userId) return setEtat(undefined)
+    let annule = false
+    ;(async () => {
+      let suivant: Etat
+      try {
+        let profil = await chargerProfil(client, userId)
+        let erreur = ''
+        const attente = lireInvitationEnAttente()
+        if (!profil && attente) {
+          const { error } = await client.rpc('accepter_invitation', { p_jeton: attente.jeton, p_nom: attente.nom })
+          if (error) erreur = messageErreur(error)
+          else profil = await chargerProfil(client, userId)
+        }
+        if (attente) {
+          effacerInvitationEnAttente()
+          history.replaceState(null, '', location.pathname + location.search)
+          setHash('')
+        }
+        suivant = { profil, erreur }
+      } catch (e) {
+        suivant = { profil: null, erreur: messageErreur(e) }
+      }
+      if (!annule) setEtat(suivant)
+    })()
+    return () => {
+      annule = true
+    }
+  }, [client, userId])
+
+  const deconnecter = () => {
+    setVoirConnexion(false)
+    client.auth.signOut()
+  }
+
+  if (session === undefined || (session && !etat)) return <Page titre="…">{null}</Page>
+
+  if (!session) {
+    const jeton = jetonAdresse ?? lireInvitationEnAttente()?.jeton
+    return jeton && !voirConnexion ? (
+      <Inscription client={client} jeton={jeton} allerConnexion={() => setVoirConnexion(true)} />
+    ) : (
+      <Connexion client={client} />
+    )
+  }
+
+  const { profil, erreur } = etat!
+  if (!profil)
+    return (
+      <Page surtitre="Suivi Coaching" titre="Compte">
+        <Carte>
+          <Message type={erreur ? 'erreur' : 'info'}>
+            {erreur || 'Ce compte n’est rattaché à aucun coach. Ouvre le lien d’invitation envoyé par ton coach.'}
+          </Message>
+        </Carte>
+        <Bouton variante="discret" onClick={deconnecter}>
+          Déconnexion
+        </Bouton>
+      </Page>
+    )
+
+  return profil.role === 'coach' ? (
+    <MesEleves client={client} profil={profil} deconnecter={deconnecter} />
+  ) : (
+    <Aujourdhui client={client} profil={profil} deconnecter={deconnecter} />
   )
 }
