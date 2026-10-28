@@ -40,23 +40,6 @@ export function Champ({ etiquette, ...props }: InputHTMLAttributes<HTMLInputElem
   )
 }
 
-export function Choix<T extends string>({ valeur, options, onChange }: { valeur: T; options: [T, string][]; onChange: (v: T) => void }) {
-  return (
-    <div className="flex rounded-xl bg-surface-2 p-1">
-      {options.map(([v, libelle]) => (
-        <button
-          key={v}
-          type="button"
-          onClick={() => onChange(v)}
-          className={`flex-1 rounded-lg px-3 py-2 text-sm ${v === valeur ? 'bg-surface font-semibold text-texte' : 'text-texte-3'}`}
-        >
-          {libelle}
-        </button>
-      ))}
-    </div>
-  )
-}
-
 export function Message({ type = 'info', children }: { type?: 'info' | 'erreur' | 'succes'; children: ReactNode }) {
   const couleur = type === 'erreur' ? 'text-alerte' : type === 'succes' ? 'text-succes' : 'text-texte-2'
   return <p className={`text-sm ${couleur}`}>{children}</p>

@@ -11,10 +11,6 @@ export function lienInvitation(adresseApp: string, jeton: string): string {
   return `${adresseApp.replace(/[?#].*$/, '')}#/invitation/${jeton}`
 }
 
-export function codeValide(code: string): boolean {
-  return /^\d{6,8}$/.test(code.trim())
-}
-
 export function lireInvitationEnAttente(): InvitationEnAttente | null {
   try {
     const brut = localStorage.getItem(CLE_STOCKAGE)

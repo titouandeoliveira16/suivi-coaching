@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import { messageErreur } from '../core/compte'
 import { ecrireInvitationEnAttente, effacerInvitationEnAttente } from '../core/invitation'
 import type { Client } from '../core/supabase'
-import { Bouton, Carte, Champ, Choix, Message, Page } from '../core/ui'
-import { CodeParEmail } from './CodeParEmail'
+import { Bouton, Carte, Champ, Message, Page } from '../core/ui'
 
 type Invitation = { nom: string; coach_nom: string; valide: boolean }
 
@@ -11,7 +10,6 @@ type Invitation = { nom: string; coach_nom: string; valide: boolean }
 export function Inscription({ client, jeton, allerConnexion }: { client: Client; jeton: string; allerConnexion: () => void }) {
   const [invitation, setInvitation] = useState<Invitation | null | undefined>(undefined)
   const [prenom, setPrenom] = useState('')
-  const [mode, setMode] = useState<'mdp' | 'code'>('mdp')
   const [email, setEmail] = useState('')
   const [mdp, setMdp] = useState('')
   const [occupe, setOccupe] = useState(false)
@@ -62,10 +60,9 @@ export function Inscription({ client, jeton, allerConnexion }: { client: Client;
       <Carte>
         <div className="flex flex-col gap-4">
           <Champ etiquette="Prénom" autoComplete="given-name" value={prenom} onChange={(e) => setPrenom(e.target.value)} />
-          <Choix valeur={mode} onChange={setMode} options={[['mdp', 'Mot de passe'], ['code', 'Code par email']]} />
           {aConfirmer ? (
             <Message type="succes">Compte créé : confirme ton email avec le lien reçu, puis reviens te connecter.</Message>
-          ) : mode === 'mdp' ? (
+          ) : (
             <form className="flex flex-col gap-3" onSubmit={(e) => (e.preventDefault(), creer())}>
               <Champ etiquette="Email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
               <Champ
@@ -82,8 +79,6 @@ export function Inscription({ client, jeton, allerConnexion }: { client: Client;
               </Bouton>
               {erreur && <Message type="erreur">{erreur}</Message>}
             </form>
-          ) : (
-            <CodeParEmail client={client} creerCompte avantEnvoi={memoriser} />
           )}
         </div>
       </Carte>

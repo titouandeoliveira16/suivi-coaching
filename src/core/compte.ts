@@ -27,9 +27,7 @@ const MESSAGES: [RegExp, string][] = [
   [/Invalid login credentials/i, 'Email ou mot de passe incorrect.'],
   [/User already registered/i, 'Un compte existe déjà avec cet email : connecte-toi plutôt.'],
   [/Password should be at least/i, 'Le mot de passe doit faire au moins 8 caractères.'],
-  [/(Token has expired|invalid).*otp|otp.*(expired|invalid)|Token has expired or is invalid/i, 'Code incorrect ou expiré.'],
   [/rate limit|too many|security purposes/i, 'Trop de demandes d’affilée : réessaie dans quelques minutes.'],
-  [/Signups not allowed|not allowed for otp/i, 'Aucun compte avec cet email.'],
   [/Failed to fetch|NetworkError|Load failed/i, 'Pas de connexion internet.'],
 ]
 
