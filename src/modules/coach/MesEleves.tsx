@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { adresseEleve, allerA } from '../../core/adresse'
 import { messageErreur, type Profil } from '../../core/compte'
 import { lienInvitation } from '../../core/invitation'
 import type { Client } from '../../core/supabase'
@@ -67,8 +68,15 @@ export function MesEleves({ client, profil, deconnecter }: { client: Client; pro
         ) : (
           <ul className="flex flex-col divide-y divide-bordure">
             {eleves.map((e) => (
-              <li key={e.id} className="py-3 font-semibold">
-                {e.nom || 'Sans prénom'}
+              <li key={e.id}>
+                <button
+                  type="button"
+                  onClick={() => allerA(adresseEleve(e.id))}
+                  className="flex w-full items-center justify-between py-3 text-left font-semibold"
+                >
+                  {e.nom || 'Sans prénom'}
+                  <span className="text-texte-3">›</span>
+                </button>
               </li>
             ))}
           </ul>

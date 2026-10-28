@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { eleveDepuisAdresse, remplacerAdresse, useAdresse } from '../core/adresse'
 import { chargerProfil, messageErreur, useSession, type Profil } from '../core/compte'
 import {
   ecrireInvitationEnAttente,
@@ -8,6 +9,7 @@ import {
 } from '../core/invitation'
 import { supabase, type Client } from '../core/supabase'
 import { Bouton, Carte, Message, Page } from '../core/ui'
+import { FicheEleve } from '../modules/coach/FicheEleve'
 import { MesEleves } from '../modules/coach/MesEleves'
 import { Aujourdhui } from '../modules/eleve/Aujourdhui'
 import { Connexion } from './Connexion'
@@ -28,18 +30,12 @@ export default function App() {
 type Etat = { profil: Profil | null; erreur: string }
 
 function AppConnectee({ client }: { client: Client }) {
-  const [hash, setHash] = useState(() => location.hash)
+  const hash = useAdresse()
   const [voirConnexion, setVoirConnexion] = useState(false)
   const session = useSession(client)
   const [etat, setEtat] = useState<Etat | undefined>(undefined)
   const jetonAdresse = jetonDepuisAdresse(hash)
   const userId = session?.user.id
-
-  useEffect(() => {
-    const suivre = () => setHash(location.hash)
-    addEventListener('hashchange', suivre)
-    return () => removeEventListener('hashchange', suivre)
-  }, [])
 
   useEffect(() => {
     if (jetonAdresse && lireInvitationEnAttente()?.jeton !== jetonAdresse) ecrireInvitationEnAttente({ jeton: jetonAdresse, nom: '' })
@@ -61,8 +57,7 @@ function AppConnectee({ client }: { client: Client }) {
         }
         if (attente) {
           effacerInvitationEnAttente()
-          history.replaceState(null, '', location.pathname + location.search)
-          setHash('')
+          remplacerAdresse('')
         }
         suivant = { profil, erreur }
       } catch (e) {
@@ -106,9 +101,14 @@ function AppConnectee({ client }: { client: Client }) {
       </Page>
     )
 
-  return profil.role === 'coach' ? (
-    <MesEleves client={client} profil={profil} deconnecter={deconnecter} />
-  ) : (
+  const eleveOuvert = eleveDepuisAdresse(hash)
+  if (profil.role === 'coach')
+    return eleveOuvert ? (
+      <FicheEleve client={client} id={eleveOuvert} />
+    ) : (
+      <MesEleves client={client} profil={profil} deconnecter={deconnecter} />
+    )
+  return (
     <Aujourdhui client={client} profil={profil} deconnecter={deconnecter} />
   )
 }
