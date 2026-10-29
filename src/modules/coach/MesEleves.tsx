@@ -1,80 +1,87 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { adresseEleve, allerA } from '../../core/adresse'
 import { messageErreur, type Profil } from '../../core/compte'
+import { alertesNonVues, nonLus, useCharge } from '../../core/donnees'
 import { lienInvitation } from '../../core/invitation'
 import type { Client } from '../../core/supabase'
-import { Bouton, Carte, Champ, Message, Page } from '../../core/ui'
+import { Bouton, Carte, Champ, Chargement, Message, Pastille } from '../../core/ui'
+import { jour, lundiDe } from '../../moteur/dates'
+import type { Feu } from '../../moteur/types'
 
 type Invitation = { id: string; jeton: string; nom: string; expire_le: string }
+const POINT_FEU: Record<Feu, string> = { vert: 'bg-succes', orange: 'bg-alerte', rouge: 'bg-[#f87171]', repos: 'bg-[#f87171]' }
 
-export function MesEleves({ client, profil, deconnecter }: { client: Client; profil: Profil; deconnecter: () => void }) {
-  const [eleves, setEleves] = useState<Profil[]>([])
-  const [invitations, setInvitations] = useState<Invitation[]>([])
-  const [erreur, setErreur] = useState('')
+export function MesEleves({ client, profil }: { client: Client; profil: Profil }) {
+  const aujourdhui = jour()
+  const charger = useCallback(async () => {
+    const [eleves, invitations, sportifs, semaines, alertes, lus, matins] = await Promise.all([
+      client.from('profils').select('id, role, coach_id, nom').eq('coach_id', profil.id).order('nom'),
+      client.from('invitations').select('id, jeton, nom, expire_le').eq('statut', 'en_attente').gt('expire_le', new Date().toISOString()).order('cree_le', { ascending: false }),
+      client.from('profils_sportifs').select('eleve_id'),
+      client.from('semaines').select('eleve_id, lundi').eq('validee', false).gte('lundi', lundiDe(aujourdhui)),
+      alertesNonVues(client),
+      nonLus(client, profil.id),
+      client.from('matins').select('eleve_id, feu').eq('date', aujourdhui),
+    ])
+    const erreur = eleves.error ?? invitations.error ?? sportifs.error ?? semaines.error ?? matins.error
+    if (erreur) throw erreur
+    return {
+      eleves: eleves.data as Profil[],
+      invitations: invitations.data as Invitation[],
+      avecProfil: new Set((sportifs.data as { eleve_id: string }[]).map((s) => s.eleve_id)),
+      aValider: (semaines.data as { eleve_id: string }[]).reduce<Record<string, number>>((t, s) => ((t[s.eleve_id] = (t[s.eleve_id] ?? 0) + 1), t), {}),
+      alertes: alertes.reduce<Record<string, number>>((t, a) => ((t[a.eleve_id] = (t[a.eleve_id] ?? 0) + 1), t), {}),
+      lus,
+      feux: Object.fromEntries((matins.data as { eleve_id: string; feu: Feu }[]).map((m) => [m.eleve_id, m.feu])),
+    }
+  }, [client, profil.id, aujourdhui])
+  const { donnees: d, erreur, recharger } = useCharge(charger, [charger])
   const [nouveau, setNouveau] = useState<string | null>(null)
   const [prenom, setPrenom] = useState('')
   const [occupe, setOccupe] = useState(false)
-
-  const charger = useCallback(async () => {
-    const [e, i] = await Promise.all([
-      client.from('profils').select('id, role, coach_id, nom').eq('coach_id', profil.id).order('nom'),
-      client
-        .from('invitations')
-        .select('id, jeton, nom, expire_le')
-        .eq('statut', 'en_attente')
-        .gt('expire_le', new Date().toISOString())
-        .order('cree_le', { ascending: false }),
-    ])
-    if (e.error || i.error) return setErreur(messageErreur(e.error ?? i.error))
-    setEleves(e.data as Profil[])
-    setInvitations(i.data as Invitation[])
-  }, [client, profil.id])
-
-  useEffect(() => {
-    charger()
-  }, [charger])
+  const [erreurAction, setErreurAction] = useState('')
 
   async function inviter() {
     setOccupe(true)
-    setErreur('')
+    setErreurAction('')
     const { data, error } = await client.from('invitations').insert({ nom: prenom.trim() }).select('jeton').single()
     setOccupe(false)
-    if (error) return setErreur(messageErreur(error))
+    if (error) return setErreurAction(messageErreur(error))
     setNouveau(lienInvitation(location.href, data.jeton))
     setPrenom('')
-    charger()
+    recharger()
   }
 
   async function annuler(id: string) {
     const { error } = await client.from('invitations').delete().eq('id', id)
-    if (error) setErreur(messageErreur(error))
-    charger()
+    if (error) setErreurAction(messageErreur(error))
+    recharger()
   }
 
+  if (erreur) return <Message type="erreur">{messageErreur(erreur)}</Message>
+  if (!d) return <Chargement />
+
   return (
-    <Page
-      surtitre={`Coach · ${profil.nom}`}
-      titre="Mes élèves"
-      action={
-        <Bouton variante="discret" onClick={deconnecter}>
-          Déconnexion
-        </Bouton>
-      }
-    >
+    <>
       <Carte>
-        <p className="mb-3 text-sm text-texte-3">{eleves.length} élève{eleves.length > 1 ? 's' : ''}</p>
-        {eleves.length === 0 ? (
+        <p className="mb-1 text-sm text-texte-3">
+          {d.eleves.length} élève{d.eleves.length > 1 ? 's' : ''}
+        </p>
+        {d.eleves.length === 0 ? (
           <Message>Aucun élève pour l’instant : invite ton premier élève ci-dessous.</Message>
         ) : (
           <ul className="flex flex-col divide-y divide-bordure">
-            {eleves.map((e) => (
+            {d.eleves.map((e) => (
               <li key={e.id}>
-                <button
-                  type="button"
-                  onClick={() => allerA(adresseEleve(e.id))}
-                  className="flex w-full items-center justify-between py-3 text-left font-semibold"
-                >
-                  {e.nom || 'Sans prénom'}
+                <button type="button" onClick={() => allerA(adresseEleve(e.id))} className="flex w-full items-center gap-3 py-3 text-left">
+                  <span className={`h-3 w-3 shrink-0 rounded-full ${d.feux[e.id] ? POINT_FEU[d.feux[e.id]] : 'bg-surface-2'}`} title="Feu du jour" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-semibold">{e.nom || 'Sans prénom'}</span>
+                    {!d.avecProfil.has(e.id) && <span className="block text-xs text-texte-3">Questionnaire pas encore rempli</span>}
+                  </span>
+                  {!!d.aValider[e.id] && <Pastille>à valider</Pastille>}
+                  {!!d.alertes[e.id] && <Pastille ton="alerte">{d.alertes[e.id]} alerte{d.alertes[e.id] > 1 ? 's' : ''}</Pastille>}
+                  {!!d.lus[e.id] && <Pastille ton="neutre">💬 {d.lus[e.id]}</Pastille>}
                   <span className="text-texte-3">›</span>
                 </button>
               </li>
@@ -83,8 +90,7 @@ export function MesEleves({ client, profil, deconnecter }: { client: Client; pro
         )}
       </Carte>
 
-      <Carte>
-        <h2 className="mb-3 text-lg font-semibold">Inviter un élève</h2>
+      <Carte titre="Inviter un élève">
         {nouveau ? (
           <LienAPartager lien={nouveau} fermer={() => setNouveau(null)} />
         ) : (
@@ -97,11 +103,10 @@ export function MesEleves({ client, profil, deconnecter }: { client: Client; pro
         )}
       </Carte>
 
-      {invitations.length > 0 && (
-        <Carte>
-          <h2 className="mb-1 text-lg font-semibold">Invitations en attente</h2>
+      {d.invitations.length > 0 && (
+        <Carte titre="Invitations en attente">
           <ul className="flex flex-col divide-y divide-bordure">
-            {invitations.map((i) => (
+            {d.invitations.map((i) => (
               <li key={i.id} className="flex items-center justify-between gap-2 py-3">
                 <span>
                   {i.nom || 'Sans prénom'}
@@ -120,9 +125,8 @@ export function MesEleves({ client, profil, deconnecter }: { client: Client; pro
           </ul>
         </Carte>
       )}
-
-      {erreur && <Message type="erreur">{erreur}</Message>}
-    </Page>
+      {erreurAction && <Message type="erreur">{erreurAction}</Message>}
+    </>
   )
 }
 

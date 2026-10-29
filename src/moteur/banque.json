@@ -1,0 +1,3831 @@
+{
+ "source": "Catalogue scientifique de Coach (version 2)",
+ "seances": [
+  {
+   "id": "velo-recuperation-active",
+   "sport": "velo",
+   "famille": "recuperation",
+   "nom": "Récupération active",
+   "objectif": "Récupérer sans ajouter de fatigue",
+   "resume": "Pédalage très facile, souple, sans aucune pression.",
+   "unite": "%CP",
+   "zone": "Z1",
+   "rpe": "1-2",
+   "niveau": "tous",
+   "dureeMin": 35,
+   "deroule": [
+    {
+     "type": "effort",
+     "duree": 2100,
+     "intensite": [
+      40,
+      55
+     ],
+     "cadence": "85-95"
+    }
+   ],
+   "phases": [
+    "toutes"
+   ],
+   "conseils": [
+    "Si les jambes piquent, c'est trop fort : baisse.",
+    "Remplace sans regret par du repos complet."
+   ],
+   "preuve": {
+    "niveau": "faible",
+    "references": [
+     "Van Hooren B 2018"
+    ]
+   }
+  },
+  {
+   "id": "velo-endurance-courte",
+   "sport": "velo",
+   "famille": "endurance",
+   "nom": "Endurance fondamentale courte",
+   "objectif": "Volume aérobie, capillarisation, mitochondries, économie",
+   "resume": "45 à 90 min régulières sous le premier seuil.",
+   "unite": "%CP",
+   "zone": "Z2",
+   "rpe": "2-3",
+   "niveau": "tous",
+   "dureeMin": 65,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 600,
+     "intensite": [
+      50,
+      65
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 3000,
+     "intensite": [
+      56,
+      75
+     ],
+     "cadence": "85-95"
+    },
+    {
+     "type": "retour",
+     "duree": 300,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "toutes"
+   ],
+   "conseils": [
+    "Test de la parole : tu dois pouvoir parler confortablement en phrases (= sous le premier seuil).",
+    "Repère d'entraîneur : dérive de FC < 5 % = endurance solide."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Seiler S 2010",
+     "Rosenblat MA 2019",
+     "Rosenblat MA 2025",
+     "Persinger R 2004"
+    ]
+   }
+  },
+  {
+   "id": "velo-endurance-longue",
+   "sport": "velo",
+   "famille": "endurance",
+   "nom": "Sortie longue",
+   "objectif": "Endurance de fond, utilisation des graisses, résistance à la fatigue",
+   "resume": "2 à 4 h en Z2, sur terrain varié ou home trainer.",
+   "unite": "%CP",
+   "zone": "Z2",
+   "rpe": "2-3",
+   "niveau": "intermédiaire",
+   "dureeMin": 175,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      65
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 9000,
+     "intensite": [
+      56,
+      75
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Glucides : 30-60 g/h au-delà de 1 h 15, 60-90 g/h au-delà de 2 h 30 (consensus ACSM).",
+    "Bois selon la soif, davantage en intérieur."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Seiler S 2010",
+     "van Erp T 2021",
+     "Maunder E 2021"
+    ]
+   }
+  },
+  {
+   "id": "velo-endurance-sprints",
+   "sport": "velo",
+   "famille": "endurance",
+   "nom": "Endurance + sprints",
+   "objectif": "Garder la puissance de sprint pendant les blocs d'endurance",
+   "resume": "Z2 avec quelques sprints répartis dans la sortie.",
+   "unite": "%CP",
+   "zone": "Z2 + Z7",
+   "rpe": "3 (sprints 9)",
+   "niveau": "intermédiaire",
+   "dureeMin": 121,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      65
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 8,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 600,
+       "intensite": [
+        56,
+        75
+       ]
+      },
+      {
+       "type": "effort",
+       "duree": 10,
+       "max": true,
+       "cadence": "> 100",
+       "note": "assis puis debout"
+      }
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 900,
+     "intensite": [
+      56,
+      75
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Sprint à fond, puis 2 min très facile avant de reprendre la Z2.",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Almquist NW 2020"
+    ]
+   }
+  },
+  {
+   "id": "velo-durabilite-effort-final",
+   "sport": "velo",
+   "famille": "durabilite",
+   "nom": "Sortie longue + effort final",
+   "objectif": "Durabilité : rester fort quand on est déjà fatigué",
+   "resume": "2 h 30 à 4 h en Z2, puis 2 × 10-15 min au seuil ou en sweet spot dans la dernière heure.",
+   "unite": "%CP",
+   "zone": "Z2 puis Z3-Z4",
+   "rpe": "3 puis 7",
+   "niveau": "confirmé",
+   "dureeMin": 194,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      65
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 8100,
+     "intensite": [
+      56,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 2,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 720,
+       "intensite": [
+        88,
+        95
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 300,
+       "intensite": [
+        55,
+        65
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Mange régulièrement avant l'effort final (60-90 g/h) : on entraîne la tenue, pas la panne.",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "van Erp T 2021",
+     "Spragg J 2024",
+     "Rønnestad BR 2011",
+     "Maunder E 2021"
+    ]
+   }
+  },
+  {
+   "id": "velo-tempo-2x20",
+   "sport": "velo",
+   "famille": "tempo",
+   "nom": "Tempo 2 × 20 min",
+   "objectif": "Endurance aérobie haute, préparation au sweet spot",
+   "resume": "2 blocs de 20 min en Z3 basse, récupération 5 min.",
+   "unite": "%CP",
+   "zone": "Z3",
+   "rpe": "5",
+   "niveau": "tous",
+   "dureeMin": 75,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 2,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 1200,
+       "intensite": [
+        76,
+        85
+       ],
+       "cadence": "85-95"
+      },
+      {
+       "type": "recup",
+       "duree": 300,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Respiration appuyée mais régulière, phrases courtes possibles."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Neal CM 2013",
+     "Rosenblat MA 2019",
+     "Allen H 2019"
+    ]
+   }
+  },
+  {
+   "id": "velo-sweet-spot-3x15",
+   "sport": "velo",
+   "famille": "tempo",
+   "nom": "Sweet spot 3 × 15 min",
+   "objectif": "Beaucoup de travail proche du seuil pour une fatigue modérée",
+   "resume": "3 × 15 min à 88-94 % de la CP, récupération 5 min.",
+   "unite": "%CP",
+   "zone": "Z3-Z4",
+   "rpe": "6",
+   "niveau": "intermédiaire",
+   "dureeMin": 85,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 900,
+       "intensite": [
+        88,
+        94
+       ],
+       "cadence": "85-95"
+      },
+      {
+       "type": "recup",
+       "duree": 300,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Allen H 2019",
+     "Neal CM 2013"
+    ]
+   }
+  },
+  {
+   "id": "velo-sweet-spot-long",
+   "sport": "velo",
+   "famille": "tempo",
+   "nom": "Sweet spot long 2 × 30 min",
+   "objectif": "Endurance au seuil, préparation aux longues ascensions",
+   "resume": "2 × 30 min à 88-92 %, récupération 10 min.",
+   "unite": "%CP",
+   "zone": "Z3-Z4",
+   "rpe": "6-7",
+   "niveau": "confirmé",
+   "dureeMin": 105,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 2,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 1800,
+       "intensite": [
+        88,
+        92
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 600,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Glucides pendant l'effort si la séance dépasse 75 min."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Allen H 2019"
+    ]
+   }
+  },
+  {
+   "id": "velo-seuil-2x20",
+   "sport": "velo",
+   "famille": "seuil",
+   "nom": "Seuil 2 × 20 min",
+   "objectif": "Puissance au seuil (CP, FTP)",
+   "resume": "Le classique : 2 × 20 min à 95-100 % de la CP, récupération 5-10 min.",
+   "unite": "%CP",
+   "zone": "Z4",
+   "rpe": "7",
+   "niveau": "intermédiaire",
+   "dureeMin": 81,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 2,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 1200,
+       "intensite": [
+        95,
+        100
+       ],
+       "cadence": "85-95"
+      },
+      {
+       "type": "recup",
+       "duree": 480,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "La FC monte un peu même sous ta CP. Tu es au-dessus seulement si elle grimpe de plus de 8 % dans le bloc et finit vers 95 % de ta FC max.",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Allen H 2019"
+    ]
+   }
+  },
+  {
+   "id": "velo-seuil-4x10",
+   "sport": "velo",
+   "famille": "seuil",
+   "nom": "Seuil 4 × 10 min",
+   "objectif": "Puissance au seuil, version fractionnée",
+   "resume": "4 × 10 min à 95-102 %, récupération 3-4 min.",
+   "unite": "%CP",
+   "zone": "Z4",
+   "rpe": "7",
+   "niveau": "intermédiaire",
+   "dureeMin": 81,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 4,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 600,
+       "intensite": [
+        95,
+        102
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 240,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Allen H 2019"
+    ]
+   }
+  },
+  {
+   "id": "velo-seuil-4x16",
+   "sport": "velo",
+   "famille": "seuil",
+   "nom": "4 × 16 min (Seiler, Sylta)",
+   "objectif": "Endurance au seuil, gros volume d'intensité modérée",
+   "resume": "4 × 16 min à l'effort maximal tenable (~88 % FC max, ≈ 90-95 % de la CP), récupération 2 min.",
+   "unite": "%CP",
+   "zone": "Z3-Z4",
+   "rpe": "7",
+   "niveau": "confirmé",
+   "dureeMin": 97,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 4,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 960,
+       "intensite": [
+        90,
+        95
+       ],
+       "note": "effort maximal tenable sur les 4 répétitions"
+      },
+      {
+       "type": "recup",
+       "duree": 120,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Le %CP est une estimation : les études règlent l'intensité à l'effort, pas en watts.",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Seiler S 2013",
+     "Sylta Ø 2016"
+    ]
+   }
+  },
+  {
+   "id": "velo-over-unders",
+   "sport": "velo",
+   "famille": "seuil",
+   "nom": "Over-unders",
+   "objectif": "Tolérance aux variations autour du seuil (relances, attaques en côte)",
+   "resume": "3 séries de 4 × (2 min à 95 % / 1 min à 105-110 %), récupération 5 min entre les séries.",
+   "unite": "%CP",
+   "zone": "Z4",
+   "rpe": "8",
+   "niveau": "confirmé",
+   "dureeMin": 76,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 4,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 120,
+         "intensite": [
+          93,
+          97
+         ]
+        },
+        {
+         "type": "effort",
+         "duree": 60,
+         "intensite": [
+          105,
+          110
+         ]
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 300,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Change de braquet pour passer au-dessus, sans te mettre en danseuse.",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Allen H 2019"
+    ]
+   }
+  },
+  {
+   "id": "velo-seuil-continu",
+   "sport": "velo",
+   "famille": "seuil",
+   "nom": "Seuil continu (simulation de contre-la-montre)",
+   "objectif": "Tenue d'un effort long et régulier",
+   "resume": "30 à 45 min continus à 90-95 % de la CP.",
+   "unite": "%CP",
+   "zone": "Z4",
+   "rpe": "7-8",
+   "niveau": "confirmé",
+   "dureeMin": 60,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 2100,
+     "intensite": [
+      90,
+      95
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Reste assis, cadence stable, aucune accélération."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Allen H 2019"
+    ]
+   }
+  },
+  {
+   "id": "velo-vo2-4x8-seiler",
+   "sport": "velo",
+   "famille": "vo2max",
+   "nom": "4 × 8 min (Seiler)",
+   "objectif": "VO2max et seuil : le meilleur compromis intensité-durée de l'étude",
+   "resume": "4 × 8 min à l'effort maximal tenable (~90 % FC max, ≈ 100-105 % de la CP), récupération 2 min.",
+   "unite": "%CP",
+   "zone": "Z4-Z5",
+   "rpe": "8",
+   "niveau": "intermédiaire",
+   "dureeMin": 65,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 4,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 480,
+       "intensite": [
+        100,
+        105
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 120,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Le %CP est une estimation : l'étude règle l'intensité à l'effort.",
+    "Rythme réparti : la dernière répétition doit être la plus forte.",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Seiler S 2013",
+     "Sylta Ø 2016"
+    ]
+   }
+  },
+  {
+   "id": "velo-vo2-30-15-ronnestad",
+   "sport": "velo",
+   "famille": "vo2max",
+   "nom": "30/15 (Rønnestad)",
+   "objectif": "VO2max et puissance au seuil",
+   "resume": "3 séries de 13 × (30 s dur / 15 s facile), récupération 3 min entre les séries.",
+   "unite": "%CP",
+   "zone": "Z5",
+   "rpe": "8-9",
+   "niveau": "intermédiaire",
+   "dureeMin": 63,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 13,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 30,
+         "intensite": [
+          115,
+          125
+         ],
+         "cadence": "90-100"
+        },
+        {
+         "type": "recup",
+         "duree": 15,
+         "intensite": [
+          50,
+          50
+         ]
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 180,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Dans l'étude : effort maximal tenable sur toute la série, pas un sprint. Le %CP est une estimation.",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise. Sur les 30 s, reste sur le même braquet et monte la cadence."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Rønnestad BR 2015",
+     "Rønnestad BR 2020"
+    ]
+   }
+  },
+  {
+   "id": "velo-vo2-15-15",
+   "sport": "velo",
+   "famille": "vo2max",
+   "nom": "15/15",
+   "objectif": "VO2max avec très peu de fatigue par répétition",
+   "resume": "2 à 3 séries de 10-12 × (15 s à ~130-140 % / 15 s facile), récupération 3 min.",
+   "unite": "%CP",
+   "zone": "Z5-Z6",
+   "rpe": "8",
+   "niveau": "intermédiaire",
+   "dureeMin": 49,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 10,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 15,
+         "intensite": [
+          130,
+          140
+         ]
+        },
+        {
+         "type": "recup",
+         "duree": 15,
+         "intensite": [
+          50,
+          50
+         ]
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 180,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Buchheit M 2013"
+    ]
+   }
+  },
+  {
+   "id": "velo-vo2-20-40",
+   "sport": "velo",
+   "famille": "vo2max",
+   "nom": "20/40",
+   "objectif": "VO2max, efforts courts et intenses avec récupération longue",
+   "resume": "2 à 3 séries de 8-10 × (20 s à ~135-145 % / 40 s facile), récupération 3 min.",
+   "unite": "%CP",
+   "zone": "Z6",
+   "rpe": "8",
+   "niveau": "intermédiaire",
+   "dureeMin": 58,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 8,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 20,
+         "intensite": [
+          135,
+          145
+         ]
+        },
+        {
+         "type": "recup",
+         "duree": 40,
+         "intensite": [
+          50,
+          50
+         ]
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 180,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Rønnestad BR 2016",
+     "Buchheit M 2013"
+    ]
+   }
+  },
+  {
+   "id": "velo-vo2-4x5",
+   "sport": "velo",
+   "famille": "vo2max",
+   "nom": "VO2 longs 4 × 5 min",
+   "objectif": "Temps passé près de la VO2max",
+   "resume": "4 à 5 × 5 min à 106-115 % de la CP, récupération 2 min 30.",
+   "unite": "%CP",
+   "zone": "Z5",
+   "rpe": "8-9",
+   "niveau": "intermédiaire",
+   "dureeMin": 55,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 4,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 300,
+       "intensite": [
+        106,
+        115
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 150,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Vise ≥ 90 % de ta FC max pendant au moins 2-3 min de chaque répétition.",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Buchheit M 2013",
+     "Rønnestad BR 2015"
+    ]
+   }
+  },
+  {
+   "id": "velo-vo2-8x4-stepto",
+   "sport": "velo",
+   "famille": "vo2max",
+   "nom": "8 × 4 min (Stepto)",
+   "objectif": "Puissance aérobie, contre-la-montre",
+   "resume": "8 × 4 min à ~85 % de la PMA (≈ 105-110 % de la CP), récupération ~1 min 30.",
+   "unite": "%CP",
+   "zone": "Z5",
+   "rpe": "8",
+   "niveau": "confirmé",
+   "dureeMin": 69,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 8,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 240,
+       "intensite": [
+        105,
+        110
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 90,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Conversion PMA → CP approximative ; récupération exacte de l'étude non vérifiée."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Stepto NK 1999"
+    ]
+   }
+  },
+  {
+   "id": "velo-vo2-puissance-variee",
+   "sport": "velo",
+   "famille": "vo2max",
+   "nom": "Intervalles à puissance variée (Bossi)",
+   "objectif": "Passer plus de temps près de la VO2max à travail égal",
+   "resume": "6 × 5 min : 3 × (30 s à 125-130 % puis 70 s à 95-100 %), récupération 2 min 30.",
+   "unite": "%CP",
+   "zone": "Z5",
+   "rpe": "8-9",
+   "niveau": "confirmé",
+   "dureeMin": 70,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 6,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 3,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 30,
+         "intensite": [
+          125,
+          130
+         ]
+        },
+        {
+         "type": "effort",
+         "duree": 70,
+         "intensite": [
+          95,
+          100
+         ]
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 150,
+       "intensite": [
+        30,
+        45
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Dans l'étude : 30 s à 100 % de la PMA intercalés avec 77 % de la PMA ; conversion en %CP estimée.",
+    "Ce sont les accélérations répétées qui comptent : un seul départ rapide ne change rien à travail égal (Miller 2023).",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Bossi AH 2020"
+    ]
+   }
+  },
+  {
+   "id": "velo-vo2-4x4-helgerud",
+   "sport": "velo",
+   "famille": "vo2max",
+   "nom": "4 × 4 min (Helgerud)",
+   "objectif": "VO2max",
+   "resume": "4 × 4 min à 90-95 % de la FC max, récupération active 3 min.",
+   "unite": "%CP",
+   "zone": "Z5",
+   "rpe": "8-9",
+   "niveau": "tous",
+   "dureeMin": 43,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 600,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 4,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 240,
+       "intensite": [
+        108,
+        118
+       ],
+       "note": "cible réelle : 90-95 % de la FC max"
+      },
+      {
+       "type": "recup",
+       "duree": 180,
+       "intensite": [
+        50,
+        60
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 300,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Guidée par la FC : elle met 1-2 min à monter, le début peut être un peu plus fort.",
+    "Conversion en %CP : estimation d'entraîneur."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Helgerud J 2007"
+    ]
+   }
+  },
+  {
+   "id": "velo-vo2-30-30",
+   "sport": "velo",
+   "famille": "vo2max",
+   "nom": "30/30",
+   "objectif": "VO2max avec moins de charge que les intervalles longs",
+   "resume": "2 à 3 séries de 10-12 × (30 s à 120-130 % / 30 s facile).",
+   "unite": "%CP",
+   "zone": "Z5",
+   "rpe": "8",
+   "niveau": "tous",
+   "dureeMin": 59,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 2,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 12,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 30,
+         "intensite": [
+          120,
+          130
+         ]
+        },
+        {
+         "type": "recup",
+         "duree": 30,
+         "intensite": [
+          50,
+          50
+         ]
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 300,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Billat VL 2000",
+     "Buchheit M 2013"
+    ]
+   }
+  },
+  {
+   "id": "velo-vo2-40-20",
+   "sport": "velo",
+   "famille": "vo2max",
+   "nom": "40/20",
+   "objectif": "VO2max, version plus dense que le 30/30",
+   "resume": "3 séries de 8 × (40 s à 115-120 % / 20 s facile), récupération 4 min.",
+   "unite": "%CP",
+   "zone": "Z5",
+   "rpe": "9",
+   "niveau": "confirmé",
+   "dureeMin": 61,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 8,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 40,
+         "intensite": [
+          115,
+          120
+         ]
+        },
+        {
+         "type": "recup",
+         "duree": 20,
+         "intensite": [
+          50,
+          50
+         ]
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 240,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Buchheit M 2013"
+    ]
+   }
+  },
+  {
+   "id": "velo-anaerobie-1min",
+   "sport": "velo",
+   "famille": "anaerobie",
+   "nom": "Capacité anaérobie 1 min",
+   "objectif": "Capacité anaérobie, tolérance à l'acidité",
+   "resume": "6 à 8 × 1 min à 130-150 % de la CP, récupération 3-4 min.",
+   "unite": "%CP",
+   "zone": "Z6",
+   "rpe": "9",
+   "niveau": "confirmé",
+   "dureeMin": 62,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 7,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 60,
+       "intensite": [
+        130,
+        150
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 210,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Seulement si ta discipline le demande (critériums, cyclo-cross, relances)."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Allen H 2019",
+     "Stepto NK 1999"
+    ]
+   }
+  },
+  {
+   "id": "velo-sit-30s",
+   "sport": "velo",
+   "famille": "anaerobie",
+   "nom": "Sprints de 30 s (type Wingate)",
+   "objectif": "Adaptations aérobies et anaérobies en très peu de temps",
+   "resume": "4 à 6 × 30 s à fond, récupération 4 min très facile.",
+   "unite": "%CP",
+   "zone": "Z7",
+   "rpe": "10",
+   "niveau": "confirmé",
+   "dureeMin": 48,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 5,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 30,
+       "max": true
+      },
+      {
+       "type": "recup",
+       "duree": 240,
+       "intensite": [
+        40,
+        50
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Très éprouvant : jamais deux jours de suite, jamais un jour de feu orange."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Gibala MJ 2006"
+    ]
+   }
+  },
+  {
+   "id": "velo-sit-supramax-laursen",
+   "sport": "velo",
+   "famille": "anaerobie",
+   "nom": "12 × 30 s supramaximaux (Laursen)",
+   "objectif": "Contre-la-montre chez des cyclistes très entraînés",
+   "resume": "12 × 30 s à ~175 % de la PMA (≈ 220 % de la CP), récupération 4 min 30.",
+   "unite": "%CP",
+   "zone": "Z7",
+   "rpe": "10",
+   "niveau": "confirmé",
+   "dureeMin": 90,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 12,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 30,
+       "intensite": [
+        210,
+        230
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 270,
+       "intensite": [
+        40,
+        50
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Conversion PMA → CP estimée. Sans ERG : quasiment un sprint, choisis un gros braquet."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Laursen PB 2002"
+    ]
+   }
+  },
+  {
+   "id": "velo-sit-10s",
+   "sport": "velo",
+   "famille": "anaerobie",
+   "nom": "Sprints de 10 s (SIT court)",
+   "objectif": "VO2max et performance avec un minimum de temps",
+   "resume": "4 à 6 × 10 s à fond, récupération 4 min ; version mini : 2 × 20 s.",
+   "unite": "%CP",
+   "zone": "Z7",
+   "rpe": "9",
+   "niveau": "tous",
+   "dureeMin": 46,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 5,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 10,
+       "max": true
+      },
+      {
+       "type": "recup",
+       "duree": 240,
+       "intensite": [
+        40,
+        50
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "toutes"
+   ],
+   "conseils": [
+    "Faire plus de sprints n'augmente pas le gain de VO2max."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Hazell TJ 2010",
+     "Vollaard NBJ 2017"
+    ]
+   }
+  },
+  {
+   "id": "velo-tabata",
+   "sport": "velo",
+   "famille": "anaerobie",
+   "nom": "Tabata 20/10",
+   "objectif": "VO2max et capacité anaérobie",
+   "resume": "7 à 8 × (20 s à ~170 % de la puissance à VO2max / 10 s de repos) : à l'épuisement.",
+   "unite": "%CP",
+   "zone": "Z7",
+   "rpe": "10",
+   "niveau": "confirmé",
+   "dureeMin": 29,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 8,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 20,
+       "max": true,
+       "note": "≈ 170 % de la puissance à VO2max"
+      },
+      {
+       "type": "recup",
+       "duree": 10,
+       "intensite": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Protocole de laboratoire très dur ; la plupart des « tabata » des applis sont bien moins intenses."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Tabata I 1996"
+    ]
+   }
+  },
+  {
+   "id": "velo-sprints-courts",
+   "sport": "velo",
+   "famille": "sprint",
+   "nom": "Sprints courts",
+   "objectif": "Puissance maximale, recrutement neuromusculaire",
+   "resume": "8 à 10 × 8-10 s à fond, récupération complète 3-5 min.",
+   "unite": "%CP",
+   "zone": "Z7",
+   "rpe": "9",
+   "niveau": "tous",
+   "dureeMin": 63,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 8,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 10,
+       "max": true,
+       "cadence": "> 100"
+      },
+      {
+       "type": "recup",
+       "duree": 240,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "toutes"
+   ],
+   "conseils": [
+    "Qualité avant quantité : arrête dès que la puissance baisse nettement.",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Allen H 2019",
+     "Hazell TJ 2010"
+    ]
+   }
+  },
+  {
+   "id": "velo-sprints-force-paton",
+   "sport": "velo",
+   "famille": "sprint",
+   "nom": "Sprints en force (Paton & Hopkins)",
+   "objectif": "Puissance et contre-la-montre court, en période de compétition",
+   "resume": "3 séries de 5 × 30 s à fond à 60-70 tr/min (récupération 30 s), en alternance avec 20 sauts sur une jambe ; 3-5 min entre les séries.",
+   "unite": "%CP",
+   "zone": "Z7",
+   "rpe": "9",
+   "niveau": "confirmé",
+   "dureeMin": 57,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 5,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 30,
+         "max": true,
+         "cadence": "60-70"
+        },
+        {
+         "type": "recup",
+         "duree": 30,
+         "intensite": [
+          40,
+          50
+         ]
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 240,
+       "intensite": [
+        45,
+        55
+       ],
+       "note": "+ 20 sauts sur une jambe, par jambe"
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Gros braquet, cadence basse imposée ; sans ERG, c'est le braquet qui fait la résistance."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Paton CD 2005"
+    ]
+   }
+  },
+  {
+   "id": "velo-departs-arretes",
+   "sport": "velo",
+   "famille": "sprint",
+   "nom": "Départs arrêtés en gros braquet",
+   "objectif": "Force explosive sur le vélo",
+   "resume": "6 × 10-15 s en partant presque à l'arrêt (50 tr/min), récupération 4 min.",
+   "unite": "%CP",
+   "zone": "Z7",
+   "rpe": "9",
+   "niveau": "intermédiaire",
+   "dureeMin": 55,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 6,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 12,
+       "max": true,
+       "cadence": "démarrage à 50"
+      },
+      {
+       "type": "recup",
+       "duree": 240,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "En côte légère dehors ; sur home trainer, mets le braquet le plus dur avant de démarrer."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Allen H 2019"
+    ]
+   }
+  },
+  {
+   "id": "velo-velocite",
+   "sport": "velo",
+   "famille": "sprint",
+   "nom": "Vélocité (spin-ups)",
+   "objectif": "Technique de pédalage, souplesse à haute cadence",
+   "resume": "8 × 30 s en montant progressivement à 110-130 tr/min, faible puissance.",
+   "unite": "%CP",
+   "zone": "Z2",
+   "rpe": "3-4",
+   "niveau": "tous",
+   "dureeMin": 36,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 600,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 8,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 30,
+       "intensite": [
+        60,
+        75
+       ],
+       "cadence": "110-130"
+      },
+      {
+       "type": "recup",
+       "duree": 90,
+       "intensite": [
+        50,
+        65
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base"
+   ],
+   "conseils": [
+    "Le bassin ne doit pas rebondir sur la selle."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Friel J 2018"
+    ]
+   }
+  },
+  {
+   "id": "velo-force-basse-cadence",
+   "sport": "velo",
+   "famille": "force",
+   "nom": "Basse cadence (force sur le vélo)",
+   "objectif": "Force-endurance, recrutement des fibres",
+   "resume": "6 × 5 min autour de la CP à 60 tr/min, récupération 3-4 min (protocole Nimmerichter).",
+   "unite": "%CP",
+   "zone": "Z4",
+   "rpe": "7",
+   "niveau": "intermédiaire",
+   "dureeMin": 76,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 6,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 300,
+       "intensite": [
+        95,
+        100
+       ],
+       "cadence": "60"
+      },
+      {
+       "type": "recup",
+       "duree": 210,
+       "intensite": [
+        50,
+        60
+       ],
+       "note": "cadence libre"
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Arrête si tes genoux tirent : la basse cadence charge l'articulation."
+   ],
+   "preuve": {
+    "niveau": "mitigé",
+    "references": [
+     "Nimmerichter A 2012",
+     "Kristoffersen M 2014"
+    ]
+   }
+  },
+  {
+   "id": "velo-test-cp-3-7-12",
+   "sport": "velo",
+   "famille": "test",
+   "nom": "Test CP 3/7/12 min",
+   "objectif": "Mesurer ta CP (puissance critique) ; W′ seulement approximatif",
+   "resume": "3 efforts à fond, dans l'ordre 12, 7 puis 3 min, avec 30 min de récupération facile entre chaque.",
+   "unite": "%CP",
+   "zone": "test",
+   "rpe": "10",
+   "niveau": "intermédiaire",
+   "dureeMin": 112,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ],
+     "note": "avec 2 × 1 min à 110 %"
+    },
+    {
+     "type": "effort",
+     "duree": 720,
+     "max": true,
+     "note": "12 min à fond, réparti"
+    },
+    {
+     "type": "recup",
+     "duree": 1800,
+     "intensite": [
+      45,
+      55
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 420,
+     "max": true,
+     "note": "7 min à fond"
+    },
+    {
+     "type": "recup",
+     "duree": 1800,
+     "intensite": [
+      45,
+      55
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 180,
+     "max": true,
+     "note": "3 min à fond"
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "début et fin de phase"
+   ],
+   "conseils": [
+    "Frais (feu vert), même heure, même vélo, mêmes conditions.",
+    "Sans ERG, c'est ce qu'il faut : effort libre."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Karsten B 2015",
+     "Karsten B 2017"
+    ]
+   }
+  },
+  {
+   "id": "velo-test-cp-2-points",
+   "sport": "velo",
+   "famille": "test",
+   "nom": "Test CP 2 points (3 + 12 min)",
+   "objectif": "CP en moins de temps",
+   "resume": "3 min puis 12 min à fond, 30 min de récupération entre les deux.",
+   "unite": "%CP",
+   "zone": "test",
+   "rpe": "10",
+   "niveau": "intermédiaire",
+   "dureeMin": 75,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 180,
+     "max": true
+    },
+    {
+     "type": "recup",
+     "duree": 1800,
+     "intensite": [
+      45,
+      55
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 720,
+     "max": true
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "début et fin de phase"
+   ],
+   "conseils": [
+    "Un peu moins précis que 3 efforts, mais suffisant pour recaler les zones."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Simpson LP 2017"
+    ]
+   }
+  },
+  {
+   "id": "velo-test-ftp-20",
+   "sport": "velo",
+   "famille": "test",
+   "nom": "Test FTP 20 min",
+   "objectif": "Estimer le seuil (FTP ≈ 95 % de la puissance sur 20 min)",
+   "resume": "5 min à fond, 10 min facile, puis 20 min à fond.",
+   "unite": "%CP",
+   "zone": "test",
+   "rpe": "10",
+   "niveau": "tous",
+   "dureeMin": 65,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 300,
+     "max": true,
+     "note": "5 min à fond pour vider la réserve anaérobie"
+    },
+    {
+     "type": "recup",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 1200,
+     "max": true
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "début de phase"
+   ],
+   "conseils": [
+    "Le coefficient 0,95 est une moyenne : il varie d'un cycliste à l'autre.",
+    "L'appli raisonne en CP : préfère le test CP."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Borszcz FK 2018",
+     "Inglis EC 2020",
+     "Karsten B 2021"
+    ]
+   }
+  },
+  {
+   "id": "velo-test-rampe",
+   "sport": "velo",
+   "famille": "test",
+   "nom": "Test rampe (PMA)",
+   "objectif": "Puissance maximale aérobie (PMA)",
+   "resume": "Paliers de 1 min augmentant de 20-25 W jusqu'à l'épuisement.",
+   "unite": "%CP",
+   "zone": "test",
+   "rpe": "10",
+   "niveau": "tous",
+   "dureeMin": 32,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 600,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 720,
+     "max": true,
+     "note": "+20 à 25 W chaque minute jusqu'à l'arrêt"
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "début de phase"
+   ],
+   "conseils": [
+    "« Seuil ≈ 75 % de la meilleure minute » est une convention des applis (Zwift, TrainerRoad), pas un résultat d'étude.",
+    "La PMA dépend de la pente de la rampe : garde toujours la même.",
+    "Sans ERG : monte d'une dent toutes les minutes en gardant la cadence."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Allen H 2019"
+    ]
+   }
+  },
+  {
+   "id": "velo-test-5min",
+   "sport": "velo",
+   "famille": "test",
+   "nom": "Test 5 min",
+   "objectif": "Estimer la VO2max (et suivre ta puissance aérobie)",
+   "resume": "5 min à fond après un bon échauffement.",
+   "unite": "%CP",
+   "zone": "test",
+   "rpe": "10",
+   "niveau": "tous",
+   "dureeMin": 35,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 300,
+     "max": true
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "début de phase"
+   ],
+   "conseils": [
+    "La puissance sur 5 min est un bon repère de suivi en soi, même sans formule."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Sitko S 2022"
+    ]
+   }
+  },
+  {
+   "id": "velo-test-durabilite",
+   "sport": "velo",
+   "famille": "test",
+   "nom": "Test de durabilité",
+   "objectif": "Mesurer combien tu perds quand tu es fatigué",
+   "resume": "Un jour : 5 min à fond frais. Un autre jour : 5 min à fond après 2 h 30 à intensité modérée. Compare l'écart en %.",
+   "unite": "%CP",
+   "zone": "test",
+   "rpe": "10",
+   "niveau": "confirmé",
+   "dureeMin": 180,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      65
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 9000,
+     "intensite": [
+      60,
+      70
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 300,
+     "max": true,
+     "note": "5 min à fond fatigué"
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction"
+   ],
+   "conseils": [
+    "Mange comme en course pendant la partie modérée."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Spragg J 2024",
+     "van Erp T 2021"
+    ]
+   }
+  },
+  {
+   "id": "velo-test-sprint",
+   "sport": "velo",
+   "famille": "test",
+   "nom": "Test de sprint",
+   "objectif": "Puissance maximale (1-10 s)",
+   "resume": "3 sprints de 10 s à fond, récupération complète 5 min.",
+   "unite": "%CP",
+   "zone": "test",
+   "rpe": "10",
+   "niveau": "tous",
+   "dureeMin": 46,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 10,
+       "max": true
+      },
+      {
+       "type": "recup",
+       "duree": 300,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "toutes"
+   ],
+   "conseils": [
+    "Note le meilleur des 3."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Allen H 2019"
+    ]
+   }
+  },
+  {
+   "id": "velo-test-derive",
+   "sport": "velo",
+   "famille": "test",
+   "nom": "Test de dérive cardiaque",
+   "objectif": "Solidité de l'endurance (découplage puissance / FC)",
+   "resume": "60 à 90 min à puissance constante à tes watts Z2, au frais, bien hydraté.",
+   "unite": "%CP",
+   "zone": "Z2",
+   "rpe": "3",
+   "niveau": "tous",
+   "dureeMin": 85,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 600,
+     "intensite": [
+      50,
+      65
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 4200,
+     "intensite": [
+      65,
+      70
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 300,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "base"
+   ],
+   "conseils": [
+    "On ignore les 10 premières minutes. Dérive < 5 % : endurance solide ; > 10 % : trop dur ou fatigue.",
+    "L'appli le mesure déjà sur chaque sortie Z2."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Friel J 2018",
+     "Maunder E 2021"
+    ]
+   }
+  },
+  {
+   "id": "course-footing",
+   "sport": "course",
+   "famille": "endurance",
+   "nom": "Footing en endurance fondamentale",
+   "objectif": "Volume aérobie, économie de course",
+   "resume": "30 à 60 min à allure de conversation.",
+   "unite": "%VMA",
+   "zone": "Z2",
+   "rpe": "2-3",
+   "niveau": "tous",
+   "dureeMin": 45,
+   "deroule": [
+    {
+     "type": "effort",
+     "duree": 2700,
+     "intensite": [
+      60,
+      72
+     ]
+    }
+   ],
+   "phases": [
+    "toutes"
+   ],
+   "conseils": [
+    "Test de la parole. Mieux vaut trop lent que trop vite."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Seiler S 2010",
+     "Stöggl T 2014",
+     "Persinger R 2004"
+    ]
+   }
+  },
+  {
+   "id": "course-sortie-longue",
+   "sport": "course",
+   "famille": "endurance",
+   "nom": "Sortie longue",
+   "objectif": "Endurance de fond",
+   "resume": "60 à 100 min en endurance fondamentale.",
+   "unite": "%VMA",
+   "zone": "Z2",
+   "rpe": "3",
+   "niveau": "intermédiaire",
+   "dureeMin": 75,
+   "deroule": [
+    {
+     "type": "effort",
+     "duree": 4500,
+     "intensite": [
+      62,
+      72
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Repère d'entraîneur : ne dépasse pas ~25-30 % de ton volume hebdomadaire."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Seiler S 2010"
+    ]
+   }
+  },
+  {
+   "id": "course-lignes-droites",
+   "sport": "course",
+   "famille": "sprint",
+   "nom": "Lignes droites (accélérations)",
+   "objectif": "Foulée, économie, vitesse sans fatigue",
+   "resume": "Après un footing : 6 à 10 × 15-20 s en accélération progressive jusqu'à ton allure 1 500 m, relâché, retour en marchant.",
+   "unite": "%VMA",
+   "zone": "Z2 + vitesse",
+   "rpe": "4",
+   "niveau": "tous",
+   "dureeMin": 41,
+   "deroule": [
+    {
+     "type": "effort",
+     "duree": 1800,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 8,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 20,
+       "intensite": [
+        105,
+        115
+       ],
+       "note": "relâché, pas un sprint"
+      },
+      {
+       "type": "recup",
+       "duree": 60,
+       "intensite": [
+        0,
+        40
+       ]
+      }
+     ]
+    }
+   ],
+   "phases": [
+    "toutes"
+   ],
+   "conseils": [
+    "Relâché, sur terrain plat et souple."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Daniels J 2021"
+    ]
+   }
+  },
+  {
+   "id": "course-tempo-continu",
+   "sport": "course",
+   "famille": "tempo",
+   "nom": "Tempo continu",
+   "objectif": "Seuil, endurance à allure soutenue",
+   "resume": "20 à 30 min à allure « confortablement difficile » (85-88 % VMA, allure T).",
+   "unite": "%VMA",
+   "zone": "Z3",
+   "rpe": "6",
+   "niveau": "intermédiaire",
+   "dureeMin": 50,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 1500,
+     "intensite": [
+      85,
+      88
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "construction"
+   ],
+   "conseils": [
+    "Tu peux dire quelques mots, pas des phrases."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Daniels J 2021"
+    ]
+   }
+  },
+  {
+   "id": "course-seuil-fractionne",
+   "sport": "course",
+   "famille": "seuil",
+   "nom": "Seuil fractionné (cruise intervals)",
+   "objectif": "Seuil, avec plus de volume au seuil qu'en continu",
+   "resume": "4 à 6 × 5 min (ou 1 km) à 85-90 % VMA, récupération 1 min.",
+   "unite": "%VMA",
+   "zone": "Z3-Z4",
+   "rpe": "7",
+   "niveau": "intermédiaire",
+   "dureeMin": 55,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 5,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 300,
+       "intensite": [
+        85,
+        90
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 60,
+       "intensite": [
+        50,
+        60
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Récupération courte volontaire : on reste au seuil."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Daniels J 2021",
+     "Casado A 2023"
+    ]
+   }
+  },
+  {
+   "id": "course-double-seuil",
+   "sport": "course",
+   "famille": "seuil",
+   "nom": "Double seuil (modèle norvégien)",
+   "objectif": "Beaucoup de volume au seuil, contrôlé",
+   "resume": "Matin : 5 × 6 min au seuil ; soir : 10 × 1 000 m au seuil ; récupérations 1 min (déroulé = séance du matin).",
+   "unite": "%VMA",
+   "zone": "Z3-Z4",
+   "rpe": "6-7",
+   "niveau": "confirmé",
+   "dureeMin": 60,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 5,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 360,
+       "intensite": [
+        83,
+        88
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 60,
+       "intensite": [
+        50,
+        60
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "construction"
+   ],
+   "conseils": [
+    "Réservé à un gros volume (dans les descriptions : 3-4 séances de ce type par semaine pour 150-180 km) ; intensité contrôlée (lactate 2 à 4,5 mmol/L)."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Casado A 2023"
+    ]
+   }
+  },
+  {
+   "id": "course-vma-30-30",
+   "sport": "course",
+   "famille": "vo2max",
+   "nom": "VMA courte 30/30",
+   "objectif": "VO2max, vitesse maximale aérobie",
+   "resume": "2 séries de 8 à 12 × (30 s à 100-105 % VMA / 30 s trot à 50 %), récupération 3-5 min.",
+   "unite": "%VMA",
+   "zone": "Z5",
+   "rpe": "8",
+   "niveau": "tous",
+   "dureeMin": 58,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 2,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 10,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 30,
+         "intensite": [
+          100,
+          105
+         ]
+        },
+        {
+         "type": "recup",
+         "duree": 30,
+         "intensite": [
+          45,
+          55
+         ]
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 240,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "La récupération est trottinée, pas marchée."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Billat VL 2000",
+     "Billat LV 2001"
+    ]
+   }
+  },
+  {
+   "id": "course-vma-longue",
+   "sport": "course",
+   "famille": "vo2max",
+   "nom": "VMA longue",
+   "objectif": "VO2max, endurance à haute vitesse",
+   "resume": "5 à 6 × 1 000 m (ou 3 min) à 95-100 % VMA, récupération 2-3 min.",
+   "unite": "%VMA",
+   "zone": "Z5",
+   "rpe": "8-9",
+   "niveau": "intermédiaire",
+   "dureeMin": 60,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 5,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 210,
+       "intensite": [
+        95,
+        100
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 150,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Billat VL 1999",
+     "Esfarjani F 2007",
+     "Buchheit M 2013"
+    ]
+   }
+  },
+  {
+   "id": "course-4x4-helgerud",
+   "sport": "course",
+   "famille": "vo2max",
+   "nom": "4 × 4 min (Helgerud)",
+   "objectif": "VO2max",
+   "resume": "4 × 4 min à 90-95 % de la FC max, récupération 3 min en trottinant (~70 % FC max).",
+   "unite": "%VMA",
+   "zone": "Z5",
+   "rpe": "8-9",
+   "niveau": "tous",
+   "dureeMin": 43,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 4,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 240,
+       "intensite": [
+        90,
+        95
+       ],
+       "note": "cible réelle : 90-95 % de la FC max"
+      },
+      {
+       "type": "recup",
+       "duree": 180,
+       "intensite": [
+        50,
+        60
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 300,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Helgerud J 2007"
+    ]
+   }
+  },
+  {
+   "id": "course-10-20-30",
+   "sport": "course",
+   "famille": "vo2max",
+   "nom": "10-20-30 (Bangsbo)",
+   "objectif": "VO2max et performance avec moins de volume",
+   "resume": "3-4 blocs de 5 min : chaque minute = 30 s lent, 20 s modéré, 10 s presque à fond ; 2 min de récupération entre les blocs.",
+   "unite": "%VMA",
+   "zone": "Z2-Z6",
+   "rpe": "8",
+   "niveau": "tous",
+   "dureeMin": 46,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 5,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 30,
+         "intensite": [
+          55,
+          65
+         ]
+        },
+        {
+         "type": "effort",
+         "duree": 20,
+         "intensite": [
+          75,
+          85
+         ]
+        },
+        {
+         "type": "effort",
+         "duree": 10,
+         "intensite": [
+          115,
+          130
+         ]
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 120,
+       "intensite": [
+        0,
+        50
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Les %VMA de chaque partie sont estimés : dans l'étude, lent / modéré / presque à fond."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Gunnarsson TP 2012"
+    ]
+   }
+  },
+  {
+   "id": "course-sprints-30s",
+   "sport": "course",
+   "famille": "anaerobie",
+   "nom": "Sprints de 30 s",
+   "objectif": "Capacité anaérobie, vitesse",
+   "resume": "8 à 12 × 30 s à ~130 % VMA, récupération 4 min 30.",
+   "unite": "%VMA",
+   "zone": "Z6",
+   "rpe": "9",
+   "niveau": "confirmé",
+   "dureeMin": 70,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 8,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 30,
+       "intensite": [
+        125,
+        135
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 270,
+       "intensite": [
+        0,
+        50
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Esfarjani F 2007"
+    ]
+   }
+  },
+  {
+   "id": "course-allure-5km",
+   "sport": "course",
+   "famille": "specifique",
+   "nom": "Allure 5 km",
+   "objectif": "Spécifique 5 km : tenir l'allure de course",
+   "resume": "5 × 1 000 m ou 3 × 1 600 m à allure 5 km (~95 % VMA), récupération 2-3 min.",
+   "unite": "%VMA",
+   "zone": "Z5",
+   "rpe": "8",
+   "niveau": "intermédiaire",
+   "dureeMin": 61,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 5,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 222,
+       "intensite": [
+        93,
+        96
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 150,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Allure régulière, la dernière doit être la plus rapide."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Daniels J 2021"
+    ]
+   }
+  },
+  {
+   "id": "course-allure-10km",
+   "sport": "course",
+   "famille": "specifique",
+   "nom": "Allure 10 km / semi",
+   "objectif": "Spécifique 10 km ou semi-marathon",
+   "resume": "3 × 3 km ou 5 × 2 km à allure 10 km, récupération 2 min ; semi : 2 × 5 km à allure semi.",
+   "unite": "%VMA",
+   "zone": "Z4",
+   "rpe": "7",
+   "niveau": "intermédiaire",
+   "dureeMin": 72,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 720,
+       "intensite": [
+        88,
+        92
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 120,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Le %VMA de l'allure 10 km (≈ 88-92 %) est un repère, pas une valeur vérifiée."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Daniels J 2021"
+    ]
+   }
+  },
+  {
+   "id": "course-cotes-courtes",
+   "sport": "course",
+   "famille": "sprint",
+   "nom": "Côtes courtes (sprints en côte)",
+   "objectif": "Force, puissance, foulée",
+   "resume": "8 à 10 × 10 s de sprint en côte raide, retour en marchant (2 min).",
+   "unite": "%VMA",
+   "zone": "vitesse",
+   "rpe": "8",
+   "niveau": "tous",
+   "dureeMin": 37,
+   "deroule": [
+    {
+     "type": "effort",
+     "duree": 1200,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 8,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 10,
+       "max": true,
+       "note": "côte de 6-10 %"
+      },
+      {
+       "type": "recup",
+       "duree": 120,
+       "intensite": [
+        0,
+        40
+       ],
+       "note": "marche"
+      }
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Conseil d'entraîneur : la pente limite la vitesse et l'impact."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Daniels J 2021"
+    ]
+   }
+  },
+  {
+   "id": "course-cotes-longues",
+   "sport": "course",
+   "famille": "vo2max",
+   "nom": "Côtes longues",
+   "objectif": "VO2max, force-endurance, économie",
+   "resume": "6 à 8 × 1 min 30-2 min en côte à l'effort 5 km, retour en trottinant.",
+   "unite": "%VMA",
+   "zone": "Z5",
+   "rpe": "8",
+   "niveau": "intermédiaire",
+   "dureeMin": 57,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 6,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 120,
+       "intensite": [
+        90,
+        100
+       ],
+       "note": "effort, pas allure"
+      },
+      {
+       "type": "recup",
+       "duree": 150,
+       "intensite": [
+        45,
+        55
+       ],
+       "note": "descente en trottinant"
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Barnes KR 2013"
+    ]
+   }
+  },
+  {
+   "id": "course-fartlek",
+   "sport": "course",
+   "famille": "vo2max",
+   "nom": "Fartlek",
+   "objectif": "Variété, VO2max sans pression du chrono",
+   "resume": "30-45 min avec des accélérations libres (1 à 3 min) quand tu en as envie.",
+   "unite": "%VMA",
+   "zone": "Z2-Z5",
+   "rpe": "6",
+   "niveau": "tous",
+   "dureeMin": 43,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 600,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 8,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 90,
+       "intensite": [
+        90,
+        100
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 120,
+       "intensite": [
+        60,
+        70
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 300,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "base"
+   ],
+   "conseils": [
+    "Au ressenti, sans montre."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Daniels J 2021"
+    ]
+   }
+  },
+  {
+   "id": "course-test-vma-5min",
+   "sport": "course",
+   "famille": "test",
+   "nom": "Test VMA 5 min",
+   "objectif": "Estimer ta VMA",
+   "resume": "Après échauffement, cours la plus grande distance possible en 5 min (VMA ≈ distance / 5 min).",
+   "unite": "%VMA",
+   "zone": "test",
+   "rpe": "10",
+   "niveau": "tous",
+   "dureeMin": 35,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 300,
+     "max": true,
+     "note": "allure régulière, la plus haute possible"
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "début de phase"
+   ],
+   "conseils": [
+    "Sur piste ou terrain plat mesuré."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Berthon P 1997"
+    ]
+   }
+  },
+  {
+   "id": "course-test-vameval",
+   "sport": "course",
+   "famille": "test",
+   "nom": "Test par paliers (Léger-Boucher / VAMEVAL)",
+   "objectif": "VMA par paliers",
+   "resume": "Vitesse qui augmente par paliers, rythmée par des bips, jusqu'à l'arrêt (Léger-Boucher : paliers de 2 min ; VAMEVAL : +0,5 km/h par minute).",
+   "unite": "%VMA",
+   "zone": "test",
+   "rpe": "10",
+   "niveau": "tous",
+   "dureeMin": 40,
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      60,
+      72
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 900,
+     "max": true,
+     "note": "paliers jusqu'à l'épuisement"
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      60,
+      70
+     ]
+    }
+   ],
+   "phases": [
+    "début de phase"
+   ],
+   "conseils": [
+    "Besoin d'une piste balisée et de la bande-son. Le VAMEVAL (Cazorla & Léger 1993) vient d'un ouvrage français, hors PubMed."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Léger LA 1980"
+    ]
+   }
+  }
+ ]
+}

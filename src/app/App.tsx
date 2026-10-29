@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { eleveDepuisAdresse, remplacerAdresse, useAdresse } from '../core/adresse'
+import { remplacerAdresse, useAdresse } from '../core/adresse'
 import { chargerProfil, messageErreur, useSession, type Profil } from '../core/compte'
 import {
   ecrireInvitationEnAttente,
@@ -9,9 +9,8 @@ import {
 } from '../core/invitation'
 import { supabase, type Client } from '../core/supabase'
 import { Bouton, Carte, Message, Page } from '../core/ui'
-import { FicheEleve } from '../modules/coach/FicheEleve'
-import { MesEleves } from '../modules/coach/MesEleves'
-import { Aujourdhui } from '../modules/eleve/Aujourdhui'
+import { EspaceCoach } from '../modules/coach/EspaceCoach'
+import { EspaceEleve } from '../modules/eleve/EspaceEleve'
 import { Connexion } from './Connexion'
 import { Inscription } from './Inscription'
 
@@ -101,14 +100,9 @@ function AppConnectee({ client }: { client: Client }) {
       </Page>
     )
 
-  const eleveOuvert = eleveDepuisAdresse(hash)
-  if (profil.role === 'coach')
-    return eleveOuvert ? (
-      <FicheEleve client={client} id={eleveOuvert} />
-    ) : (
-      <MesEleves client={client} profil={profil} deconnecter={deconnecter} />
-    )
-  return (
-    <Aujourdhui client={client} profil={profil} deconnecter={deconnecter} />
+  return profil.role === 'coach' ? (
+    <EspaceCoach client={client} profil={profil} deconnecter={deconnecter} />
+  ) : (
+    <EspaceEleve client={client} profil={profil} deconnecter={deconnecter} />
   )
 }
