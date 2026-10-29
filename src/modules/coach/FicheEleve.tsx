@@ -4,10 +4,12 @@ import { messageErreur } from '../../core/compte'
 import {
   ajouterSeanceMain,
   alertesNonVues,
+  enregistrerObjectifs,
   enregistrerTest,
   marquerAlerteVue,
   matinsDepuis,
   modifierProfilParCoach,
+  objectifsDe,
   profilSportif,
   proposerSemaine,
   seancesEntre,
@@ -18,25 +20,33 @@ import { Bouton, Carte, Champ, Chargement, Message, Page, Pastille, Zone } from 
 import { ajouterJours, jour, lundiDe, NOMS_JOURS, versDate } from '../../moteur/dates'
 import { feuDuJour, LIBELLE_FEU } from '../../moteur/feu'
 import { LIBELLE_PHASE, phaseDeLaSemaine } from '../../moteur/phase'
-import { LIBELLE_NIVEAU, niveau } from '../../moteur/profil'
-import type { Categorie, ProfilSportif, Sport } from '../../moteur/types'
+import { LIBELLE_NIVEAU, minutesParJour, niveau } from '../../moteur/profil'
+import { libelleObjectif, objectifPrincipal, pointsAttention } from '../../moteur/objectifs'
+import type { Categorie, Objectif, ProfilSportif, Sport } from '../../moteur/types'
 import { Messages } from '../commun/Messages'
 import { Progres } from '../commun/Progres'
 import { Semaines } from '../eleve/Programme'
 import { CarteSeance } from '../commun/CarteSeance'
 import { AValider } from './AValider'
+import { ObjectifsEditeur } from '../commun/ObjectifsEditeur'
 
 const h = (min: number) => `${Math.round((min / 60) * 10) / 10} h`
 
-function Resume({ p }: { p: ProfilSportif }) {
-  const ph = phaseDeLaSemaine(p, lundiDe(jour()))
+function Resume({ p, objectifs }: { p: ProfilSportif; objectifs: Objectif[] }) {
+  const lundi = lundiDe(jour())
+  const ph = phaseDeLaSemaine(p, lundi, objectifs)
+  const principal = objectifPrincipal(objectifs, lundi)
+  const minutes = minutesParJour(p)
+  const lieux = [p.exterieur && 'dehors', p.home_trainer && 'home trainer', p.tapis && 'tapis', p.piste && 'piste', p.cotes && 'côtes'].filter(Boolean).join(', ')
   const lignes: [string, string][] = [
     ['Niveau', LIBELLE_NIVEAU[niveau(p)]],
-    ['Sports', p.disciplines.map((s) => (s === 'velo' ? 'vélo' : 'course')).join(' + ')],
-    ['Objectif', `${p.objectif || '—'}${p.date_objectif ? ` · ${versDate(p.date_objectif).toLocaleDateString('fr-FR')} (${p.duree_epreuve === 'longue' ? '> 1 h' : '< 1 h'})` : ''}`],
-    ['Phase', `${LIBELLE_PHASE[ph.phase]}${ph.semainesAvant !== null ? ` · J-${Math.max(0, Math.round((versDate(p.date_objectif!).getTime() - Date.now()) / 86_400_000))}` : ''}`],
-    ['Disponible', `${p.jours_dispo.slice().sort().map((j) => NOMS_JOURS[j].slice(0, 3)).join(', ')} · ${h(p.minutes_semaine)}/sem · ${p.duree_max_min} min max`],
+    ['Sports', `${p.disciplines.map((s) => (s === 'velo' ? 'vélo' : 'course')).join(' + ')}${p.sport_principal ? ` (principal : ${p.sport_principal === 'velo' ? 'vélo' : 'course'})` : ''}`],
+    ['Phase', `${LIBELLE_PHASE[ph.phase]}${principal.date ? ` · J-${Math.max(0, Math.round((versDate(principal.date).getTime() - Date.now()) / 86_400_000))} avant ${libelleObjectif(principal)}` : ''}`],
+    ['Disponible', `${minutes.map((m, j) => (m ? `${NOMS_JOURS[j].slice(0, 3)} ${m}′` : '')).filter(Boolean).join(', ')} · ${h(p.minutes_semaine)}/sem`],
+    ['Préférences', [p.jour_longue != null && `longue le ${NOMS_JOURS[p.jour_longue]}`, p.jours_sans_intense.length && `pas d’intensité ${p.jours_sans_intense.map((j) => NOMS_JOURS[j].slice(0, 3)).join(', ')}`, p.jours_club.length && `club ${p.jours_club.map((j) => NOMS_JOURS[j].slice(0, 3)).join(', ')}`, p.renfo && 'renfo accepté'].filter(Boolean).join(' · ') || '—'],
+    ['Lieux', lieux || '—'],
     ['Volume déclaré', `vélo ${h(p.volume_velo_min)} · course ${h(p.volume_course_min)} · ${p.annees_pratique} an(s)${p.competitions ? ' · compétitions' : ''}`],
+    ['Plus longues (mois)', `vélo ${p.longue_velo_min ?? '—'} min · course ${p.longue_course_min ?? '—'} min`],
     ['Matériel', [p.capteur_puissance && 'capteur', p.cardio && 'cardio', p.montre_gps && 'GPS', p.montre_vfc && 'VFC'].filter(Boolean).join(', ') || 'aucun'],
     ['Repères', `CP ${p.cp ? `${p.cp} W` : '—'} · VMA ${p.vma ? `${p.vma} km/h` : '—'} · FC max ${p.fc_max ?? '—'} · âge ${p.age ?? '—'}`],
   ]
@@ -131,18 +141,20 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
   const aujourdhui = jour()
   const lundi = lundiDe(aujourdhui)
   const charger = useCallback(async () => {
-    const [nom, profil, seances, matins, alertes] = await Promise.all([
+    const [nom, profil, seances, matins, alertes, objectifs] = await Promise.all([
       client.from('profils').select('nom, cree_le').eq('id', id).eq('role', 'eleve').maybeSingle(),
       profilSportif(client, id),
       seancesEntre(client, id, ajouterJours(aujourdhui, -21), ajouterJours(lundi, 13)),
       matinsDepuis(client, id, ajouterJours(aujourdhui, -60)),
       alertesNonVues(client, id),
+      objectifsDe(client, id),
     ])
     if (nom.error) throw nom.error
-    return { eleve: nom.data as { nom: string; cree_le: string } | null, profil, seances, matins, alertes }
+    return { eleve: nom.data as { nom: string; cree_le: string } | null, profil, seances, matins, alertes, objectifs }
   }, [client, id, aujourdhui, lundi])
   const { donnees: d, erreur, recharger } = useCharge(charger, [charger])
-  const [ouvert, setOuvert] = useState<'' | 'ajout' | 'test'>('')
+  const [ouvert, setOuvert] = useState<'' | 'ajout' | 'test' | 'objectifs'>('')
+  const [brouillon, setBrouillon] = useState<Objectif[]>([])
   const [occupe, setOccupe] = useState(false)
   const [erreurAction, setErreurAction] = useState('')
   const [version, setVersion] = useState(0)
@@ -191,6 +203,62 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
               </Bouton>
             </Carte>
           )}
+
+          {p.fracture_fatigue && !p.avis_kine && (
+            <Carte>
+              <p className="font-semibold text-alerte">Fracture de fatigue déclarée</p>
+              <p className="mt-1 text-sm text-texte-2">Aucune course n’est proposée tant que le kiné ou le médecin n’a pas donné son accord.</p>
+              <Bouton className="mt-3 w-full" disabled={occupe} onClick={() => agir(() => modifierProfilParCoach(client, id, { avis_kine: true }))}>
+                Accord du kiné ou du médecin reçu
+              </Bouton>
+            </Carte>
+          )}
+
+          <Carte
+            titre="Objectifs"
+            action={
+              ouvert !== 'objectifs' && (
+                <Bouton variante="lien" className="text-sm" onClick={() => (setBrouillon(d.objectifs), setOuvert('objectifs'))}>
+                  Modifier
+                </Bouton>
+              )
+            }
+          >
+            {ouvert === 'objectifs' ? (
+              <div className="flex flex-col gap-3">
+                <ObjectifsEditeur objectifs={brouillon} onChange={setBrouillon} />
+                <Bouton disabled={occupe || !brouillon.length} onClick={() => agir(async () => (await enregistrerObjectifs(client, id, brouillon), setOuvert('')))}>
+                  Enregistrer les objectifs
+                </Bouton>
+              </div>
+            ) : d.objectifs.length ? (
+              <ul className="flex flex-col divide-y divide-bordure text-sm">
+                {d.objectifs.map((o) => (
+                  <li key={o.id} className="flex justify-between gap-2 py-2">
+                    <span>
+                      <Pastille ton={o.priorite === 'A' ? 'accent' : 'neutre'}>{o.priorite}</Pastille> {libelleObjectif(o)}
+                    </span>
+                    <span className="shrink-0 text-texte-3">{o.date ? versDate(o.date).toLocaleDateString('fr-FR') : 'sans date'}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <Message>Aucun objectif.</Message>
+            )}
+          </Carte>
+
+          {(() => {
+            const points = pointsAttention(p, d.objectifs, aujourdhui)
+            return points.length ? (
+              <Carte titre="Points d’attention">
+                <ul className="list-disc pl-5 text-sm text-texte-2">
+                  {points.map((x) => (
+                    <li key={x}>{x}</li>
+                  ))}
+                </ul>
+              </Carte>
+            ) : null
+          })()}
 
           {d.alertes.length > 0 && (
             <Carte titre="Alertes">
@@ -261,7 +329,7 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
           )}
 
           <Carte titre="Profil">
-            <Resume p={p} />
+            <Resume p={p} objectifs={d.objectifs} />
           </Carte>
         </>
       )}

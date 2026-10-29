@@ -35,7 +35,7 @@ export function raccourcir(etapes: Etape[]): Etape[] {
   return etapes.map((e) => (e.type === 'effort' && e.duree && !e.max && e.duree >= 900 ? { ...e, duree: Math.round((e.duree * 2) / 3) } : e))
 }
 
-function tresFacile(s: Seance, minutes: number): SeancePlanifiee {
+function tresFacile(s: Seance & { sport: 'velo' | 'course' }, minutes: number): SeancePlanifiee {
   const f = formatObligatoire(s.sport === 'velo' ? 'velo-recuperation-active' : 'course-footing-tres-facile')
   const contenu = ajusterDuree(f.deroule, minutes)
   return { date: s.date, sport: s.sport, categorie: 'facile', format_id: f.id, titre: f.nom, description: f.resume, contenu, duree_min: dureeMinutes(contenu) }
@@ -43,10 +43,11 @@ function tresFacile(s: Seance, minutes: number): SeancePlanifiee {
 
 /** Ce que devient la séance du jour selon le feu (null = rien ne change). Jamais plus longue que prévu. */
 export function adapterAuFeu(s: Seance, feu: Feu): Allegement | null {
-  if (feu === 'vert') return null
+  if (feu === 'vert' || s.categorie === 'epreuve') return null
+  if (s.sport === 'renfo') return feu === 'orange' ? null : { annuler: true, seance: versPlanifiee(s), raison: feu === 'repos' ? 'Malade avec fièvre : repos complet' : 'Feu rouge : renfo remis à plus tard' }
   if (feu === 'repos') return { annuler: true, seance: versPlanifiee(s), raison: 'Malade avec fièvre : repos complet' }
   if (feu === 'rouge') {
-    return { annuler: false, seance: tresFacile(s, Math.min(s.duree_min, s.sport === 'velo' ? 35 : 30)), raison: 'Feu rouge : 30-45 min très facile à la place' }
+    return { annuler: false, seance: tresFacile(s as Seance & { sport: 'velo' | 'course' }, Math.min(s.duree_min, s.sport === 'velo' ? 35 : 30)), raison: 'Feu rouge : 30-45 min très facile à la place' }
   }
   if (s.categorie === 'intense') {
     const contenu = raccourcir(s.contenu)

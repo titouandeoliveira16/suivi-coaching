@@ -5,11 +5,12 @@ import { nominalSuivant, plafondCourse, volumeDepart } from './charge'
 import { ajouterJours, jourSemaine } from './dates'
 import { feuDuJour, seuilRessenti } from './feu'
 import { cible } from './intensite'
-import { phaseDeLaSemaine } from './phase'
+import { coefficientsAffutage, phaseDeLaSemaine } from './phase'
+import { objectifPrincipal, param, pointsAttention } from './objectifs'
 import { intensiteAutorisee, niveau } from './profil'
 import { genererSemaine, nombreIntenses, placer, type Creneau } from './semaine'
 import { cpDeuxPoints, vmaCinqMinutes } from './tests'
-import type { Matin, ProfilSportif, Seance, Test } from './types'
+import type { Matin, Objectif, ProfilSportif, Seance, Test } from './types'
 
 const LUNDI = '2026-11-02'
 
@@ -41,6 +42,28 @@ function profil(p: Partial<ProfilSportif> = {}): ProfilSportif {
     cp: 250,
     vma: null,
     debut: LUNDI,
+    sport_principal: null,
+    minutes_jour: null,
+    jour_longue: null,
+    jours_sans_intense: [],
+    jours_club: [],
+    exterieur: true,
+    home_trainer: false,
+    tapis: false,
+    piste: false,
+    cotes: true,
+    renfo: false,
+    longue_course_min: null,
+    longue_velo_min: null,
+    blessure_recente: false,
+    fracture_fatigue: false,
+    avis_kine: false,
+    diabete: false,
+    travail_poste: false,
+    grossesse: false,
+    post_partum: false,
+    regime_restrictif: false,
+    trouble_alimentaire: false,
     ...p,
   }
 }
@@ -88,8 +111,8 @@ const matin = (date: string, m: Partial<Matin> = {}): Matin => ({
   ...m,
 })
 
-const semaine = (p: ProfilSportif, autres: { tests?: Test[]; seances?: Seance[] } = {}) =>
-  genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: autres.seances ?? [], matins: [], tests: autres.tests ?? [] })
+const semaine = (p: ProfilSportif, autres: { tests?: Test[]; seances?: Seance[]; objectifs?: Objectif[] } = {}) =>
+  genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: autres.seances ?? [], matins: [], tests: autres.tests ?? [], objectifs: autres.objectifs })
 
 const durs = (r: ReturnType<typeof semaine>) => r.seances.filter((s) => s.categorie === 'intense' || (s.categorie === 'test' && !s.format_id?.endsWith('reference')))
 
@@ -109,26 +132,39 @@ describe('profil', () => {
   })
 })
 
+const obj = (type: string, date: string | null, o: Partial<Objectif> = {}): Objectif => ({ id: type + date, type, nom: '', date, priorite: 'A', distance_km: null, denivele_m: null, chaleur: false, altitude: false, ...o })
+
 describe('phases', () => {
   it('suit le temps restant avant l’objectif', () => {
-    const p = (date: string) => profil({ date_objectif: date, duree_epreuve: 'longue' })
-    expect(phaseDeLaSemaine(p(ajouterJours(LUNDI, 7 * 20)), LUNDI).phase).toBe('base')
-    expect(phaseDeLaSemaine(p(ajouterJours(LUNDI, 7 * 8)), LUNDI).phase).toBe('developpement')
-    expect(phaseDeLaSemaine(p(ajouterJours(LUNDI, 7 * 3)), LUNDI).phase).toBe('specifique')
-    expect(phaseDeLaSemaine(p(ajouterJours(LUNDI, 10)), LUNDI)).toMatchObject({ phase: 'affutage', coefficient: 0.6 })
-    expect(phaseDeLaSemaine(p(ajouterJours(LUNDI, 5)), LUNDI)).toMatchObject({ phase: 'affutage', coefficient: 0.4 })
+    const o = (sem: number) => [obj('course-semi', ajouterJours(LUNDI, 7 * sem + 3))]
+    expect(phaseDeLaSemaine(profil(), LUNDI, o(20)).phase).toBe('base')
+    expect(phaseDeLaSemaine(profil(), LUNDI, o(8)).phase).toBe('developpement')
+    expect(phaseDeLaSemaine(profil(), LUNDI, o(3)).phase).toBe('specifique')
+    expect(phaseDeLaSemaine(profil(), LUNDI, o(1))).toMatchObject({ phase: 'affutage', coefficient: 0.6 })
+    expect(phaseDeLaSemaine(profil(), LUNDI, o(0))).toMatchObject({ phase: 'affutage', coefficient: 0.45 })
   })
 
-  it('affûte une seule semaine pour un débutant sur une épreuve courte', () => {
-    const p = profil({ annees_pratique: 0.2, date_objectif: ajouterJours(LUNDI, 10), duree_epreuve: 'courte' })
-    expect(phaseDeLaSemaine(p, LUNDI).phase).toBe('specifique')
-    expect(phaseDeLaSemaine(p, ajouterJours(LUNDI, 7)).phase).toBe('affutage')
+  it('affûte 3 semaines pour un marathon, 10 jours pour un 5 km', () => {
+    expect(coefficientsAffutage(param('course-marathon').affutageJours)).toEqual([0.6, 0.5, 0.4])
+    expect(coefficientsAffutage(param('course-5k').affutageJours)).toEqual([0.75, 0.5])
+    const marathon = [obj('course-marathon', ajouterJours(LUNDI, 7 * 2 + 4))]
+    expect(phaseDeLaSemaine(profil(), LUNDI, marathon)).toMatchObject({ phase: 'affutage', coefficient: 0.6 })
+  })
+
+  it('récupère la semaine qui suit un objectif A', () => {
+    const r = phaseDeLaSemaine(profil(), LUNDI, [obj('course-10k', ajouterJours(LUNDI, -1))])
+    expect(r).toMatchObject({ recuperation: true, coefficient: 0.6 })
   })
 
   it('allège une semaine sur 4 sans objectif', () => {
     const p = profil()
     expect(phaseDeLaSemaine(p, ajouterJours(LUNDI, 14)).allegee).toBe(false)
     expect(phaseDeLaSemaine(p, ajouterJours(LUNDI, 21))).toMatchObject({ allegee: true, coefficient: 0.65 })
+  })
+
+  it('pilote la saison avec le prochain objectif A', () => {
+    const o = [obj('course-10k', ajouterJours(LUNDI, 20), { priorite: 'B' }), obj('course-semi', ajouterJours(LUNDI, 60)), obj('course-5k', ajouterJours(LUNDI, -30))]
+    expect(objectifPrincipal(o, LUNDI).type).toBe('course-semi')
   })
 })
 
@@ -288,5 +324,105 @@ describe('tests et cibles', () => {
     const e = { type: 'effort' as const, duree: 600, intensite: [90, 95] as [number, number] }
     expect(cible(e, 'velo', profil())).toMatch(/225-238 W/)
     expect(cible(e, 'velo', profil({ capteur_puissance: false, cardio: false }))).toMatch(/^effort/)
+  })
+})
+
+const CP_RECENT: Test[] = [{ date: ajouterJours(LUNDI, -10), sport: 'velo', type: 'cp', valeur: 250 }]
+const VMA_RECENTE: Test[] = [{ date: ajouterJours(LUNDI, -10), sport: 'course', type: 'vma', valeur: 15 }]
+
+describe('objectifs et préférences', () => {
+  it('place l’épreuve et protège les 2 jours d’avant', () => {
+    const p = profil({ disciplines: ['course'], volume_velo_min: 0, volume_course_min: 300, capteur_puissance: false, cp: null, vma: 15, jours_dispo: [0, 1, 2, 3, 4, 5, 6], longue_course_min: 90 })
+    const r = semaine(p, { tests: VMA_RECENTE, objectifs: [obj('course-10k', ajouterJours(LUNDI, 6))] })
+    const epreuve = r.seances.find((s) => s.categorie === 'epreuve')!
+    expect(jourSemaine(epreuve.date)).toBe(6)
+    expect(durs(r).filter((s) => s.categorie !== 'epreuve').every((s) => jourSemaine(s.date) < 4)).toBe(true)
+  })
+
+  it('objectif B : semaine −20 % et épreuve placée', () => {
+    const p = profil({ jours_dispo: [0, 1, 2, 3, 4, 5, 6] })
+    const sans = semaine(p, { tests: CP_RECENT, objectifs: [obj('velo-cyclo', ajouterJours(LUNDI, 90))] })
+    const avec = semaine(p, { tests: CP_RECENT, objectifs: [obj('velo-cyclo', ajouterJours(LUNDI, 90)), obj('velo-clm', ajouterJours(LUNDI, 5), { priorite: 'B' })] })
+    expect(avec.seances.some((s) => s.categorie === 'epreuve')).toBe(true)
+    expect(avec.explications.join()).toMatch(/objectif B/)
+    expect(avec.semaine.cible_min).toBeLessThan(sans.semaine.cible_min)
+  })
+
+  it('course : aucune séance au-delà de +10 % de la plus longue du mois (Frandsen 2025)', () => {
+    const p = profil({ disciplines: ['course'], volume_velo_min: 0, volume_course_min: 360, minutes_semaine: 400, capteur_puissance: false, cp: null, vma: 15, longue_course_min: 60, jours_dispo: [1, 3, 5, 6] })
+    const r = semaine(p, { tests: VMA_RECENTE, objectifs: [obj('course-marathon', ajouterJours(LUNDI, 150))] })
+    expect(r.seances.filter((s) => s.sport === 'course').every((s) => s.duree_min <= 66)).toBe(true)
+  })
+
+  it('séance clé de l’objectif en phase spécifique', () => {
+    const p = profil({ disciplines: ['course'], volume_velo_min: 0, volume_course_min: 300, capteur_puissance: false, cp: null, vma: 15, longue_course_min: 90 })
+    const r = semaine(p, { tests: VMA_RECENTE, objectifs: [obj('course-10k', ajouterJours(LUNDI, 7 * 3 + 3))] })
+    expect(r.seances.map((s) => s.format_id)).toEqual(expect.arrayContaining([expect.stringMatching(/allure-10km|seuil-fractionne/)]))
+  })
+
+  it('respecte le jour de sortie longue, les jours sans intensité et les minutes par jour', () => {
+    const p = profil({ minutes_jour: [0, 60, 0, 60, 0, 90, 180], jour_longue: 5, jours_sans_intense: [1], jours_dispo: [1, 3, 5, 6] })
+    const r = semaine(p, { tests: CP_RECENT })
+    const longue = r.seances.find((s) => s.categorie === 'longue')!
+    expect(jourSemaine(longue.date)).toBe(5)
+    expect(durs(r).every((s) => jourSemaine(s.date) !== 1)).toBe(true)
+    expect(r.seances.every((s) => s.duree_min <= [0, 60, 0, 60, 0, 90, 180][jourSemaine(s.date)])).toBe(true)
+  })
+
+  it('compte la sortie en club comme séance dure', () => {
+    const p = profil({ jours_club: [6], jours_dispo: [1, 3, 5, 6], volume_velo_min: 420, competitions: true })
+    const r = semaine(p, { tests: CP_RECENT })
+    const club = r.seances.find((s) => s.titre.includes('club'))!
+    expect(jourSemaine(club.date)).toBe(6)
+    expect(durs(r).filter((s) => s !== club).every((s) => Math.abs(jourSemaine(s.date) - 6) > 1)).toBe(true)
+  })
+
+  it('ajoute le renfo deux fois par semaine si accepté', () => {
+    const r = semaine(profil({ renfo: true, jours_dispo: [0, 1, 2, 3, 4, 5, 6] }), { tests: CP_RECENT })
+    expect(r.seances.filter((s) => s.sport === 'renfo')).toHaveLength(2)
+  })
+
+  it('santé : grossesse sans avis médical = aucune intensité ; fracture de fatigue = pas de course', () => {
+    expect(durs(semaine(profil({ grossesse: true }), { tests: CP_RECENT }))).toHaveLength(0)
+    const r = semaine(profil({ disciplines: ['velo', 'course'], fracture_fatigue: true }), { tests: CP_RECENT })
+    expect(r.seances.some((s) => s.sport === 'course')).toBe(false)
+  })
+
+  it('débuter la course : marche-course, aucune intensité', () => {
+    const p = profil({ disciplines: ['course'], volume_velo_min: 0, volume_course_min: 0, annees_pratique: 0, capteur_puissance: false, cp: null, jours_dispo: [0, 2, 4] })
+    const r = semaine(p, { objectifs: [obj('debuter-course', null)] })
+    expect(r.seances.filter((s) => s.categorie === 'intense')).toHaveLength(0)
+    expect(r.seances.some((s) => s.format_id === 'course-marche-course')).toBe(true)
+  })
+
+  it('ne repropose pas un test déjà prévu la semaine d’avant', () => {
+    const prevu = seance({ date: ajouterJours(LUNDI, -3), format_id: 'velo-test-cp-2-points', categorie: 'test', statut: 'validee' })
+    const r = semaine(profil(), { seances: [prevu] })
+    expect(r.seances.map((s) => s.format_id)).not.toContain('velo-test-cp-2-points')
+  })
+
+  it('trail long : sorties longues dos à dos le week-end', () => {
+    const p = profil({ disciplines: ['course'], volume_velo_min: 0, volume_course_min: 420, minutes_semaine: 600, capteur_puissance: false, cp: null, vma: 14, longue_course_min: 150, jours_dispo: [0, 1, 2, 3, 5, 6], duree_max_min: 240 })
+    const r = semaine(p, { tests: VMA_RECENTE, objectifs: [obj('trail-long', ajouterJours(LUNDI, 7 * 6))] })
+    const longues = r.seances.filter((s) => s.categorie === 'longue').map((s) => jourSemaine(s.date))
+    expect(longues).toEqual([5, 6])
+  })
+
+  it('signale une préparation marathon trop courte', () => {
+    const points = pointsAttention(profil({ longue_course_min: 40 }), [obj('course-marathon', ajouterJours(LUNDI, 7 * 8))], LUNDI)
+    expect(points.join()).toMatch(/16 conseillées/)
+    expect(points.join()).toMatch(/sous 60 min/)
+  })
+})
+
+describe('placement des tests', () => {
+  it('place le test CP un jour qui a le temps de l’accueillir', () => {
+    const p = profil({ cp: null, minutes_jour: [60, 45, 60, 60, 0, 120, 90], jour_longue: 5, renfo: true })
+    const r = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: [], matins: [], tests: [] })
+    const test = r.seances.find((s) => s.categorie === 'test')
+    expect(test).toBeDefined()
+    expect(jourSemaine(test!.date)).toBe(6)
+    const veille = r.seances.filter((s) => s.sport === 'renfo' && jourSemaine(s.date) === 5)
+    expect(veille.length).toBe(0)
   })
 })

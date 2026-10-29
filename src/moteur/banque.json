@@ -3826,6 +3826,184 @@
      "Léger LA 1980"
     ]
    }
+  },
+  {
+   "id": "force-lourde-jambes-cycliste",
+   "sport": "renfo",
+   "famille": "force-lourde",
+   "nom": "Force lourde des jambes (cycliste)",
+   "objectif": "Économie et puissance à vélo, tenue en fin d'effort",
+   "resume": "Demi-squat, presse une jambe, flexion de hanche une jambe et mollets : 3 séries lourdes, 2 fois par semaine pendant 12 semaines, puis 1 fois pour entretenir.",
+   "unite": "%1RM",
+   "zone": "force",
+   "rpe": "8-9",
+   "niveau": "intermédiaire",
+   "dureeMin": 45,
+   "deroule": [],
+   "phases": [
+    "base (hiver)",
+    "entretien en saison"
+   ],
+   "conseils": [
+    "Montée explosive, descente contrôlée.",
+    "L'étude faisait des séries RM (à l'échec ou presque) ; garder 1-2 reps en réserve est une adaptation d'entraîneur.",
+    "Découpage des RM par semaines : repris des études du même groupe, à confirmer pour 2010."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Rønnestad BR 2010",
+     "Rønnestad BR 2014",
+     "Rønnestad BR 2011"
+    ]
+   },
+   "exercices": [
+    {
+     "nom": "Demi-squat (barre)",
+     "series": 3,
+     "reps": "sem. 1-3 : 10RM / 6RM ; 4-6 : 8RM / 5RM ; 7-12 : 6RM / 4RM",
+     "repos": 180
+    },
+    {
+     "nom": "Presse à cuisses une jambe",
+     "series": 3,
+     "reps": "idem",
+     "repos": 120
+    },
+    {
+     "nom": "Flexion de hanche une jambe (poulie)",
+     "series": 3,
+     "reps": "idem",
+     "repos": 120
+    },
+    {
+     "nom": "Mollets (flexion plantaire)",
+     "series": 3,
+     "reps": "idem",
+     "repos": 90
+    }
+   ]
+  },
+  {
+   "id": "force-explosive-coureur",
+   "sport": "renfo",
+   "famille": "force-explosive",
+   "nom": "Force explosive et pliométrie (coureur)",
+   "objectif": "Économie de course, raideur du tendon",
+   "resume": "Sauts, bondissements, squat sauté léger : 2 fois par semaine, 20-30 min.",
+   "unite": "%1RM",
+   "zone": "force",
+   "rpe": "6-7",
+   "niveau": "intermédiaire",
+   "dureeMin": 25,
+   "deroule": [],
+   "phases": [
+    "base",
+    "construction"
+   ],
+   "conseils": [
+    "Contacts au sol courts et légers ; arrête avant de t'écraser."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Llanos-Lagos C 2024",
+     "Balsalobre-Fernández C 2016"
+    ]
+   },
+   "exercices": [
+    {
+     "nom": "Squat sauté (poids du corps ou léger)",
+     "series": 3,
+     "reps": "6-8",
+     "repos": 90
+    },
+    {
+     "nom": "Bondissements alternés",
+     "series": 3,
+     "reps": "8 par jambe",
+     "repos": 90
+    },
+    {
+     "nom": "Sauts à la corde / pogos",
+     "series": 3,
+     "reps": "20 s",
+     "repos": 60
+    },
+    {
+     "nom": "Fentes sautées",
+     "series": 2,
+     "reps": "6 par jambe",
+     "repos": 90
+    }
+   ]
+  },
+  {
+   "id": "force-prevention-genoux",
+   "sport": "renfo",
+   "famille": "prevention",
+   "nom": "Prévention des blessures (renfo général + ischios)",
+   "objectif": "Réduire le risque de blessure",
+   "resume": "Squat, fentes, nordic hamstring, gainage, mollets au poids du corps : 30 min, 2 fois par semaine.",
+   "unite": "%1RM",
+   "zone": "force",
+   "rpe": "5-6",
+   "niveau": "tous",
+   "dureeMin": 30,
+   "deroule": [],
+   "phases": [
+    "toutes"
+   ],
+   "conseils": [
+    "La régularité compte plus que la charge.",
+    "Nordic : progression sur 10 semaines, puis 1 fois par semaine (protocole de Petersen)."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Lauersen JB 2014",
+     "Wu H 2024",
+     "Petersen J 2011"
+    ]
+   },
+   "exercices": [
+    {
+     "nom": "Squat au poids du corps",
+     "series": 3,
+     "reps": "12-15",
+     "repos": 60
+    },
+    {
+     "nom": "Fentes arrière",
+     "series": 3,
+     "reps": "10 par jambe",
+     "repos": 60
+    },
+    {
+     "nom": "Nordic hamstring",
+     "series": 2,
+     "reps": "5-8",
+     "repos": 90
+    },
+    {
+     "nom": "Pont fessier une jambe",
+     "series": 3,
+     "reps": "10 par jambe",
+     "repos": 45
+    },
+    {
+     "nom": "Gainage (face, côtés)",
+     "series": 3,
+     "reps": "30-45 s",
+     "repos": 30
+    },
+    {
+     "nom": "Mollets une jambe",
+     "series": 3,
+     "reps": "15 par jambe",
+     "repos": 45
+    }
+   ]
   }
  ]
 }

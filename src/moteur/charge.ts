@@ -52,7 +52,7 @@ export interface Nominal {
  * +7,5 % si au moins 90 % réalisé, aucun jour rouge et au plus 1 orange ; −15 % si 2 jours rouges ou plus ;
  * sinon stable. Borné entre 60 % du départ et les minutes disponibles.
  */
-export function nominalSuivant(p: ProfilSportif, precedente: Semaine | null, bilan: Bilan | null): Nominal {
+export function nominalSuivant(p: ProfilSportif, precedente: Semaine | null, bilan: Bilan | null, sansProgression = false): Nominal {
   const depart = volumeDepart(p)
   if (!precedente || !bilan) return { minutes: depart, raison: 'Première semaine : volume de départ' }
   let minutes = precedente.nominal_min
@@ -60,6 +60,8 @@ export function nominalSuivant(p: ProfilSportif, precedente: Semaine | null, bil
   if (bilan.rouges >= 2) {
     minutes *= 0.85
     raison = '2 jours rouges ou plus la semaine dernière : −15 %'
+  } else if (sansProgression) {
+    raison = 'Objectif d’entretien : volume stable'
   } else if (bilan.prevu > 0 && bilan.realise / bilan.prevu >= 0.9 && bilan.rouges === 0 && bilan.oranges <= 1) {
     minutes *= 1.075
     raison = 'Semaine dernière réussie : +7,5 %'
@@ -83,8 +85,8 @@ export function minutesParSemaine(seances: Seance[], sport: Sport, lundi: string
 }
 
 /**
- * Plafond de course : jamais plus de +30 % au-dessus de la moyenne des 4 semaines précédentes (Nielsen 2014),
- * dès qu'il y a au moins 3 semaines de course ; avant, on part du volume déclaré.
+ * Garde-fou hebdomadaire de course (choix d'entraîneur, inspiré de Nielsen 2014) : pas plus de +30 % au-dessus
+ * de la moyenne des 4 semaines précédentes dès 3 semaines de course ; avant, on part du volume déclaré.
  */
 export function plafondCourse(p: ProfilSportif, seances: Seance[], lundi: string): number {
   const semaines = minutesParSemaine(seances, 'course', lundi)
@@ -111,4 +113,15 @@ export function ratioPic(seances: Seance[], aujourdhui: string): number | null {
   if (semaines.filter((c) => c > 0).length < 3) return null
   const moyenne = semaines.reduce((a, b) => a + b, 0) / 4
   return moyenne > 0 ? somme(0, 6) / moyenne : null
+}
+
+/**
+ * Règle de la plus longue sortie de course (Frandsen 2025, 5 205 coureurs) : aucune séance ne dépasse de plus de 10 %
+ * la plus longue course des 30 derniers jours (mesurée, sinon déclarée, sinon 30 min).
+ */
+export function plafondSeanceCourse(p: ProfilSportif, seances: Seance[], lundi: string): number {
+  const depuis = ajouterJours(lundi, -30)
+  const mesure = Math.max(0, ...seances.filter((s) => s.statut === 'faite' && s.sport === 'course' && s.date >= depuis && s.date < lundi).map((s) => s.duree_reelle_min ?? s.duree_min))
+  const reference = mesure || p.longue_course_min || 30
+  return Math.max(20, Math.floor((reference * 1.1) / 5) * 5)
 }

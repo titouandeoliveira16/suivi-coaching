@@ -3,7 +3,7 @@ import { adapterAuFeu, raisonDouleur, remplacerCourse, type Allegement } from '.
 import { ajouterJours, jour, lundiDe } from '../moteur/dates'
 import { feuDuJour, type Signal } from '../moteur/feu'
 import { genererSemaine } from '../moteur/semaine'
-import type { Matin, ProfilSportif, Seance, Semaine, Test } from '../moteur/types'
+import type { Matin, Objectif, ProfilSportif, Seance, Semaine, Test } from '../moteur/types'
 import type { Client } from './supabase'
 
 /** Charge des données et permet de les recharger ; `undefined` pendant le chargement. */
@@ -47,6 +47,19 @@ export async function testsDe(c: Client, eleve: string): Promise<(Test & { id: s
   })[]
 }
 
+export async function objectifsDe(c: Client, eleve: string): Promise<Objectif[]> {
+  return verifier(await c.from('objectifs').select('id, type, nom, date, priorite, distance_km, denivele_m, chaleur, altitude').eq('eleve_id', eleve).order('date', { nullsFirst: false })) as Objectif[]
+}
+
+/** Remplace la liste des objectifs de l'élève par celle-ci. */
+export async function enregistrerObjectifs(c: Client, eleve: string, objectifs: Objectif[]) {
+  const ids = objectifs.map((o) => o.id)
+  let suppression = c.from('objectifs').delete().eq('eleve_id', eleve)
+  if (ids.length) suppression = suppression.not('id', 'in', `(${ids.join(',')})`)
+  verifier(await suppression)
+  if (objectifs.length) verifier(await c.from('objectifs').upsert(objectifs.map((o) => ({ ...o, eleve_id: eleve }))))
+}
+
 export type SemaineStockee = Semaine & { eleve_id: string; explications: string[] }
 
 export async function semainesDe(c: Client, eleve: string, depuis: string): Promise<SemaineStockee[]> {
@@ -55,7 +68,7 @@ export async function semainesDe(c: Client, eleve: string, depuis: string): Prom
 
 // ---------- Élève ----------
 
-export async function enregistrerProfilSportif(c: Client, p: Omit<ProfilSportif, 'avis_medical'>) {
+export async function enregistrerProfilSportif(c: Client, p: Omit<ProfilSportif, 'avis_medical' | 'avis_kine'>) {
   verifier(await c.from('profils_sportifs').upsert(p))
 }
 
@@ -145,14 +158,15 @@ export async function reconduireSiBesoin(c: Client, eleve: string): Promise<bool
 export async function proposerSemaine(c: Client, eleve: string, lundi: string, aPartirDe: string) {
   const p = await profilSportif(c, eleve)
   if (!p) return null
-  const [seances, matins, tests, semaines] = await Promise.all([
+  const [seances, matins, tests, semaines, objectifs] = await Promise.all([
     seancesEntre(c, eleve, ajouterJours(lundi, -63), ajouterJours(lundi, -1)),
     matinsDepuis(c, eleve, ajouterJours(lundi, -14)),
     testsDe(c, eleve),
     semainesDe(c, eleve, ajouterJours(lundi, -7)),
+    objectifsDe(c, eleve),
   ])
   const precedente = semaines.find((s) => s.lundi === ajouterJours(lundi, -7)) ?? null
-  const r = genererSemaine({ profil: p, lundi, aPartirDe, precedente, seances, matins, tests })
+  const r = genererSemaine({ profil: p, lundi, aPartirDe, precedente, seances, matins, tests, objectifs })
   verifier(await c.from('seances').delete().eq('eleve_id', eleve).eq('statut', 'proposee').gte('date', lundi).lte('date', ajouterJours(lundi, 6)))
   verifier(await c.from('semaines').upsert({ ...r.semaine, eleve_id: eleve, explications: r.explications }))
   if (r.seances.length) verifier(await c.from('seances').insert(r.seances.map((s) => ({ ...s, eleve_id: eleve, statut: 'proposee', origine: 'moteur' }))))
@@ -192,7 +206,7 @@ export async function ajouterSeanceMain(c: Client, s: Pick<Seance, 'eleve_id' | 
   verifier(await c.from('seances').insert({ ...s, contenu: [], statut: 'validee', origine: 'coach' }))
 }
 
-export async function modifierProfilParCoach(c: Client, eleve: string, champs: Partial<Pick<ProfilSportif, 'avis_medical' | 'cp' | 'vma'>>) {
+export async function modifierProfilParCoach(c: Client, eleve: string, champs: Partial<Pick<ProfilSportif, 'avis_medical' | 'avis_kine' | 'cp' | 'vma'>>) {
   verifier(await c.from('profils_sportifs').update(champs).eq('eleve_id', eleve))
 }
 

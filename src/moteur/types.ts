@@ -1,6 +1,7 @@
 export type Sport = 'velo' | 'course'
+export type SportSeance = Sport | 'renfo'
 export type Niveau = 'debutant' | 'intermediaire' | 'confirme'
-export type Categorie = 'facile' | 'longue' | 'intense' | 'test'
+export type Categorie = 'facile' | 'longue' | 'intense' | 'test' | 'renfo' | 'epreuve'
 export type Phase = 'base' | 'developpement' | 'specifique' | 'affutage'
 export type Feu = 'vert' | 'orange' | 'rouge' | 'repos'
 export type Statut = 'proposee' | 'validee' | 'faite' | 'annulee'
@@ -33,6 +34,43 @@ export interface ProfilSportif {
   cp: number | null
   vma: number | null
   debut: string
+  sport_principal: Sport | null
+  /** Minutes disponibles par jour (lundi → dimanche, 0 = pas dispo) */
+  minutes_jour: number[] | null
+  jour_longue: number | null
+  jours_sans_intense: number[]
+  /** Jours de sortie en club ou en groupe (comptés comme séances dures) */
+  jours_club: number[]
+  exterieur: boolean
+  home_trainer: boolean
+  tapis: boolean
+  piste: boolean
+  cotes: boolean
+  renfo: boolean
+  /** Plus longue sortie des 30 derniers jours, en minutes */
+  longue_course_min: number | null
+  longue_velo_min: number | null
+  blessure_recente: boolean
+  fracture_fatigue: boolean
+  avis_kine: boolean
+  diabete: boolean
+  travail_poste: boolean
+  grossesse: boolean
+  post_partum: boolean
+  regime_restrictif: boolean
+  trouble_alimentaire: boolean
+}
+
+export interface Objectif {
+  id: string
+  type: string
+  nom: string
+  date: string | null
+  priorite: 'A' | 'B' | 'C'
+  distance_km: number | null
+  denivele_m: number | null
+  chaleur: boolean
+  altitude: boolean
 }
 
 /** Étape du déroulé d'une séance (reprend le format du catalogue de Coach). */
@@ -45,16 +83,25 @@ export interface Etape {
   etapes?: Etape[]
   note?: string
   cadence?: string
+  /** Sport de l'étape quand il diffère de la séance (enchaînement vélo → course) */
+  sport?: Sport
+}
+
+export interface Exercice {
+  nom: string
+  series: number
+  reps: string
+  repos: number
 }
 
 export interface FormatSeance {
   id: string
-  sport: Sport
+  sport: SportSeance
   famille: string
   nom: string
   objectif: string
   resume: string
-  unite: '%CP' | '%VMA'
+  unite: '%CP' | '%VMA' | '%1RM'
   zone: string
   rpe: string
   niveau: string
@@ -63,6 +110,7 @@ export interface FormatSeance {
   phases: string[]
   conseils: string[]
   preuve: { niveau: string; references: string[] }
+  exercices?: Exercice[]
 }
 
 /** Séance telle que stockée (proposée, validée, faite…). */
@@ -70,7 +118,7 @@ export interface Seance {
   id: string
   eleve_id: string
   date: string
-  sport: Sport
+  sport: SportSeance
   categorie: Categorie
   format_id: string | null
   titre: string

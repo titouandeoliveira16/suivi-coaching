@@ -24,14 +24,15 @@ https://claude.ai/artifact/VADvDEMvyjDpPsEMoT14fE — les lire avant toute nouve
 
 ## Repères
 - `src/app/` : coquille (connexion, invitation, aiguillage coach / élève). Nommage en français (`seance`, `eleve`, `valider`…).
-- `src/moteur/` : moteur de règles pur et testé — profil (niveau, unité, PAR-Q+), phases (affûtage Bosquet 2007),
+- `src/moteur/` : moteur de règles pur et testé — objectifs (`objectifs.ts` : 25 types, priorités A/B/C, séance clé,
+  points d'attention), profil (niveau, unité, PAR-Q+, minutes par jour, lieux, santé), phases (affûtage Bosquet 2007),
   charge (règles de Coach, plafond course Nielsen 2014), construction de la semaine, feu du jour (questionnaire du matin,
-  VFC), allègements et douleur (Silbernagel 2007). Banque de séances : `banque.json`, extraite du catalogue de Coach.
+  VFC), allègements et douleur (Silbernagel 2007), renfo (OMS 2020), course ≤ 1,1 × la plus longue du mois (Frandsen 2025). Banque de séances : `banque.json`, extraite du catalogue de Coach.
 - `src/core/donnees.ts` : accès au serveur (lecture, propositions, validation, allègements via fonctions serveur).
 - `src/modules/eleve/` (Aujourd'hui, Programme, Progrès, Messages, questionnaires) et `src/modules/coach/`
   (Élèves, À valider, fiche élève).
 - Le moteur allège seul (feu orange/rouge, maladie, douleur) et prévient le coach ; toute hausse de charge et chaque
   semaine attendent la validation du coach ; sans validation le lundi, la semaine précédente est reconduite.
-- Serveur : projet Supabase **séparé** de celui de Coach ; SQL dans `supabase/sql/` (01 comptes, 02 programme), exécuté
+- Serveur : projet Supabase **séparé** de celui de Coach ; SQL dans `supabase/sql/` (01 comptes, 02 programme, 03 objectifs), exécuté
   à la main dans le SQL Editor. Toute nouvelle table reçoit ses droits et ses règles RLS explicitement. Les scripts
   se testent sur un PostgreSQL local (schéma `auth` et rôles `anon`/`authenticated` imités).

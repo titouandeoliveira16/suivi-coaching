@@ -70,6 +70,31 @@ const AJOUTS: FormatSeance[] = [
     preuve: { niveau: 'pratique', references: ['Riebe 2015 (ACSM)'] },
   },
   {
+    id: 'duathlon-enchainement',
+    sport: 'velo',
+    famille: 'specifique',
+    nom: 'Enchaînement vélo → course',
+    objectif: 'Habituer les jambes à courir après le vélo',
+    resume: 'Vélo au seuil, puis course enchaînée sans pause à l’allure de l’épreuve.',
+    unite: '%CP',
+    zone: 'Z3-Z4',
+    rpe: '6-7',
+    niveau: 'tous',
+    dureeMin: 70,
+    deroule: [
+      { type: 'echauffement', duree: 900, intensite: [50, 65] },
+      { type: 'repetition', fois: 2, etapes: [
+        { type: 'effort', duree: 600, intensite: [85, 92] },
+        { type: 'recup', duree: 300, intensite: [50, 60] },
+      ] },
+      { type: 'effort', duree: 900, intensite: [65, 75] },
+      { type: 'effort', duree: 900, intensite: [85, 90], sport: 'course', note: 'transition rapide, puis course à l’allure de l’épreuve' },
+    ],
+    phases: ['spécifique', 'construction'],
+    conseils: ['Prépare tes affaires de course à côté du vélo pour une transition rapide.'],
+    preuve: { niveau: 'pratique', references: [] },
+  },
+  {
     id: 'course-footing-tres-facile',
     sport: 'course',
     famille: 'recuperation',
@@ -99,6 +124,13 @@ export function formatObligatoire(id: string): FormatSeance {
   const f = format(id)
   if (!f) throw new Error(`Format inconnu : ${id}`)
   return f
+}
+
+/** Minutes courues dans un déroulé (étapes de course d'un enchaînement comprises). */
+export function minutesCourues(sport: string, etapes: Etape[]): number {
+  const s = (es: Etape[]): number =>
+    es.reduce((t, e) => t + (e.type === 'repetition' ? (e.fois ?? 1) * s(e.etapes ?? []) : (e.sport ?? sport) === 'course' ? (e.duree ?? 0) : 0), 0)
+  return Math.round(s(etapes) / 60)
 }
 
 /** Durée totale d'un déroulé, en secondes. */

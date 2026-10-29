@@ -44,7 +44,7 @@ export function SaisieSeance({ client, seance: s, termine, annuler }: { client: 
     setOccupe(true)
     setErreur('')
     try {
-      if (resultatTest) await enregistrerTest(client, { eleve_id: s.eleve_id, date: s.date, sport: s.sport, type: resultatTest.type, valeur: resultatTest.valeur, details: resultatTest.details, seance_id: s.id })
+      if (resultatTest) await enregistrerTest(client, { eleve_id: s.eleve_id, date: s.date, sport: s.sport as 'velo' | 'course', type: resultatTest.type, valeur: resultatTest.valeur, details: resultatTest.details, seance_id: s.id })
       await enregistrerResultat(client, s, { duree: Math.round(nombre(duree)), rpe: rpe!, reussie: reussie!, douleur: douleur ?? 0, zone, boiterie: !!boiterie, note })
       termine()
     } catch (e) {
