@@ -33,6 +33,10 @@ https://claude.ai/artifact/VADvDEMvyjDpPsEMoT14fE — les lire avant toute nouve
   (Élèves, À valider, fiche élève).
 - Le moteur allège seul (feu orange/rouge, maladie, douleur) et prévient le coach ; toute hausse de charge et chaque
   semaine attendent la validation du coach ; sans validation le lundi, la semaine précédente est reconduite.
-- Serveur : projet Supabase **séparé** de celui de Coach ; SQL dans `supabase/sql/` (01 comptes, 02 programme, 03 objectifs), exécuté
+- Serveur : projet Supabase **séparé** de celui de Coach ; SQL dans `supabase/sql/` (01 comptes, 02 programme, 03 objectifs, 04 notifications), exécuté
   à la main dans le SQL Editor. Toute nouvelle table reçoit ses droits et ses règles RLS explicitement. Les scripts
   se testent sur un PostgreSQL local (schéma `auth` et rôles `anon`/`authenticated` imités).
+- Notifications : fonction serveur `supabase/functions/notifications` (Web Push, clés VAPID créées par elle-même,
+  « Verify JWT » désactivé), collée à la main dans le tableau de bord. Messages, alertes et semaine validée passent
+  par une file (`notifications_a_envoyer`) remplie par des déclencheurs ; rappels du matin, du soir et du dimanche
+  (règles pures entre les marqueurs `debut regles` / `fin regles`, testées dans `src/core/rappels.test.ts`).

@@ -6,6 +6,7 @@ import type { Client } from '../../core/supabase'
 import { BarreOnglets, Bouton, Chargement, Message, Page, type Onglet } from '../../core/ui'
 import { Messages } from '../commun/Messages'
 import { Progres } from '../commun/Progres'
+import { ReglagesNotifications } from '../commun/ReglagesNotifications'
 import { Aujourdhui } from './Aujourdhui'
 import { Programme } from './Programme'
 import { QuestionnaireArrivee } from './QuestionnaireArrivee'
@@ -57,6 +58,7 @@ export function EspaceEleve({ client, profil, deconnecter }: { client: Client; p
           <Bouton variante="discret" onClick={() => setEditer(true)}>
             Modifier mon profil (disponibilités, objectif…)
           </Bouton>
+          <ReglagesNotifications client={client} moi={profil.id} role="eleve" />
         </>
       )}
       {actif === '#/messages' && <Messages client={client} eleve={profil.id} moi={profil.id} auLu={lus} />}

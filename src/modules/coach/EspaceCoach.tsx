@@ -8,6 +8,7 @@ import { BarreOnglets, Bouton, Page, type Onglet } from '../../core/ui'
 import { AValider } from './AValider'
 import { FicheEleve } from './FicheEleve'
 import { MesEleves } from './MesEleves'
+import { ReglagesNotifications } from '../commun/ReglagesNotifications'
 
 export function EspaceCoach({ client, profil, deconnecter }: { client: Client; profil: Profil; deconnecter: () => void }) {
   const hash = useAdresse()
@@ -61,7 +62,14 @@ export function EspaceCoach({ client, profil, deconnecter }: { client: Client; p
         )
       }
     >
-      {actif ? <AValider key={version} client={client} auChangement={() => setVersion((v) => v + 1)} /> : <MesEleves key={version} client={client} profil={profil} />}
+      {actif ? (
+        <AValider key={version} client={client} auChangement={() => setVersion((v) => v + 1)} />
+      ) : (
+        <>
+          <MesEleves key={version} client={client} profil={profil} />
+          <ReglagesNotifications client={client} moi={profil.id} role="coach" />
+        </>
+      )}
     </Page>
   )
 }
