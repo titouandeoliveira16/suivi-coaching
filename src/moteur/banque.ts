@@ -113,7 +113,43 @@ const AJOUTS: FormatSeance[] = [
   },
 ]
 
-export const BANQUE: FormatSeance[] = [...(donnees.seances as unknown as FormatSeance[]), ...AJOUTS]
+
+/**
+ * Module Muscu : force lourde des jambes (Rønnestad 2010 ; Vikmoen 2016 ; Blagrove 2018 pour la course).
+ * Une variante par charge (RM = charge qu'on ne peut soulever que ce nombre de fois) ; 3 séries.
+ */
+const EXERCICES_MUSCU = {
+  velo: ['Demi-squat', 'Presse une jambe (ou fente bulgare)', 'Flexion de hanche une jambe (poulie ou élastique)', 'Mollets debout'],
+  course: ['Demi-squat', 'Step-up (montée sur banc)', 'Hip thrust', 'Mollets debout'],
+} as const
+export const CHARGES_MUSCU = [10, 8, 6, 5, 4] as const
+const FORMATS_MUSCU: FormatSeance[] = (['velo', 'course'] as const).flatMap((sport) =>
+  CHARGES_MUSCU.map((rm) => ({
+    id: `muscu-${sport}-${rm}rm`,
+    sport: 'renfo' as const,
+    famille: 'force-lourde',
+    nom: `Muscu jambes · 3 × ${rm}RM`,
+    objectif: sport === 'velo' ? 'Puissance et économie à vélo' : 'Économie de course et puissance',
+    resume: `3 séries de ${rm} répétitions avec la charge que tu ne pourrais soulever que ${rm} fois (garde 1-2 répétitions en réserve). Repos 2-3 min.`,
+    unite: '%1RM' as const,
+    zone: 'force',
+    rpe: '8-9',
+    niveau: 'intermédiaire',
+    dureeMin: 45,
+    deroule: [],
+    phases: ['base', 'développement', 'entretien en saison'],
+    conseils: [
+      'Après ta sortie du jour (idéalement 6 h plus tard), jamais la veille d’une séance dure : les jambes restent moins efficaces jusqu’à 48 h (Doma 2017).',
+      'Montée explosive, descente contrôlée. Échauffement : 10 min de vélo ou de corde + 2 séries légères.',
+      'Charge : la plus lourde qui te permet de garder 1-2 répétitions en réserve (choix d’entraîneur, les études allaient presque à l’échec).',
+      'Débutant en muscu ou moins de 18 ans : apprends d’abord la technique avec un entraîneur qualifié, et monte la charge avec la maîtrise (Lloyd 2014).',
+    ],
+    preuve: { niveau: 'prouvé', references: sport === 'velo' ? ['Rønnestad 2010', 'Vikmoen 2016', 'Beattie 2014'] : ['Blagrove 2018', 'Beattie 2014'] },
+    exercices: EXERCICES_MUSCU[sport].map((nom) => ({ nom, series: 3, reps: `${rm}RM`, repos: 120 })),
+  })),
+)
+
+export const BANQUE: FormatSeance[] = [...(donnees.seances as unknown as FormatSeance[]), ...AJOUTS, ...FORMATS_MUSCU]
 export const SOURCE_BANQUE = donnees.source
 
 export function format(id: string): FormatSeance | undefined {

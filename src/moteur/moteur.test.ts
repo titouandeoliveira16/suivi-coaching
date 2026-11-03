@@ -9,6 +9,7 @@ import { coefficientsAffutage, phaseDeLaSemaine } from './phase'
 import { objectifPrincipal, param, pointsAttention } from './objectifs'
 import { intensiteAutorisee, niveau } from './profil'
 import { echangePossible } from './echange'
+import { chargesMuscu } from './muscu'
 import { reajusterSemaine } from './reajustement'
 import { saison } from './saison'
 import { genererSemaine, nombreIntenses, placer, type Creneau } from './semaine'
@@ -501,5 +502,54 @@ describe('saison', () => {
     const course = semaines.find((s) => s.courses.length === 1)!
     expect(course.phase).toBe('affutage')
     expect(semaines.at(-1)!.recuperation).toBe(true)
+  })
+})
+
+describe('module muscu', () => {
+  it('progression alternée lourd / moins lourd (Rønnestad 2010), puis entretien', () => {
+    const base = { phase: 'base' as const, recuperation: false }
+    expect(chargesMuscu('2026-11-02', '2026-11-02', base)).toEqual([10, 6])
+    expect(chargesMuscu('2026-11-02', '2026-11-30', base)).toEqual([8, 5])
+    expect(chargesMuscu('2026-11-02', '2026-12-28', base)).toEqual([6, 4])
+    expect(chargesMuscu('2026-11-02', ajouterJours('2026-11-02', 7 * 12), base)).toEqual([5])
+    expect(chargesMuscu('2026-11-02', '2026-12-28', { phase: 'specifique', recuperation: false })).toEqual([5])
+    expect(chargesMuscu('2026-11-02', '2026-12-28', { phase: 'base', recuperation: true })).toEqual([])
+  })
+  it('jamais la veille d’une séance dure, le jour du dur de préférence, 48 h entre deux séances', () => {
+    const p = profil({ cp: 260, minutes_jour: [90, 90, 90, 0, 90, 210, 180], jour_longue: 5 })
+    const r = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: [], matins: [], tests: [], modules: [{ module: 'muscu', debut: LUNDI }] })
+    const muscu = r.seances.filter((s) => s.format_id?.startsWith('muscu-'))
+    expect(muscu.map((s) => s.format_id)).toEqual(['muscu-velo-10rm', 'muscu-velo-6rm'])
+    const jours = muscu.map((s) => jourSemaine(s.date))
+    expect(Math.abs(jours[1] - jours[0])).toBeGreaterThanOrEqual(2)
+    for (const s of muscu) {
+      const lendemain = r.seances.filter((x) => x.date === ajouterJours(s.date, 1))
+      expect(lendemain.some((x) => x.categorie === 'intense' || x.categorie === 'test')).toBe(false)
+    }
+  })
+  it('rien dans les 4 jours avant une course', () => {
+    const p = profil({ cp: 260 })
+    const r = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: [], matins: [], tests: [], objectifs: [obj('velo-route', '2026-11-07')], modules: [{ module: 'muscu', debut: '2026-09-01' }] })
+    const muscu = r.seances.filter((s) => s.format_id?.startsWith('muscu-'))
+    expect(muscu.every((s) => s.date < '2026-11-03')).toBe(true)
+  })
+  it('avec les modules, le renfo reste au poids du corps et passe à 1 séance avec la muscu', () => {
+    const p = profil({ cp: 260 })
+    const r = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: [], matins: [], tests: [], modules: [{ module: 'renfo', debut: LUNDI }, { module: 'muscu', debut: LUNDI }] })
+    const renfo = r.seances.filter((s) => s.sport === 'renfo' && !s.format_id?.startsWith('muscu-'))
+    expect(renfo.map((s) => s.format_id)).toEqual(['force-prevention-genoux'])
+    const sansModule = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: [], matins: [], tests: [], modules: [] })
+    expect(sansModule.seances.some((s) => s.sport === 'renfo')).toBe(false)
+  })
+})
+
+describe('module muscu entre deux semaines', () => {
+  it('pas le dimanche si on peut l’éviter, pas le lundi après une muscu le dimanche', () => {
+    const p = profil({ cp: 260, minutes_jour: [90, 90, 90, 0, 90, 210, 180], jour_longue: 5 })
+    const r = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: [], matins: [], tests: [], modules: [{ module: 'muscu', debut: LUNDI }] })
+    expect(r.seances.filter((s) => s.format_id?.startsWith('muscu-')).every((s) => jourSemaine(s.date) !== 6)).toBe(true)
+    const avant = [seance({ date: '2026-11-01', sport: 'renfo', categorie: 'renfo', format_id: 'muscu-velo-6rm', statut: 'validee' })]
+    const r2 = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: avant, matins: [], tests: [], modules: [{ module: 'muscu', debut: LUNDI }] })
+    expect(r2.seances.filter((s) => s.format_id?.startsWith('muscu-')).every((s) => s.date !== LUNDI)).toBe(true)
   })
 })

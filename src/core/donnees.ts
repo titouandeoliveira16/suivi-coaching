@@ -166,17 +166,20 @@ export async function reconduireSiBesoin(c: Client, eleve: string): Promise<bool
 export async function proposerSemaine(c: Client, eleve: string, lundi: string, aPartirDe: string) {
   const p = await profilSportif(c, eleve)
   if (!p) return null
-  const [seances, matins, tests, semaines, objectifs] = await Promise.all([
+  const [seances, matins, tests, semaines, objectifs, modules] = await Promise.all([
     seancesEntre(c, eleve, ajouterJours(lundi, -63), ajouterJours(lundi, -1)),
     matinsDepuis(c, eleve, ajouterJours(lundi, -14)),
     testsDe(c, eleve),
     semainesDe(c, eleve, ajouterJours(lundi, -7)),
     objectifsDe(c, eleve),
+    c.from('modules').select('module, debut').eq('eleve_id', eleve).eq('statut', 'actif'),
   ])
   const precedente = semaines.find((s) => s.lundi === ajouterJours(lundi, -7)) ?? null
   // Semaine préparée avant la fin de la précédente : réajustée (à la baisse seulement) une fois celle-ci terminée
   const anticipee = lundi > jour()
-  const r = genererSemaine({ profil: p, lundi, aPartirDe, precedente, seances, matins, tests, objectifs, anticipee })
+  // Table des modules pas encore créée sur le serveur : on garde l'ancien choix « renfo » du profil
+  const actifs = modules.error ? undefined : (modules.data as { module: string; debut: string | null }[])
+  const r = genererSemaine({ profil: p, lundi, aPartirDe, precedente, seances, matins, tests, objectifs, anticipee, modules: actifs })
   verifier(await c.from('seances').delete().eq('eleve_id', eleve).eq('statut', 'proposee').gte('date', lundi).lte('date', ajouterJours(lundi, 6)))
   verifier(await c.from('semaines').upsert({ ...r.semaine, eleve_id: eleve, explications: r.explications, anticipee, reevaluee: false }))
   if (r.seances.length) verifier(await c.from('seances').insert(r.seances.map((s) => ({ ...s, eleve_id: eleve, statut: 'proposee', origine: 'moteur' }))))

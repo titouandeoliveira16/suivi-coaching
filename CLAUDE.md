@@ -37,7 +37,7 @@ https://claude.ai/artifact/VADvDEMvyjDpPsEMoT14fE — les lire avant toute nouve
   est prévenu quand c'est l'élève).
 - Le moteur allège seul (feu orange/rouge, maladie, douleur) et prévient le coach ; toute hausse de charge et chaque
   semaine attendent la validation du coach ; sans validation le lundi, la semaine précédente est reconduite.
-- Serveur : projet Supabase **séparé** de celui de Coach ; SQL dans `supabase/sql/` (01 comptes, 02 programme, 03 objectifs, 04 notifications, 05 deux semaines, 06 intervals), exécuté
+- Serveur : projet Supabase **séparé** de celui de Coach ; SQL dans `supabase/sql/` (01 comptes, 02 programme, 03 objectifs, 04 notifications, 05 deux semaines, 06 intervals, 07 modules), exécuté
   à la main dans le SQL Editor. Toute nouvelle table reçoit ses droits et ses règles RLS explicitement. Les scripts
   se testent sur un PostgreSQL local (schéma `auth` et rôles `anon`/`authenticated` imités).
 - Notifications : fonction serveur `supabase/functions/notifications` (Web Push, clés VAPID créées par elle-même,
@@ -48,3 +48,7 @@ https://claude.ai/artifact/VADvDEMvyjDpPsEMoT14fE — les lire avant toute nouve
   colonne `liaison`). Fonction serveur `supabase/functions/intervals` (clé API chiffrée, import toutes les heures par
   pg_cron) : sorties dans `activites`, rattachées à la séance du jour (règles testées dans `src/core/intervals.test.ts`),
   séance marquée faite le surlendemain si l'élève ne l'a pas saisie ; VFC de la nuit dans `bien_etre`.
+- Modules (table `modules`) : l'élève demande dans Réglages, le coach accepte / active / retire dans la fiche.
+  Renfo (poids du corps), Muscu (`moteur/muscu.ts` : force lourde Rønnestad 2010, 10/6RM → 8/5RM → 6/4RM puis entretien,
+  jamais la veille d'une séance dure ni 4 j avant une course), Nutrition (`moteur/nutrition.ts`, repris de Coach,
+  affichée sous chaque séance). Sans module renfo, plus de renfo dans le plan (la question du questionnaire est retirée).

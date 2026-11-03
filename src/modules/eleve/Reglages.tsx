@@ -1,6 +1,7 @@
 import { allerA } from '../../core/adresse'
 import type { Client } from '../../core/supabase'
 import { Bouton, Carte } from '../../core/ui'
+import { CarteModules } from '../commun/CarteModules'
 import { ReglagesNotifications } from '../commun/ReglagesNotifications'
 import { MaMontre } from './MaMontre'
 
@@ -15,6 +16,7 @@ export function Reglages({ client, moi, modifierProfil, deconnecter, auChangemen
         </Bouton>
       </Carte>
       <MaMontre client={client} auChangement={auChangement} />
+      <CarteModules client={client} eleve={moi} role="eleve" auChangement={auChangement} />
       <ReglagesNotifications client={client} moi={moi} role="eleve" />
       <Carte titre="📖 Mode d’emploi">
         <p className="mb-3 text-sm text-texte-2">Comment marche l’appli, en 2 minutes.</p>

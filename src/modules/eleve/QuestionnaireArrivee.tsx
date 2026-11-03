@@ -273,7 +273,6 @@ export function QuestionnaireArrivee({
               {p.disciplines.includes('course') && <OuiNon etiquette="Était-ce une fracture de fatigue ?" valeur={p.fracture_fatigue} onChange={(v) => maj({ fracture_fatigue: v })} />}
             </>
           )}
-          <OuiNon etiquette="D’accord pour 2 séances de renfo par semaine (20-30 min, peu de matériel) ?" valeur={p.renfo} onChange={(v) => maj({ renfo: v })} />
         </div>
       </Carte>
 

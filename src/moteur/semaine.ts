@@ -2,6 +2,7 @@ import { BANQUE, dureeMinutes, formatObligatoire, minutesCourues } from './banqu
 import { arrondi5, bilanSemaine, nominalSuivant, plafondCourse, plafondSeanceCourse } from './charge'
 import { ajouterJours, ecartJours, jourSemaine } from './dates'
 import { epreuvesDeLaSemaine, libelleObjectif, objectifPrincipal, param, sportPrincipal, type ParamObjectif } from './objectifs'
+import { chargesMuscu, formatMuscu, joursMuscu } from './muscu'
 import { phaseDeLaSemaine, type PhaseSemaine } from './phase'
 import { disciplinesActives, intensiteAutorisee, interieurSeulement, minutesParJour, niveau, pratique } from './profil'
 import type { Categorie, Etape, FormatSeance, Matin, Niveau, Objectif, Phase, ProfilSportif, Seance, SeancePlanifiee, Semaine, Sport, SportSeance, Test } from './types'
@@ -21,6 +22,8 @@ export interface EntreesSemaine {
    * en cours était réussie ; elle est réajustée (à la baisse seulement) une fois la semaine en cours terminée.
    */
   anticipee?: boolean
+  /** Modules actifs de l'élève (absent : on se fie à l'ancien choix « renfo » du profil). */
+  modules?: { module: string; debut: string | null }[]
 }
 
 export interface SemaineProposee {
@@ -481,12 +484,28 @@ export function genererSemaine(e: EntreesSemaine): SemaineProposee {
     seances.push(seance)
   }
 
-  // Renfo : 2 fois par semaine (OMS 2020), 1 en spécifique, affûtage et récupération ; jamais un jour d'épreuve
-  if (p.renfo) {
-    const nb = ph.phase === 'specifique' || ph.phase === 'affutage' || ph.recuperation ? 1 : 2
+  // Muscu (module) : force lourde, 2 séances en préparation puis 1 d'entretien, placées loin des séances dures
+  const muscu = e.modules?.find((m) => m.module === 'muscu')
+  const joursMusculation: number[] = []
+  if (muscu) {
+    const charges = chargesMuscu(muscu.debut ?? lundi, lundi, ph)
+    const courses = objectifs.filter((o) => o.date && o.date >= lundi && o.date <= ajouterJours(lundi, 11)).map((o) => o.date!)
+    const jours = joursMuscu(seances, lundi, e.aPartirDe, minutes, charges.length, courses, e.seances)
+    jours.forEach((j, i) => {
+      seances.push(seanceDepuisFormat(formatObligatoire(formatMuscu(sportP, charges[i])), ajouterJours(lundi, j), 'renfo'))
+      joursMusculation.push(j)
+    })
+    if (jours.length) explications.push(`Muscu : ${jours.map((_, i) => `${charges[i]}RM`).join(' et ')}${charges.length === 1 ? ' (entretien)' : ''}, jamais la veille d’une séance dure (Rønnestad 2010 ; Doma 2017)`)
+    else if (charges.length) explications.push('Muscu : pas de jour possible cette semaine (séances dures ou course trop proches)')
+  }
+
+  // Renfo : 2 fois par semaine (OMS 2020), 1 en spécifique, affûtage et récupération, ou avec la muscu ; jamais un jour d'épreuve
+  const renfoActif = e.modules ? e.modules.some((m) => m.module === 'renfo') : p.renfo
+  if (renfoActif) {
+    const nb = ph.phase === 'specifique' || ph.phase === 'affutage' || ph.recuperation || muscu ? 1 : 2
     const occupes = new Set(seances.map((s) => jourSemaine(s.date)))
     const jourEpreuve = new Set(creneaux.filter((c) => c.categorie === 'epreuve').map((c) => c.jour!))
-    const candidats = [0, 1, 2, 3, 4, 5, 6].filter((j) => ajouterJours(lundi, j) >= e.aPartirDe && !jourEpreuve.has(j) && !jourEpreuve.has(j + 1))
+    const candidats = [0, 1, 2, 3, 4, 5, 6].filter((j) => ajouterJours(lundi, j) >= e.aPartirDe && !jourEpreuve.has(j) && !jourEpreuve.has(j + 1) && !joursMusculation.includes(j))
     const libres = candidats.filter((j) => !occupes.has(j) && minutes[j] > 0)
     const faciles = candidats.filter((j) => seances.some((s) => jourSemaine(s.date) === j && (s.categorie === 'facile' || s.categorie === 'longue')))
     // Jamais la veille d'une séance dure ou d'un test si on peut l'éviter (jambes fraîches)
@@ -495,7 +514,9 @@ export function genererSemaine(e: EntreesSemaine): SemaineProposee {
     const choix: number[] = []
     for (const j of joursRenfo) if (choix.length < nb && choix.every((k) => Math.abs(k - j) > 1)) choix.push(j)
     choix.forEach((j, i) => {
-      const id = i === 1 && niveau(p) !== 'debutant' && (ph.phase === 'base' || ph.phase === 'developpement') ? (sportP === 'velo' ? 'force-lourde-jambes-cycliste' : 'force-explosive-coureur') : 'force-prevention-genoux'
+      const prepa = i === 1 && niveau(p) !== 'debutant' && (ph.phase === 'base' || ph.phase === 'developpement')
+      // Avec les modules, la force lourde est réservée au module Muscu : le renfo reste au poids du corps
+      const id = prepa && sportP === 'course' ? 'force-explosive-coureur' : prepa && sportP === 'velo' && !e.modules ? 'force-lourde-jambes-cycliste' : 'force-prevention-genoux'
       seances.push(seanceDepuisFormat(formatObligatoire(id), ajouterJours(lundi, j), 'renfo'))
     })
     if (choix.length) explications.push(`${choix.length} séance(s) de renfo (OMS 2020 ; Lauersen 2014)`)

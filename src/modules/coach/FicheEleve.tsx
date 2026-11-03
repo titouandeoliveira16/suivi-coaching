@@ -27,6 +27,7 @@ import type { Categorie, Objectif, ProfilSportif, Sport } from '../../moteur/typ
 import { Messages } from '../commun/Messages'
 import { Progres } from '../commun/Progres'
 import { activitesEntre, importerIntervals, resumeActivite, type Activite } from '../../core/intervals'
+import { CarteModules } from '../commun/CarteModules'
 import { useInterversion } from '../commun/Interversion'
 import { VueSemaines } from '../commun/VueSemaines'
 import { CarteSeance } from '../commun/CarteSeance'
@@ -365,6 +366,8 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
               <SaisieTest client={client} eleve={id} fini={() => (setOuvert(''), rafraichir())} />
             </Carte>
           )}
+
+          <CarteModules key={`modules-${version}`} client={client} eleve={id} role="coach" auChangement={rafraichir} />
 
           <Carte titre="Profil">
             <Resume p={p} objectifs={d.objectifs} />

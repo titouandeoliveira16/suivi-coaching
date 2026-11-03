@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { allerA, useAdresse } from '../../core/adresse'
 import { messageErreur, type Profil } from '../../core/compte'
 import { choisirSansMontre, nonLus, objectifsDe, profilSportif, useCharge } from '../../core/donnees'
+import { ModulesActifs, modulesDe } from '../../core/modules'
 import type { Client } from '../../core/supabase'
 import { BarreOnglets, Chargement, Message, Page, Pastille, type Onglet } from '../../core/ui'
 import { Messages } from '../commun/Messages'
@@ -28,8 +29,8 @@ export function EspaceEleve({ client, profil, deconnecter }: { client: Client; p
   const hash = useAdresse()
   const actif = (hash in TITRES ? hash : '') as keyof typeof TITRES
   const { donnees: d, erreur, recharger } = useCharge(async () => {
-    const [sportif, objectifs] = await Promise.all([profilSportif(client, profil.id), objectifsDe(client, profil.id)])
-    return { sportif, objectifs }
+    const [sportif, objectifs, modules] = await Promise.all([profilSportif(client, profil.id), objectifsDe(client, profil.id), modulesDe(client, profil.id)])
+    return { sportif, objectifs, actifs: modules.filter((m) => m.statut === 'actif').map((m) => m.module) }
   }, [client, profil.id])
   const sportif = d?.sportif
   const { donnees: aLire, recharger: rechargerLus } = useCharge(() => nonLus(client, profil.id), [client, profil.id])
@@ -69,6 +70,7 @@ export function EspaceEleve({ client, profil, deconnecter }: { client: Client; p
   )
 
   return (
+    <ModulesActifs.Provider value={d.actifs}>
     <Page
       surtitre={profil.nom ? `Bonjour ${profil.nom}` : 'Bonjour'}
       titre={TITRES[actif]}
@@ -88,5 +90,6 @@ export function EspaceEleve({ client, profil, deconnecter }: { client: Client; p
       {actif === '#/reglages' && <Reglages client={client} moi={profil.id} modifierProfil={() => setEditer(true)} deconnecter={deconnecter} auChangement={recharger} />}
       {actif === '#/aide' && <ModeEmploi />}
     </Page>
+    </ModulesActifs.Provider>
   )
 }

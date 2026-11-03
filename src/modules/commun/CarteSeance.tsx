@@ -4,6 +4,9 @@ import { dateLisible } from '../../moteur/dates'
 import { cible, duree } from '../../moteur/intensite'
 import type { Categorie, Etape, Exercice, ProfilSportif, Seance, Sport, SportSeance } from '../../moteur/types'
 import { resumeActivite, type Activite } from '../../core/intervals'
+import { useModulesActifs } from '../../core/modules'
+import { conseilsPourSeance } from '../../moteur/nutrition'
+import { interieurSeulement } from '../../moteur/profil'
 import { Pastille } from '../../core/ui'
 
 export const ICONE_SPORT: Record<SportSeance, string> = { velo: '🚴', course: '🏃', renfo: '🏋️' }
@@ -61,6 +64,8 @@ function Exercices({ exercices }: { exercices: Exercice[] }) {
 export function CarteSeance({ seance: s, profil, avecDate, avecStatut, ouverte, activite, children }: { seance: Seance; profil: ProfilSportif; avecDate?: boolean; avecStatut?: boolean; ouverte?: boolean; activite?: Activite; children?: ReactNode }) {
   const [details, setDetails] = useState(!!ouverte)
   const f = s.format_id ? format(s.format_id) : undefined
+  const nutrition = useModulesActifs().includes('nutrition') && s.sport !== 'renfo' && s.statut !== 'faite' && s.statut !== 'annulee'
+  const conseils = nutrition ? conseilsPourSeance(s, interieurSeulement(profil)) : null
   return (
     <section className={`rounded-2xl border bg-surface p-5 ${s.statut === 'annulee' ? 'border-bordure opacity-70' : s.categorie === 'intense' || s.categorie === 'test' ? 'border-accent/60' : 'border-bordure'}`}>
       <div className="mb-1 flex flex-wrap items-center gap-2 text-sm text-texte-3">
@@ -83,7 +88,7 @@ export function CarteSeance({ seance: s, profil, avecDate, avecStatut, ouverte, 
         </p>
       )}
 
-      {(s.contenu.length > 0 || !!f?.exercices?.length) && (
+      {(s.contenu.length > 0 || !!f?.exercices?.length || !!conseils) && (
         <button type="button" className="mt-2 text-sm text-accent" onClick={() => setDetails(!details)}>
           {details ? 'Masquer le déroulé' : 'Voir le déroulé'}
         </button>
@@ -91,6 +96,17 @@ export function CarteSeance({ seance: s, profil, avecDate, avecStatut, ouverte, 
       {details && (
         <div className="mt-3 flex flex-col gap-3">
           {s.sport === 'renfo' ? f?.exercices && <Exercices exercices={f.exercices} /> : <Etapes etapes={s.contenu} sport={s.sport as Sport} profil={profil} />}
+          {conseils && (
+            <div className="rounded-xl bg-surface-2 p-3 text-sm">
+              <p className="mb-1 font-semibold">🍽️ Nutrition</p>
+              <ul className="flex flex-col gap-1 text-texte-2">
+                {conseils.avant && <li><span className="text-texte">Avant :</span> {conseils.avant}</li>}
+                <li><span className="text-texte">Pendant :</span> {conseils.pendant}</li>
+                <li><span className="text-texte">Boire :</span> {conseils.hydratation}</li>
+                <li><span className="text-texte">Après :</span> {conseils.apres}</li>
+              </ul>
+            </div>
+          )}
           {f && f.conseils.length > 0 && (
             <ul className="list-disc pl-5 text-xs text-texte-3">
               {f.conseils.map((c) => (

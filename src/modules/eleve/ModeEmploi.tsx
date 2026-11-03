@@ -22,6 +22,11 @@ const SECTIONS: [string, string[]][] = [
     'Une semaine sur 4 est plus légère : c’est là que le corps assimile le travail.',
     'Des tests réguliers (CP en vélo) mettent tes cibles à jour : fais-les à fond, ils servent à tout le reste.',
   ]],
+  ['🧩 Modules', [
+    'Renfo, Muscu, Nutrition : demande-les dans Réglages. Ton coach valide et les intègre à ton programme dès la semaine suivante.',
+    'Muscu : 2 séances par semaine en préparation, puis 1 pour entretenir ; toujours après ta sortie, jamais la veille d’une séance dure.',
+    'Nutrition : sous chaque séance (« Voir le déroulé »), quoi manger avant, pendant et après.',
+  ]],
   ['🩹 Douleur ou maladie', [
     'Signale toute douleur, même petite. Au-delà de 3/10, ou si tu boites, ton coach est prévenu et tes séances sont adaptées.',
     'Malade avec de la fièvre : repos complet, l’appli le gère pour toi.',
