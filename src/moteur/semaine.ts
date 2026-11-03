@@ -1,7 +1,7 @@
 import { BANQUE, dureeMinutes, formatObligatoire, minutesCourues } from './banque'
 import { arrondi5, bilanSemaine, nominalSuivant, plafondCourse, plafondSeanceCourse } from './charge'
 import { ajouterJours, ecartJours, jourSemaine } from './dates'
-import { epreuvesDeLaSemaine, libelleObjectif, objectifPrincipal, param, sportPrincipal, type ParamObjectif } from './objectifs'
+import { epreuvesDeLaSemaine, libelleObjectif, objectifPrincipal, param, paramObjectif, sportPrincipal, type ParamObjectif } from './objectifs'
 import { chargesMuscu, formatMuscu, joursMuscu } from './muscu'
 import { phaseDeLaSemaine, type PhaseSemaine } from './phase'
 import { disciplinesActives, intensiteAutorisee, interieurSeulement, minutesParJour, niveau, pratique } from './profil'
@@ -101,7 +101,7 @@ function rotation(liste: FormatSeance[], historique: Seance[]): FormatSeance | n
 
 export function choisirFormat(p: ProfilSportif, sport: Sport, famille: string, phase: Phase, historique: Seance[], exclus: string[] = [], dureeMax = p.duree_max_min): FormatSeance | null {
   const ok = (f: FormatSeance, avecPhase: boolean) =>
-    f.sport === sport && f.famille === famille && !exclus.includes(f.id) && permis(p, f, dureeMax) && (!avecPhase || f.phases.some((ph) => PHASES_CATALOGUE[phase].includes(ph)))
+    f.sport === sport && f.famille === famille && !f.terrain && !exclus.includes(f.id) && permis(p, f, dureeMax) && (!avecPhase || f.phases.some((ph) => PHASES_CATALOGUE[phase].includes(ph)))
   let liste = BANQUE.filter((f) => ok(f, true))
   if (!liste.length) liste = BANQUE.filter((f) => ok(f, false))
   if (phase === 'affutage') liste = [...liste].sort((a, b) => a.dureeMin - b.dureeMin).slice(0, 2)
@@ -313,7 +313,7 @@ export function genererSemaine(e: EntreesSemaine): SemaineProposee {
   const explications: string[] = []
   const ph = phaseDeLaSemaine(p, lundi, objectifs)
   const principal = objectifPrincipal(objectifs, lundi)
-  const pp = param(principal.type)
+  const pp = paramObjectif(principal)
   const actifs = disciplinesActives(p)
   const semaine: Semaine = { lundi, phase: ph.phase, nominal_min: 0, cible_min: 0, allegee: ph.allegee, validee: false }
   if (!actifs.length) return { semaine, seances: [], explications: ['Aucun sport programmable (course suspendue après une fracture de fatigue)'] }
@@ -350,7 +350,7 @@ export function genererSemaine(e: EntreesSemaine): SemaineProposee {
   for (const o of epreuvesDeLaSemaine(objectifs, lundi)) {
     if (o.date! < e.aPartirDe) continue
     const j = jourSemaine(o.date!)
-    const po = param(o.type)
+    const po = paramObjectif(o)
     const sport = po.sport && actifs.includes(po.sport) ? po.sport : sportP
     creneaux.push({ categorie: 'epreuve', sport, jour: j, fixe: true, duree: po.dureeEpreuve, titre: `🏁 ${libelleObjectif(o)}`, description: `Objectif ${o.priorite}${o.distance_km ? ` · ${o.distance_km} km` : ''}${o.denivele_m ? ` · D+ ${o.denivele_m} m` : ''}. Bonne course !` })
     sansIntense.add(j - 1)
@@ -482,6 +482,16 @@ export function genererSemaine(e: EntreesSemaine): SemaineProposee {
     // Un format qui ne se raccourcit pas assez laisse la place à une endurance simple
     if (seance.duree_min > duree + 10) seance = seanceDepuisFormat(formatObligatoire(sport === 'velo' ? (categorie === 'longue' ? 'velo-endurance-longue' : 'velo-endurance-courte') : 'course-footing'), date, categorie, duree, texte)
     seances.push(seance)
+  }
+
+  // VTT : une séance technique par semaine sur le terrain à la place d'une sortie facile (profils XCO, XCM, enduro, DH ;
+  // choix d'entraîneur) ; les intervalles restent là où la puissance est facile à tenir (home trainer, route)
+  if (pp.vtt && sportP === 'velo') {
+    const faciles = seances.map((x, k) => ({ x, k })).filter(({ x }) => x.categorie === 'facile' && x.sport === 'velo' && x.duree_min >= 30)
+    const plusLongue = faciles.sort((a, b) => b.x.duree_min - a.x.duree_min)[0]
+    const i = pp.technique && ph.phase !== 'affutage' && !ph.recuperation && plusLongue ? plusLongue.k : -1
+    if (i >= 0) seances[i] = seanceDepuisFormat(formatObligatoire('vtt-technique'), seances[i].date, 'facile', seances[i].duree_min)
+    explications.push(`VTT : intervalles sur home trainer ou route (puissance précise)${i >= 0 ? ', 1 séance technique sur le terrain' : ''}`)
   }
 
   // Muscu (module) : force lourde, 2 séances en préparation puis 1 d'entretien, placées loin des séances dures

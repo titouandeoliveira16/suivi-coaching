@@ -1,5 +1,5 @@
 import { Bouton, Champ, OuiNon } from '../../core/ui'
-import { GROUPES, OBJECTIFS, param, type TypeObjectif } from '../../moteur/objectifs'
+import { dureeEstimee, GROUPES, OBJECTIFS, param, relief, type TypeObjectif } from '../../moteur/objectifs'
 import type { Objectif } from '../../moteur/types'
 
 export const nouvelObjectif = (priorite: Objectif['priorite'] = 'A'): Objectif => ({
@@ -14,7 +14,7 @@ export const nouvelObjectif = (priorite: Objectif['priorite'] = 'A'): Objectif =
   altitude: false,
 })
 
-const AVEC_DENIVELE = ['trail-court', 'trail-long', 'velo-montagne', 'velo-cyclo', 'velo-gravel-ultra', 'velo-kom']
+const AVEC_DENIVELE = ['trail-court', 'trail-long', 'velo-montagne', 'velo-cyclo', 'velo-route', 'velo-gravel-ultra', 'velo-kom', 'velo-vtt-xc', 'vtt-xcc', 'vtt-xcm', 'vtt-enduro']
 const choix = 'w-full rounded-xl border border-bordure bg-surface-2 px-3 py-3 text-base text-texte'
 
 /** Liste des objectifs de la saison, avec priorité A (le grand objectif), B (important) ou C (préparation). */
@@ -70,6 +70,12 @@ export function ObjectifsEditeur({ objectifs, onChange }: { objectifs: Objectif[
                 <Champ etiquette="Distance (km)" inputMode="decimal" value={o.distance_km ?? ''} onChange={(e) => maj(o.id, { distance_km: e.target.value ? Number(e.target.value.replace(',', '.')) : null })} />
                 {AVEC_DENIVELE.includes(o.type) && <Champ etiquette="Dénivelé + (m)" inputMode="numeric" value={o.denivele_m ?? ''} onChange={(e) => maj(o.id, { denivele_m: e.target.value ? Number(e.target.value) : null })} />}
               </div>
+            )}
+            {dureeEstimee(o) && (
+              <p className="text-xs text-texte-3">
+                Durée estimée ≈ {Math.floor(dureeEstimee(o)! / 60)} h {String(dureeEstimee(o)! % 60).padStart(2, '0')}
+                {relief(o) === 'plat' ? ' · parcours plat : préparation au seuil et au tempo continus' : relief(o) === 'vallonne' ? ' · parcours vallonné : préparation en montées longues' : ''}. Ton programme s’y adapte.
+              </p>
             )}
             {pp.competitif && (
               <>

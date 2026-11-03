@@ -17,6 +17,10 @@ export type TypeObjectif =
   | 'velo-kom'
   | 'velo-gravel-ultra'
   | 'velo-vtt-xc'
+  | 'vtt-xcc'
+  | 'vtt-xcm'
+  | 'vtt-enduro'
+  | 'vtt-dh'
   | 'duathlon'
   | 'triathlon'
   | 'forme'
@@ -30,7 +34,7 @@ export type TypeObjectif =
 
 export interface ParamObjectif {
   libelle: string
-  groupe: 'Course à pied' | 'Vélo' | 'Enchaînement' | 'Sans compétition'
+  groupe: 'Course à pied' | 'Vélo' | 'VTT' | 'Enchaînement' | 'Sans compétition'
   /** Sport de l'épreuve (null : celui du profil). */
   sport: Sport | null
   /** Une date d'épreuve a du sens. */
@@ -57,6 +61,9 @@ export interface ParamObjectif {
   durabilite?: boolean
   /** Consigne ajoutée à la sortie longue en phase spécifique. */
   noteLongue?: string
+  /** VTT : une séance technique par semaine et des sorties sur le terrain (profils de discipline du catalogue). */
+  vtt?: boolean
+  technique?: boolean
   aide: string
 }
 
@@ -78,7 +85,13 @@ export const OBJECTIFS: Record<TypeObjectif, ParamObjectif> = {
   'velo-montagne': { libelle: 'Montagne / cols', groupe: V, sport: 'velo', competitif: true, dominante: 'seuil', autre: 'vo2max', specifique: ['velo-seuil-2x20', 'velo-sweet-spot-long', 'velo-force-basse-cadence'], longueMax: 300, affutageJours: 14, semainesMin: 10, dureeEpreuve: 300, durabilite: true, aide: 'Seuil long, sorties longues avec montées.' },
   'velo-kom': { libelle: 'Montée sèche / record en côte', groupe: V, sport: 'velo', competitif: true, dominante: 'vo2max', autre: 'seuil', specifique: ['velo-vo2-4x5', 'velo-vo2-4x8-seiler', 'velo-anaerobie-1min'], longueMax: 180, affutageJours: 7, semainesMin: 6, dureeEpreuve: 20, aide: 'VO2max et seuil pour un effort court à fond.' },
   'velo-gravel-ultra': { libelle: 'Gravel / longue distance / ultra', groupe: V, sport: 'velo', competitif: true, dominante: 'seuil', autre: 'vo2max', specifique: ['velo-sweet-spot-3x15', 'velo-tempo-2x20'], longueMax: 360, affutageJours: 14, semainesMin: 12, dureeEpreuve: 480, maxIntenses: 1, durabilite: true, aide: 'Endurance très majoritaire, très longues sorties.' },
-  'velo-vtt-xc': { libelle: 'VTT cross-country', groupe: V, sport: 'velo', competitif: true, dominante: 'vo2max', autre: 'anaerobie', specifique: ['velo-vo2-30-15-ronnestad', 'velo-vo2-40-20', 'velo-sit-30s'], longueMax: 180, affutageJours: 10, semainesMin: 8, dureeEpreuve: 100, aide: 'Efforts répétés à haute intensité.' },
+  // VTT : profils de discipline du catalogue de Coach (relus le 3/11/2026) ; intervalles à puissance précise sur home
+  // trainer ou route, technique et spécifique sur le VTT (choix d'entraîneur, aucune étude ne compare les deux)
+  'velo-vtt-xc': { libelle: 'Cross-country olympique (XCO)', groupe: 'VTT', sport: 'velo', competitif: true, dominante: 'vo2max', autre: 'anaerobie', specifique: ['vtt-hit-inoue', 'vtt-relances-xco', 'vtt-sit-series', 'vtt-depart-xco'], longueMax: 180, affutageJours: 10, semainesMin: 8, dureeEpreuve: 90, vtt: true, technique: true, aide: '≈ 1 h 30 à fond avec des centaines de relances : intervalles longs, sprints de 30 s, relances, technique (Næss 2021, Inoue 2016).' },
+  'vtt-xcc': { libelle: 'Short track (XCC)', groupe: 'VTT', sport: 'velo', competitif: true, dominante: 'vo2max', autre: 'seuil', specifique: ['vtt-xcc-variable', 'vtt-hit-inoue', 'vtt-relances-xco'], longueMax: 150, affutageJours: 7, semainesMin: 6, dureeEpreuve: 25, vtt: true, aide: '≈ 20 min très intenses, peu technique : seuil, VO2max et relances (Arriel 2023).' },
+  'vtt-xcm': { libelle: 'Marathon / courses par étapes (XCM)', groupe: 'VTT', sport: 'velo', competitif: true, dominante: 'seuil', autre: 'vo2max', specifique: ['vtt-marathon-cotes', 'velo-sweet-spot-3x15', 'vtt-hit-inoue'], longueMax: 300, affutageJours: 14, semainesMin: 10, dureeEpreuve: 240, durabilite: true, vtt: true, technique: true, noteLongue: 'Sur le VTT si possible, avec des montées ; mange 60-90 g de glucides par heure.', aide: '3 à 5 h proches de la route : volume, seuil, durabilité, nutrition ; garde 1 sortie VTT par semaine.' },
+  'vtt-enduro': { libelle: 'Enduro', groupe: 'VTT', sport: 'velo', competitif: true, dominante: 'vo2max', autre: 'anaerobie', specifique: ['vtt-enduro-speciales', 'vtt-dh-sprints', 'vtt-sit-series'], longueMax: 240, affutageJours: 7, semainesMin: 8, dureeEpreuve: 300, vtt: true, technique: true, aide: 'Spéciales de quelques minutes très intenses : base aérobie, relances, haut du corps, et surtout la technique en descente.' },
+  'vtt-dh': { libelle: 'Descente (DH)', groupe: 'VTT', sport: 'velo', competitif: true, dominante: 'sprint', autre: 'anaerobie', specifique: ['vtt-dh-sprints', 'vtt-technique'], longueMax: 120, affutageJours: 7, semainesMin: 6, dureeEpreuve: 10, maxIntenses: 1, vtt: true, technique: true, aide: 'Quelques minutes : la technique prime ; physique = force, puissance courte, haut du corps (module Muscu conseillé).' },
   duathlon: { libelle: 'Duathlon', groupe: 'Enchaînement', sport: null, competitif: true, dominante: 'vo2max', autre: 'seuil', specifique: ['duathlon-enchainement', 'course-allure-10km', 'velo-seuil-4x10'], longueMax: 150, affutageJours: 10, semainesMin: 10, dureeEpreuve: 120, aide: 'Course et vélo, enchaînements vélo → course.' },
   triathlon: { libelle: 'Triathlon (vélo + course ici)', groupe: 'Enchaînement', sport: null, competitif: true, dominante: 'seuil', autre: 'vo2max', specifique: ['duathlon-enchainement', 'course-tempo-continu', 'velo-sweet-spot-3x15'], longueMax: 180, affutageJours: 14, semainesMin: 12, dureeEpreuve: 180, aide: 'Vélo, course et enchaînements ; la natation est à programmer à part.' },
   forme: { libelle: 'Être en forme / santé', groupe: 'Sans compétition', sport: null, competitif: false, dominante: 'vo2max', autre: 'tempo', specifique: [], longueMax: 120, affutageJours: 0, semainesMin: 0, dureeEpreuve: 0, maxIntenses: 1, aide: '150 à 300 min par semaine et du renfo 2 fois (OMS 2020).' },
@@ -91,10 +104,55 @@ export const OBJECTIFS: Record<TypeObjectif, ParamObjectif> = {
   'entretien-muscu': { libelle: 'Garder la forme pendant un bloc de musculation', groupe: 'Sans compétition', sport: null, competitif: false, dominante: 'vo2max', autre: 'tempo', specifique: [], longueMax: 90, affutageJours: 0, semainesMin: 0, dureeEpreuve: 0, maxIntenses: 1, sansProgression: true, aide: 'Volume stable et une seule séance intense pour ne pas gêner la muscu.' },
 }
 
-export const GROUPES = ['Course à pied', 'Vélo', 'Enchaînement', 'Sans compétition'] as const
+export const GROUPES = ['Course à pied', 'Vélo', 'VTT', 'Enchaînement', 'Sans compétition'] as const
 
 export function param(type: string): ParamObjectif {
   return OBJECTIFS[type as TypeObjectif] ?? OBJECTIFS.forme
+}
+
+const arrondi5 = (n: number) => Math.round(n / 5) * 5
+
+/**
+ * Durée estimée d'une épreuve à vélo d'après sa distance et son dénivelé (choix d'entraîneur) : 28 km/h sur route,
+ * 18 km/h en VTT sur le plat, plus 1 min par 15 m de montée. Null sans distance.
+ */
+export function dureeEstimee(o: Pick<Objectif, 'type' | 'distance_km' | 'denivele_m'>): number | null {
+  const pp = param(o.type)
+  if (!o.distance_km || pp.sport !== 'velo') return null
+  return arrondi5((o.distance_km / (pp.vtt ? 18 : 28)) * 60 + (o.denivele_m ?? 0) / 15)
+}
+
+/** Relief d'une épreuve à vélo : moins de 5 m de D+ par km = plat, 12 ou plus = vallonné (choix d'entraîneur). */
+export function relief(o: Pick<Objectif, 'distance_km' | 'denivele_m'>): 'plat' | 'vallonne' | null {
+  if (!o.distance_km || o.denivele_m == null) return null
+  const parKm = o.denivele_m / o.distance_km
+  return parKm < 5 ? 'plat' : parKm >= 12 ? 'vallonne' : null
+}
+
+/**
+ * Paramètres adaptés à l'épreuve : une même famille d'objectif ne se prépare pas pareil sur 100 km de plat et sur
+ * 35 km de VTT avec du dénivelé. La sortie longue suit la durée de l'épreuve (jusqu'à 110 %, entre 2 h et 6 h), les
+ * séances clés suivent le relief : seuil et tempo continus sur le plat, montées longues quand ça grimpe.
+ */
+export function paramObjectif(o: Objectif): ParamObjectif {
+  const pp = param(o.type)
+  if (pp.sport !== 'velo' || !pp.competitif) return pp
+  const r = { ...pp, specifique: [...pp.specifique] }
+  const duree = dureeEstimee(o)
+  if (duree) {
+    r.dureeEpreuve = duree
+    if (duree >= 120) r.longueMax = Math.min(360, Math.max(120, arrondi5(duree * 1.1)))
+  }
+  const rel = relief(o)
+  const ajouter = (ids: string[]) => (r.specifique = [...ids, ...r.specifique.filter((id) => !ids.includes(id))])
+  if (rel === 'plat' && (duree ?? 0) >= 90) {
+    ajouter(['velo-tempo-2x20', 'velo-seuil-2x20', 'velo-sweet-spot-long'])
+    r.noteLongue = 'Sur le plat, à allure régulière (en groupe si possible) ; mange 30-60 g de glucides par heure dès la 30e minute.'
+  } else if (rel === 'vallonne') {
+    ajouter(pp.vtt ? ['vtt-marathon-cotes', 'vtt-hit-inoue'] : ['velo-seuil-2x20', 'velo-force-basse-cadence'])
+    r.noteLongue = `Avec des montées de 8 à 15 min à 85-95 % de la CP : ${o.denivele_m} m de D+ le jour J.`
+  }
+  return r
 }
 
 const PAR_DEFAUT: Objectif = { id: '', type: 'progresser', nom: '', date: null, priorite: 'A', distance_km: null, denivele_m: null, chaleur: false, altitude: false }

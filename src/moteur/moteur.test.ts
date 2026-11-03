@@ -6,7 +6,7 @@ import { ajouterJours, jourSemaine } from './dates'
 import { feuDuJour, seuilRessenti } from './feu'
 import { cible } from './intensite'
 import { coefficientsAffutage, phaseDeLaSemaine } from './phase'
-import { objectifPrincipal, param, pointsAttention } from './objectifs'
+import { dureeEstimee, objectifPrincipal, param, paramObjectif, pointsAttention } from './objectifs'
 import { intensiteAutorisee, niveau } from './profil'
 import { echangePossible } from './echange'
 import { chargesMuscu } from './muscu'
@@ -551,5 +551,27 @@ describe('module muscu entre deux semaines', () => {
     const avant = [seance({ date: '2026-11-01', sport: 'renfo', categorie: 'renfo', format_id: 'muscu-velo-6rm', statut: 'validee' })]
     const r2 = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: avant, matins: [], tests: [], modules: [{ module: 'muscu', debut: LUNDI }] })
     expect(r2.seances.filter((s) => s.format_id?.startsWith('muscu-')).every((s) => s.date !== LUNDI)).toBe(true)
+  })
+})
+
+describe('préparation selon la discipline', () => {
+  it('100 km de route sur le plat et 35 km de VTT avec 1000 m de D+ ne se préparent pas pareil', () => {
+    const route = paramObjectif(obj('velo-cyclo', '2027-05-16', { distance_km: 100, denivele_m: 300 }))
+    const vtt = paramObjectif(obj('vtt-xcm', '2027-05-16', { distance_km: 35, denivele_m: 1000 }))
+    expect(dureeEstimee({ type: 'velo-cyclo', distance_km: 100, denivele_m: 300 })).toBe(235)
+    expect(dureeEstimee({ type: 'vtt-xcm', distance_km: 35, denivele_m: 1000 })).toBe(185)
+    expect(route.specifique.slice(0, 3)).toEqual(['velo-tempo-2x20', 'velo-seuil-2x20', 'velo-sweet-spot-long'])
+    expect(route.noteLongue).toContain('plat')
+    expect(vtt.specifique[0]).toBe('vtt-marathon-cotes')
+    expect(vtt.noteLongue).toContain('1000 m de D+')
+    expect(route.longueMax).toBe(260)
+    expect(vtt.longueMax).toBe(205)
+  })
+  it('VTT : une séance technique sur le terrain, jamais tirée au hasard pour un routier', () => {
+    const p = profil({ cp: 260, minutes_jour: [90, 90, 90, 0, 90, 210, 180], jour_longue: 5 })
+    const xco = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: [], matins: [], tests: [], objectifs: [obj('velo-vtt-xc', null)] })
+    expect(xco.seances.filter((s) => s.format_id === 'vtt-technique')).toHaveLength(1)
+    const route = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: [], matins: [], tests: [], objectifs: [obj('velo-cyclo', null)] })
+    expect(route.seances.some((s) => s.format_id?.startsWith('vtt-'))).toBe(false)
   })
 })

@@ -113,6 +113,10 @@ export interface FormatSeance {
   conseils: string[]
   preuve: { niveau: string; references: string[] }
   exercices?: Exercice[]
+  /** Séance à faire en VTT (sur le terrain), sinon route ou home trainer. */
+  terrain?: 'vtt'
+  /** Disciplines VTT concernées (xco, xcc, xcm, enduro, dh). */
+  disciplines?: string[]
 }
 
 /** Séance telle que stockée (proposée, validée, faite…). */

@@ -1,9 +1,8 @@
 {
- "source": "Catalogue scientifique de Coach (version 2)",
+ "source": "Catalogue scientifique de Coach (version 3, 2026-11-03)",
  "seances": [
   {
    "id": "velo-recuperation-active",
-   "sport": "velo",
    "famille": "recuperation",
    "nom": "Récupération active",
    "objectif": "Récupérer sans ajouter de fatigue",
@@ -13,6 +12,7 @@
    "rpe": "1-2",
    "niveau": "tous",
    "dureeMin": 35,
+   "sport": "velo",
    "deroule": [
     {
      "type": "effort",
@@ -36,11 +36,13 @@
     "references": [
      "Van Hooren B 2018"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-endurance-courte",
-   "sport": "velo",
    "famille": "endurance",
    "nom": "Endurance fondamentale courte",
    "objectif": "Volume aérobie, capillarisation, mitochondries, économie",
@@ -50,6 +52,7 @@
    "rpe": "2-3",
    "niveau": "tous",
    "dureeMin": 65,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -92,11 +95,17 @@
      "Rosenblat MA 2025",
      "Persinger R 2004"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc",
+    "xcm",
+    "enduro"
+   ]
   },
   {
    "id": "velo-endurance-longue",
-   "sport": "velo",
    "famille": "endurance",
    "nom": "Sortie longue",
    "objectif": "Endurance de fond, utilisation des graisses, résistance à la fatigue",
@@ -106,6 +115,7 @@
    "rpe": "2-3",
    "niveau": "intermédiaire",
    "dureeMin": 175,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -146,13 +156,19 @@
     "references": [
      "Seiler S 2010",
      "van Erp T 2021",
-     "Maunder E 2021"
+     "Maunder E 2021",
+     "de Oliveira NG 2024"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcm",
+    "enduro"
+   ]
   },
   {
    "id": "velo-endurance-sprints",
-   "sport": "velo",
    "famille": "endurance",
    "nom": "Endurance + sprints",
    "objectif": "Garder la puissance de sprint pendant les blocs d'endurance",
@@ -162,6 +178,7 @@
    "rpe": "3 (sprints 9)",
    "niveau": "intermédiaire",
    "dureeMin": 121,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -222,11 +239,16 @@
     "references": [
      "Almquist NW 2020"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc",
+    "enduro"
+   ]
   },
   {
    "id": "velo-durabilite-effort-final",
-   "sport": "velo",
    "famille": "durabilite",
    "nom": "Sortie longue + effort final",
    "objectif": "Durabilité : rester fort quand on est déjà fatigué",
@@ -236,6 +258,7 @@
    "rpe": "3 puis 7",
    "niveau": "confirmé",
    "dureeMin": 194,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -263,7 +286,8 @@
        "intensite": [
         88,
         95
-       ]
+       ],
+       "cadence": "85-95"
       },
       {
        "type": "recup",
@@ -298,13 +322,19 @@
      "van Erp T 2021",
      "Spragg J 2024",
      "Rønnestad BR 2011",
-     "Maunder E 2021"
+     "Maunder E 2021",
+     "Jones AM 2025",
+     "Matomäki P 2023"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xcm",
+    "xco"
+   ]
   },
   {
    "id": "velo-tempo-2x20",
-   "sport": "velo",
    "famille": "tempo",
    "nom": "Tempo 2 × 20 min",
    "objectif": "Endurance aérobie haute, préparation au sweet spot",
@@ -314,6 +344,7 @@
    "rpe": "5",
    "niveau": "tous",
    "dureeMin": 75,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -369,11 +400,14 @@
      "Rosenblat MA 2019",
      "Allen H 2019"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xcm"
+   ]
   },
   {
    "id": "velo-sweet-spot-3x15",
-   "sport": "velo",
    "famille": "tempo",
    "nom": "Sweet spot 3 × 15 min",
    "objectif": "Beaucoup de travail proche du seuil pour une fatigue modérée",
@@ -383,6 +417,7 @@
    "rpe": "6",
    "niveau": "intermédiaire",
    "dureeMin": 85,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -437,11 +472,15 @@
      "Allen H 2019",
      "Neal CM 2013"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xcm",
+    "xco"
+   ]
   },
   {
    "id": "velo-sweet-spot-long",
-   "sport": "velo",
    "famille": "tempo",
    "nom": "Sweet spot long 2 × 30 min",
    "objectif": "Endurance au seuil, préparation aux longues ascensions",
@@ -451,6 +490,7 @@
    "rpe": "6-7",
    "niveau": "confirmé",
    "dureeMin": 105,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -470,7 +510,8 @@
        "intensite": [
         88,
         92
-       ]
+       ],
+       "cadence": "85-95"
       },
       {
        "type": "recup",
@@ -503,11 +544,14 @@
     "references": [
      "Allen H 2019"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xcm"
+   ]
   },
   {
    "id": "velo-seuil-2x20",
-   "sport": "velo",
    "famille": "seuil",
    "nom": "Seuil 2 × 20 min",
    "objectif": "Puissance au seuil (CP, FTP)",
@@ -517,6 +561,7 @@
    "rpe": "7",
    "niveau": "intermédiaire",
    "dureeMin": 81,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -571,11 +616,15 @@
     "references": [
      "Allen H 2019"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcm"
+   ]
   },
   {
    "id": "velo-seuil-4x10",
-   "sport": "velo",
    "famille": "seuil",
    "nom": "Seuil 4 × 10 min",
    "objectif": "Puissance au seuil, version fractionnée",
@@ -585,6 +634,7 @@
    "rpe": "7",
    "niveau": "intermédiaire",
    "dureeMin": 81,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -604,7 +654,8 @@
        "intensite": [
         95,
         102
-       ]
+       ],
+       "cadence": "85-95"
       },
       {
        "type": "recup",
@@ -637,11 +688,16 @@
     "references": [
      "Allen H 2019"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc",
+    "xcm"
+   ]
   },
   {
    "id": "velo-seuil-4x16",
-   "sport": "velo",
    "famille": "seuil",
    "nom": "4 × 16 min (Seiler, Sylta)",
    "objectif": "Endurance au seuil, gros volume d'intensité modérée",
@@ -651,6 +707,7 @@
    "rpe": "7",
    "niveau": "confirmé",
    "dureeMin": 97,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -671,7 +728,8 @@
         90,
         95
        ],
-       "note": "effort maximal tenable sur les 4 répétitions"
+       "note": "effort maximal tenable sur les 4 répétitions",
+       "cadence": "85-95"
       },
       {
        "type": "recup",
@@ -706,11 +764,14 @@
      "Seiler S 2013",
      "Sylta Ø 2016"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xcm"
+   ]
   },
   {
    "id": "velo-over-unders",
-   "sport": "velo",
    "famille": "seuil",
    "nom": "Over-unders",
    "objectif": "Tolérance aux variations autour du seuil (relances, attaques en côte)",
@@ -720,6 +781,7 @@
    "rpe": "8",
    "niveau": "confirmé",
    "dureeMin": 76,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -743,7 +805,8 @@
          "intensite": [
           93,
           97
-         ]
+         ],
+         "cadence": "85-95"
         },
         {
          "type": "effort",
@@ -751,7 +814,8 @@
          "intensite": [
           105,
           110
-         ]
+         ],
+         "cadence": "90-105"
         }
        ]
       },
@@ -786,11 +850,15 @@
     "references": [
      "Allen H 2019"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc"
+   ]
   },
   {
    "id": "velo-seuil-continu",
-   "sport": "velo",
    "famille": "seuil",
    "nom": "Seuil continu (simulation de contre-la-montre)",
    "objectif": "Tenue d'un effort long et régulier",
@@ -800,6 +868,7 @@
    "rpe": "7-8",
    "niveau": "confirmé",
    "dureeMin": 60,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -815,7 +884,8 @@
      "intensite": [
       90,
       95
-     ]
+     ],
+     "cadence": "85-95"
     },
     {
      "type": "retour",
@@ -837,11 +907,14 @@
     "references": [
      "Allen H 2019"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xcm"
+   ]
   },
   {
    "id": "velo-vo2-4x8-seiler",
-   "sport": "velo",
    "famille": "vo2max",
    "nom": "4 × 8 min (Seiler)",
    "objectif": "VO2max et seuil : le meilleur compromis intensité-durée de l'étude",
@@ -851,6 +924,7 @@
    "rpe": "8",
    "niveau": "intermédiaire",
    "dureeMin": 65,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -870,7 +944,8 @@
        "intensite": [
         100,
         105
-       ]
+       ],
+       "cadence": "90-105"
       },
       {
        "type": "recup",
@@ -906,11 +981,13 @@
      "Seiler S 2013",
      "Sylta Ø 2016"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-vo2-30-15-ronnestad",
-   "sport": "velo",
    "famille": "vo2max",
    "nom": "30/15 (Rønnestad)",
    "objectif": "VO2max et puissance au seuil",
@@ -920,6 +997,7 @@
    "rpe": "8-9",
    "niveau": "intermédiaire",
    "dureeMin": 63,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -989,11 +1067,15 @@
      "Rønnestad BR 2015",
      "Rønnestad BR 2020"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc"
+   ]
   },
   {
    "id": "velo-vo2-15-15",
-   "sport": "velo",
    "famille": "vo2max",
    "nom": "15/15",
    "objectif": "VO2max avec très peu de fatigue par répétition",
@@ -1003,6 +1085,7 @@
    "rpe": "8",
    "niveau": "intermédiaire",
    "dureeMin": 49,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1026,7 +1109,8 @@
          "intensite": [
           130,
           140
-         ]
+         ],
+         "cadence": "90-105"
         },
         {
          "type": "recup",
@@ -1069,11 +1153,15 @@
     "references": [
      "Buchheit M 2013"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc"
+   ]
   },
   {
    "id": "velo-vo2-20-40",
-   "sport": "velo",
    "famille": "vo2max",
    "nom": "20/40",
    "objectif": "VO2max, efforts courts et intenses avec récupération longue",
@@ -1083,6 +1171,7 @@
    "rpe": "8",
    "niveau": "intermédiaire",
    "dureeMin": 58,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1106,7 +1195,8 @@
          "intensite": [
           135,
           145
-         ]
+         ],
+         "cadence": "90-105"
         },
         {
          "type": "recup",
@@ -1150,11 +1240,13 @@
      "Rønnestad BR 2016",
      "Buchheit M 2013"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-vo2-4x5",
-   "sport": "velo",
    "famille": "vo2max",
    "nom": "VO2 longs 4 × 5 min",
    "objectif": "Temps passé près de la VO2max",
@@ -1164,6 +1256,7 @@
    "rpe": "8-9",
    "niveau": "intermédiaire",
    "dureeMin": 55,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1183,7 +1276,8 @@
        "intensite": [
         106,
         115
-       ]
+       ],
+       "cadence": "90-105"
       },
       {
        "type": "recup",
@@ -1218,11 +1312,156 @@
      "Buchheit M 2013",
      "Rønnestad BR 2015"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc",
+    "xcm"
+   ]
+  },
+  {
+   "id": "velo-vo2-3min",
+   "famille": "vo2max",
+   "nom": "Intervalles de 3 min",
+   "objectif": "VO2max, intervalles longs courts",
+   "resume": "4 à 7 × 3 min à ~115 % de la CP, récupération 3 min.",
+   "unite": "%CP",
+   "zone": "Z5",
+   "rpe": "8-9",
+   "niveau": "intermédiaire",
+   "dureeMin": 60,
+   "sport": "velo",
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 5,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 180,
+       "intensite": [
+        112,
+        118
+       ],
+       "cadence": "90-105"
+      },
+      {
+       "type": "recup",
+       "duree": 180,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction"
+   ],
+   "conseils": [
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Buchheit M 2013"
+    ]
+   },
+   "disciplines": [
+    "route"
+   ]
+  },
+  {
+   "id": "velo-vo2-6min",
+   "famille": "vo2max",
+   "nom": "Intervalles de 6 min",
+   "objectif": "VO2max et tenue d'un effort long au-dessus du seuil",
+   "resume": "2 à 5 × 6 min à ~106 % de la CP, récupération 2 min 30.",
+   "unite": "%CP",
+   "zone": "Z5",
+   "rpe": "8",
+   "niveau": "intermédiaire",
+   "dureeMin": 64,
+   "sport": "velo",
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 4,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 360,
+       "intensite": [
+        104,
+        108
+       ],
+       "cadence": "90-105"
+      },
+      {
+       "type": "recup",
+       "duree": 150,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Buchheit M 2013",
+     "Seiler S 2013"
+    ]
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-vo2-8x4-stepto",
-   "sport": "velo",
    "famille": "vo2max",
    "nom": "8 × 4 min (Stepto)",
    "objectif": "Puissance aérobie, contre-la-montre",
@@ -1232,6 +1471,7 @@
    "rpe": "8",
    "niveau": "confirmé",
    "dureeMin": 69,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1251,7 +1491,8 @@
        "intensite": [
         105,
         110
-       ]
+       ],
+       "cadence": "90-105"
       },
       {
        "type": "recup",
@@ -1283,11 +1524,13 @@
     "references": [
      "Stepto NK 1999"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-vo2-puissance-variee",
-   "sport": "velo",
    "famille": "vo2max",
    "nom": "Intervalles à puissance variée (Bossi)",
    "objectif": "Passer plus de temps près de la VO2max à travail égal",
@@ -1297,6 +1540,7 @@
    "rpe": "8-9",
    "niveau": "confirmé",
    "dureeMin": 70,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1320,7 +1564,8 @@
          "intensite": [
           125,
           130
-         ]
+         ],
+         "cadence": "90-105"
         },
         {
          "type": "effort",
@@ -1328,7 +1573,8 @@
          "intensite": [
           95,
           100
-         ]
+         ],
+         "cadence": "85-95"
         }
        ]
       },
@@ -1364,11 +1610,15 @@
     "references": [
      "Bossi AH 2020"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc"
+   ]
   },
   {
    "id": "velo-vo2-4x4-helgerud",
-   "sport": "velo",
    "famille": "vo2max",
    "nom": "4 × 4 min (Helgerud)",
    "objectif": "VO2max",
@@ -1378,6 +1628,7 @@
    "rpe": "8-9",
    "niveau": "tous",
    "dureeMin": 43,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1398,7 +1649,8 @@
         108,
         118
        ],
-       "note": "cible réelle : 90-95 % de la FC max"
+       "note": "cible réelle : 90-95 % de la FC max",
+       "cadence": "90-105"
       },
       {
        "type": "recup",
@@ -1432,11 +1684,13 @@
     "references": [
      "Helgerud J 2007"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-vo2-30-30",
-   "sport": "velo",
    "famille": "vo2max",
    "nom": "30/30",
    "objectif": "VO2max avec moins de charge que les intervalles longs",
@@ -1446,6 +1700,7 @@
    "rpe": "8",
    "niveau": "tous",
    "dureeMin": 59,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1469,7 +1724,8 @@
          "intensite": [
           120,
           130
-         ]
+         ],
+         "cadence": "90-105"
         },
         {
          "type": "recup",
@@ -1513,11 +1769,15 @@
      "Billat VL 2000",
      "Buchheit M 2013"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc"
+   ]
   },
   {
    "id": "velo-vo2-40-20",
-   "sport": "velo",
    "famille": "vo2max",
    "nom": "40/20",
    "objectif": "VO2max, version plus dense que le 30/30",
@@ -1527,6 +1787,7 @@
    "rpe": "9",
    "niveau": "confirmé",
    "dureeMin": 61,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1550,7 +1811,8 @@
          "intensite": [
           115,
           120
-         ]
+         ],
+         "cadence": "90-105"
         },
         {
          "type": "recup",
@@ -1592,11 +1854,13 @@
     "references": [
      "Buchheit M 2013"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-anaerobie-1min",
-   "sport": "velo",
    "famille": "anaerobie",
    "nom": "Capacité anaérobie 1 min",
    "objectif": "Capacité anaérobie, tolérance à l'acidité",
@@ -1606,6 +1870,7 @@
    "rpe": "9",
    "niveau": "confirmé",
    "dureeMin": 62,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1625,7 +1890,8 @@
        "intensite": [
         130,
         150
-       ]
+       ],
+       "cadence": "90-105"
       },
       {
        "type": "recup",
@@ -1658,11 +1924,13 @@
      "Allen H 2019",
      "Stepto NK 1999"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-sit-30s",
-   "sport": "velo",
    "famille": "anaerobie",
    "nom": "Sprints de 30 s (type Wingate)",
    "objectif": "Adaptations aérobies et anaérobies en très peu de temps",
@@ -1672,6 +1940,7 @@
    "rpe": "10",
    "niveau": "confirmé",
    "dureeMin": 48,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1688,7 +1957,8 @@
       {
        "type": "effort",
        "duree": 30,
-       "max": true
+       "max": true,
+       "cadence": "100-120"
       },
       {
        "type": "recup",
@@ -1721,11 +1991,15 @@
     "references": [
      "Gibala MJ 2006"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc"
+   ]
   },
   {
    "id": "velo-sit-supramax-laursen",
-   "sport": "velo",
    "famille": "anaerobie",
    "nom": "12 × 30 s supramaximaux (Laursen)",
    "objectif": "Contre-la-montre chez des cyclistes très entraînés",
@@ -1735,6 +2009,7 @@
    "rpe": "10",
    "niveau": "confirmé",
    "dureeMin": 90,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1754,7 +2029,8 @@
        "intensite": [
         210,
         230
-       ]
+       ],
+       "cadence": "90-105"
       },
       {
        "type": "recup",
@@ -1786,11 +2062,13 @@
     "references": [
      "Laursen PB 2002"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-sit-10s",
-   "sport": "velo",
    "famille": "anaerobie",
    "nom": "Sprints de 10 s (SIT court)",
    "objectif": "VO2max et performance avec un minimum de temps",
@@ -1800,6 +2078,7 @@
    "rpe": "9",
    "niveau": "tous",
    "dureeMin": 46,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1816,7 +2095,8 @@
       {
        "type": "effort",
        "duree": 10,
-       "max": true
+       "max": true,
+       "cadence": "100-120"
       },
       {
        "type": "recup",
@@ -1849,11 +2129,13 @@
      "Hazell TJ 2010",
      "Vollaard NBJ 2017"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-tabata",
-   "sport": "velo",
    "famille": "anaerobie",
    "nom": "Tabata 20/10",
    "objectif": "VO2max et capacité anaérobie",
@@ -1863,6 +2145,7 @@
    "rpe": "10",
    "niveau": "confirmé",
    "dureeMin": 29,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1880,7 +2163,8 @@
        "type": "effort",
        "duree": 20,
        "max": true,
-       "note": "≈ 170 % de la puissance à VO2max"
+       "note": "≈ 170 % de la puissance à VO2max",
+       "cadence": "100-120"
       },
       {
        "type": "recup",
@@ -1912,11 +2196,13 @@
     "references": [
      "Tabata I 1996"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-sprints-courts",
-   "sport": "velo",
    "famille": "sprint",
    "nom": "Sprints courts",
    "objectif": "Puissance maximale, recrutement neuromusculaire",
@@ -1926,6 +2212,7 @@
    "rpe": "9",
    "niveau": "tous",
    "dureeMin": 63,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -1977,11 +2264,17 @@
      "Allen H 2019",
      "Hazell TJ 2010"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc",
+    "enduro",
+    "dh"
+   ]
   },
   {
    "id": "velo-sprints-force-paton",
-   "sport": "velo",
    "famille": "sprint",
    "nom": "Sprints en force (Paton & Hopkins)",
    "objectif": "Puissance et contre-la-montre court, en période de compétition",
@@ -1991,6 +2284,7 @@
    "rpe": "9",
    "niveau": "confirmé",
    "dureeMin": 57,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -2055,11 +2349,13 @@
     "references": [
      "Paton CD 2005"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-departs-arretes",
-   "sport": "velo",
    "famille": "sprint",
    "nom": "Départs arrêtés en gros braquet",
    "objectif": "Force explosive sur le vélo",
@@ -2069,6 +2365,7 @@
    "rpe": "9",
    "niveau": "intermédiaire",
    "dureeMin": 55,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -2119,11 +2416,16 @@
     "references": [
      "Allen H 2019"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "enduro",
+    "dh"
+   ]
   },
   {
    "id": "velo-velocite",
-   "sport": "velo",
    "famille": "sprint",
    "nom": "Vélocité (spin-ups)",
    "objectif": "Technique de pédalage, souplesse à haute cadence",
@@ -2133,6 +2435,7 @@
    "rpe": "3-4",
    "niveau": "tous",
    "dureeMin": 36,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -2185,11 +2488,13 @@
     "references": [
      "Friel J 2018"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-force-basse-cadence",
-   "sport": "velo",
    "famille": "force",
    "nom": "Basse cadence (force sur le vélo)",
    "objectif": "Force-endurance, recrutement des fibres",
@@ -2199,6 +2504,7 @@
    "rpe": "7",
    "niveau": "intermédiaire",
    "dureeMin": 76,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -2252,13 +2558,16 @@
     "niveau": "mitigé",
     "references": [
      "Nimmerichter A 2012",
-     "Kristoffersen M 2014"
+     "Kristoffersen M 2014",
+     "Hansen EA 2017"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-test-cp-3-7-12",
-   "sport": "velo",
    "famille": "test",
    "nom": "Test CP 3/7/12 min",
    "objectif": "Mesurer ta CP (puissance critique) ; W′ seulement approximatif",
@@ -2268,6 +2577,7 @@
    "rpe": "10",
    "niveau": "intermédiaire",
    "dureeMin": 112,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -2282,7 +2592,8 @@
      "type": "effort",
      "duree": 720,
      "max": true,
-     "note": "12 min à fond, réparti"
+     "note": "12 min à fond, réparti",
+     "cadence": "100-120"
     },
     {
      "type": "recup",
@@ -2296,7 +2607,8 @@
      "type": "effort",
      "duree": 420,
      "max": true,
-     "note": "7 min à fond"
+     "note": "7 min à fond",
+     "cadence": "100-120"
     },
     {
      "type": "recup",
@@ -2310,7 +2622,8 @@
      "type": "effort",
      "duree": 180,
      "max": true,
-     "note": "3 min à fond"
+     "note": "3 min à fond",
+     "cadence": "100-120"
     },
     {
      "type": "retour",
@@ -2332,13 +2645,20 @@
     "niveau": "prouvé",
     "references": [
      "Karsten B 2015",
-     "Karsten B 2017"
+     "Karsten B 2017",
+     "Ventura TP 2023"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc",
+    "xcm",
+    "enduro"
+   ]
   },
   {
    "id": "velo-test-cp-2-points",
-   "sport": "velo",
    "famille": "test",
    "nom": "Test CP 2 points (3 + 12 min)",
    "objectif": "CP en moins de temps",
@@ -2348,6 +2668,7 @@
    "rpe": "10",
    "niveau": "intermédiaire",
    "dureeMin": 75,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -2360,7 +2681,8 @@
     {
      "type": "effort",
      "duree": 180,
-     "max": true
+     "max": true,
+     "cadence": "100-120"
     },
     {
      "type": "recup",
@@ -2373,7 +2695,8 @@
     {
      "type": "effort",
      "duree": 720,
-     "max": true
+     "max": true,
+     "cadence": "100-120"
     },
     {
      "type": "retour",
@@ -2393,13 +2716,16 @@
    "preuve": {
     "niveau": "plausible",
     "references": [
-     "Simpson LP 2017"
+     "Simpson LP 2017",
+     "Ventura TP 2023"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-test-ftp-20",
-   "sport": "velo",
    "famille": "test",
    "nom": "Test FTP 20 min",
    "objectif": "Estimer le seuil (FTP ≈ 95 % de la puissance sur 20 min)",
@@ -2409,6 +2735,7 @@
    "rpe": "10",
    "niveau": "tous",
    "dureeMin": 65,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -2422,7 +2749,8 @@
      "type": "effort",
      "duree": 300,
      "max": true,
-     "note": "5 min à fond pour vider la réserve anaérobie"
+     "note": "5 min à fond pour vider la réserve anaérobie",
+     "cadence": "100-120"
     },
     {
      "type": "recup",
@@ -2435,7 +2763,8 @@
     {
      "type": "effort",
      "duree": 1200,
-     "max": true
+     "max": true,
+     "cadence": "100-120"
     },
     {
      "type": "retour",
@@ -2458,13 +2787,16 @@
     "references": [
      "Borszcz FK 2018",
      "Inglis EC 2020",
-     "Karsten B 2021"
+     "Karsten B 2021",
+     "Wong S 2023"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-test-rampe",
-   "sport": "velo",
    "famille": "test",
    "nom": "Test rampe (PMA)",
    "objectif": "Puissance maximale aérobie (PMA)",
@@ -2474,6 +2806,7 @@
    "rpe": "10",
    "niveau": "tous",
    "dureeMin": 32,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -2487,7 +2820,8 @@
      "type": "effort",
      "duree": 720,
      "max": true,
-     "note": "+20 à 25 W chaque minute jusqu'à l'arrêt"
+     "note": "+20 à 25 W chaque minute jusqu'à l'arrêt",
+     "cadence": "100-120"
     },
     {
      "type": "retour",
@@ -2511,11 +2845,13 @@
     "references": [
      "Allen H 2019"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-test-5min",
-   "sport": "velo",
    "famille": "test",
    "nom": "Test 5 min",
    "objectif": "Estimer la VO2max (et suivre ta puissance aérobie)",
@@ -2525,6 +2861,7 @@
    "rpe": "10",
    "niveau": "tous",
    "dureeMin": 35,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -2537,7 +2874,8 @@
     {
      "type": "effort",
      "duree": 300,
-     "max": true
+     "max": true,
+     "cadence": "100-120"
     },
     {
      "type": "retour",
@@ -2559,11 +2897,13 @@
     "references": [
      "Sitko S 2022"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-test-durabilite",
-   "sport": "velo",
    "famille": "test",
    "nom": "Test de durabilité",
    "objectif": "Mesurer combien tu perds quand tu es fatigué",
@@ -2573,6 +2913,7 @@
    "rpe": "10",
    "niveau": "confirmé",
    "dureeMin": 180,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -2594,7 +2935,8 @@
      "type": "effort",
      "duree": 300,
      "max": true,
-     "note": "5 min à fond fatigué"
+     "note": "5 min à fond fatigué",
+     "cadence": "100-120"
     },
     {
      "type": "retour",
@@ -2617,11 +2959,13 @@
      "Spragg J 2024",
      "van Erp T 2021"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
   },
   {
    "id": "velo-test-sprint",
-   "sport": "velo",
    "famille": "test",
    "nom": "Test de sprint",
    "objectif": "Puissance maximale (1-10 s)",
@@ -2631,6 +2975,7 @@
    "rpe": "10",
    "niveau": "tous",
    "dureeMin": 46,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -2647,7 +2992,8 @@
       {
        "type": "effort",
        "duree": 10,
-       "max": true
+       "max": true,
+       "cadence": "100-120"
       },
       {
        "type": "recup",
@@ -2679,11 +3025,17 @@
     "references": [
      "Allen H 2019"
     ]
-   }
+   },
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc",
+    "enduro",
+    "dh"
+   ]
   },
   {
    "id": "velo-test-derive",
-   "sport": "velo",
    "famille": "test",
    "nom": "Test de dérive cardiaque",
    "objectif": "Solidité de l'endurance (découplage puissance / FC)",
@@ -2693,6 +3045,7 @@
    "rpe": "3",
    "niveau": "tous",
    "dureeMin": 85,
+   "sport": "velo",
    "deroule": [
     {
      "type": "echauffement",
@@ -2732,11 +3085,820 @@
      "Friel J 2018",
      "Maunder E 2021"
     ]
-   }
+   },
+   "disciplines": [
+    "route"
+   ]
+  },
+  {
+   "id": "vtt-hit-inoue",
+   "famille": "vo2max",
+   "nom": "Intervalles longs du vététiste (Inoue)",
+   "objectif": "Temps de course en cross-country : VO2max et puissance au seuil",
+   "resume": "7 à 10 × 4-6 min au plus fort tenable sur toutes les répétitions, récupération 3 min.",
+   "unite": "%CP",
+   "zone": "Z5",
+   "rpe": "8-9",
+   "niveau": "confirmé",
+   "dureeMin": 89,
+   "sport": "velo",
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 8,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 300,
+       "intensite": [
+        100,
+        110
+       ],
+       "note": "le plus fort possible en tenant toutes les répétitions",
+       "cadence": "90-105"
+      },
+      {
+       "type": "recup",
+       "duree": 180,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Sur home trainer ou en côte régulière : la puissance y est plus facile à tenir qu'en monotrace.",
+    "La récupération de 3 min est un choix d'entraîneur (non précisée dans le résumé de l'étude).",
+    "Repère en % de la CP converti par nous : l'étude dosait à l'effort maximal tenable."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Inoue A 2016"
+    ]
+   },
+   "terrain": "vtt",
+   "disciplines": [
+    "xco",
+    "xcc",
+    "xcm"
+   ]
+  },
+  {
+   "id": "vtt-sit-series",
+   "famille": "anaerobie",
+   "nom": "Sprints de 30 s en séries (vététistes)",
+   "objectif": "VO2max et puissance anaérobie, répétition des efforts courts",
+   "resume": "3 à 4 séries de 4 × 30 s à fond, récupération 90 s, 10 min faciles entre les séries.",
+   "unite": "%CP",
+   "zone": "Z7",
+   "rpe": "10",
+   "niveau": "confirmé",
+   "dureeMin": 84,
+   "sport": "velo",
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 4,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 30,
+         "max": true,
+         "cadence": "100-120"
+        },
+        {
+         "type": "recup",
+         "duree": 90,
+         "intensite": [
+          45,
+          55
+         ]
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 600,
+       "intensite": [
+        50,
+        60
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Précéder ce travail d'une période de volume : les vététistes au gros passé d'endurance en ont le plus profité (Hebisz 2019).",
+    "La pause de 10 min entre les séries est un choix d'entraîneur.",
+    "Jamais un jour de feu orange."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Hebisz P 2016",
+     "Hebisz R 2019",
+     "Hebisz P 2021",
+     "Inoue A 2016"
+    ]
+   },
+   "terrain": "vtt",
+   "disciplines": [
+    "xco",
+    "xcc"
+   ]
+  },
+  {
+   "id": "vtt-relances-xco",
+   "famille": "repetition-efforts",
+   "nom": "Relances sur fond de tempo (surges XCO)",
+   "objectif": "Répéter des efforts au-dessus de la CP comme en course : vider et recharger le W′",
+   "resume": "3 × 10 min à 80-90 % de la CP avec, toutes les 30 s, une relance de 8 s à 150-180 % ; 5 min faciles entre les blocs.",
+   "unite": "%CP",
+   "zone": "Z3 + Z6-Z7",
+   "rpe": "8",
+   "niveau": "confirmé",
+   "dureeMin": 70,
+   "sport": "velo",
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 20,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 22,
+         "intensite": [
+          80,
+          90
+         ],
+         "cadence": "85-95"
+        },
+        {
+         "type": "effort",
+         "duree": 8,
+         "intensite": [
+          150,
+          180
+         ],
+         "cadence": "90-110",
+         "note": "relance"
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 300,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Si la puissance du tempo s'écroule après les relances, réduis leur nombre plutôt que leur intensité.",
+    "En VTT, « au-dessus de la PMA » ≈ au-dessus de 120 % de la CP (Z6) : dans Næss 2021, la CP vaut ≈ 83 % de la PMA.",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Næss S 2021",
+     "Prinz B 2021",
+     "Macdermid PW 2012",
+     "Stapelfeldt B 2004",
+     "Bossi AH 2020"
+    ]
+   },
+   "terrain": "vtt",
+   "disciplines": [
+    "xco",
+    "xcc"
+   ]
+  },
+  {
+   "id": "vtt-depart-xco",
+   "famille": "specifique",
+   "nom": "Simulation de départ XCO",
+   "objectif": "Encaisser un départ très rapide puis tenir le seuil",
+   "resume": "3 × (1 min à fond au-dessus de 150 % de la CP puis 6 min à 95-100 %), récupération 7 min.",
+   "unite": "%CP",
+   "zone": "Z7 puis Z4",
+   "rpe": "9",
+   "niveau": "confirmé",
+   "dureeMin": 72,
+   "sport": "velo",
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 3,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 60,
+       "intensite": [
+        150,
+        180
+       ],
+       "note": "départ",
+       "cadence": "90-105"
+      },
+      {
+       "type": "effort",
+       "duree": 360,
+       "intensite": [
+        95,
+        100
+       ],
+       "cadence": "85-95"
+      },
+      {
+       "type": "recup",
+       "duree": 420,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Départ debout, gros braquet ; relance-toi assis au bout de 15-20 s.",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Granier C 2018",
+     "Hays A 2018",
+     "Impellizzeri FM 2002"
+    ]
+   },
+   "terrain": "vtt",
+   "disciplines": [
+    "xco"
+   ]
+  },
+  {
+   "id": "vtt-xcc-variable",
+   "famille": "repetition-efforts",
+   "nom": "Short track : 20 min à relances",
+   "objectif": "Tenir ≈ 20 min autour de la CP avec des relances répétées",
+   "resume": "2 × 10 min à 95-100 % de la CP avec une relance de 12 s à 130-150 % chaque minute ; 6 min faciles entre les blocs.",
+   "unite": "%CP",
+   "zone": "Z4 + Z6",
+   "rpe": "9",
+   "niveau": "confirmé",
+   "dureeMin": 62,
+   "sport": "velo",
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 2,
+     "etapes": [
+      {
+       "type": "repetition",
+       "fois": 10,
+       "etapes": [
+        {
+         "type": "effort",
+         "duree": 48,
+         "intensite": [
+          95,
+          100
+         ],
+         "cadence": "85-95"
+        },
+        {
+         "type": "effort",
+         "duree": 12,
+         "intensite": [
+          130,
+          150
+         ],
+         "note": "relance",
+         "cadence": "90-105"
+        }
+       ]
+      },
+      {
+       "type": "recup",
+       "duree": 360,
+       "intensite": [
+        45,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Le short track est court et peu technique : la puissance y compte plus qu'en XCO.",
+    "Sans ERG : choisis ton braquet avant chaque effort (un ou deux pignons plus dur), lance les 5 premières secondes un peu au-dessus de la cible puis stabilise."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Arriel RA 2023"
+    ]
+   },
+   "terrain": "vtt",
+   "disciplines": [
+    "xcc"
+   ]
+  },
+  {
+   "id": "vtt-marathon-cotes",
+   "famille": "endurance",
+   "nom": "Sortie longue en côtes (marathon)",
+   "objectif": "Puissance au 2e seuil et durabilité sur plusieurs heures",
+   "resume": "3 à 5 h en Z2 avec 4 à 6 montées de 8-15 min à 85-95 % de la CP.",
+   "unite": "%CP",
+   "zone": "Z2 + Z3-Z4",
+   "rpe": "4-6",
+   "niveau": "confirmé",
+   "dureeMin": 235,
+   "sport": "velo",
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      65
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 5,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 1500,
+       "intensite": [
+        56,
+        70
+       ]
+      },
+      {
+       "type": "effort",
+       "duree": 720,
+       "intensite": [
+        85,
+        95
+       ],
+       "note": "montée",
+       "cadence": "85-95"
+      }
+     ]
+    },
+    {
+     "type": "effort",
+     "duree": 1500,
+     "intensite": [
+      56,
+      70
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "construction",
+    "spécifique"
+   ],
+   "conseils": [
+    "Mange 60-90 g de glucides par heure dès la 1re heure : on entraîne aussi l'estomac.",
+    "Garde les dernières montées aussi fortes que les premières : c'est le but (durabilité)."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Engelbrecht L 2018",
+     "Reinpõld K 2022",
+     "Wirnitzer KC 2008",
+     "Jones AM 2025"
+    ]
+   },
+   "terrain": "vtt",
+   "disciplines": [
+    "xcm"
+   ]
+  },
+  {
+   "id": "vtt-enduro-speciales",
+   "famille": "specifique",
+   "nom": "Spéciales d'enduro",
+   "objectif": "Enchaîner des descentes techniques rapides, relances comprises, malgré la fatigue",
+   "resume": "4 à 6 spéciales chronométrées de 3-8 min, pédalées fort sur les relances ; remontées tranquilles en Z1-Z2.",
+   "unite": "%CP",
+   "zone": "Z5-Z7 (spéciales)",
+   "rpe": "8-9",
+   "niveau": "confirmé",
+   "dureeMin": 130,
+   "sport": "velo",
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 5,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 300,
+       "intensite": [
+        100,
+        120
+       ],
+       "note": "spéciale : relances à fond, descente technique",
+       "cadence": "90-105"
+      },
+      {
+       "type": "recup",
+       "duree": 900,
+       "intensite": [
+        50,
+        65
+       ],
+       "note": "remontée (liaison)"
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "spécifique"
+   ],
+   "conseils": [
+    "Le chrono compte plus que les watts : les vainqueurs vont surtout plus vite dans les descentes techniques.",
+    "Protections et reconnaissance : les blessures sont surtout fréquentes en course (38 pour 1000 h contre 4 à l'entraînement).",
+    "La puissance et la FC sous-estiment la charge (vibrations, bras) : note ton effort perçu."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Kirkwood L 2017",
+     "West DW 2021",
+     "Palmer D 2021"
+    ]
+   },
+   "terrain": "vtt",
+   "disciplines": [
+    "enduro"
+   ]
+  },
+  {
+   "id": "vtt-dh-sprints",
+   "famille": "sprint",
+   "nom": "Descente : sprints courts",
+   "objectif": "Puissance de pointe pour les relances, sans fatigue inutile",
+   "resume": "8 à 10 × 5-8 s à fond depuis une allure lente, récupération 2-3 min.",
+   "unite": "%CP",
+   "zone": "Z7",
+   "rpe": "8",
+   "niveau": "intermédiaire",
+   "dureeMin": 46,
+   "sport": "velo",
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 900,
+     "intensite": [
+      50,
+      75
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 8,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 7,
+       "max": true,
+       "note": "départ lancé lentement, debout",
+       "cadence": "100-120"
+      },
+      {
+       "type": "recup",
+       "duree": 150,
+       "intensite": [
+        40,
+        55
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 600,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "toutes"
+   ],
+   "conseils": [
+    "En descente, la puissance et la cadence ne sont pas liées au temps : la technique prime. Cette séance n'est qu'un complément.",
+    "Ajoute préhension et haut du corps en salle : la force de préhension baisse après une descente."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Hurst HT 2006",
+     "Burr JF 2012",
+     "Sperlich B 2012"
+    ]
+   },
+   "terrain": "vtt",
+   "disciplines": [
+    "dh",
+    "enduro"
+   ]
+  },
+  {
+   "id": "vtt-technique",
+   "famille": "technique",
+   "nom": "Séance technique",
+   "objectif": "Pilotage : virages, passages, lignes, freinage",
+   "resume": "45 à 60 min à intensité basse, en répétant une même section (virages, racines, marches).",
+   "unite": "%CP",
+   "zone": "Z1-Z2",
+   "rpe": "3-5",
+   "niveau": "tous",
+   "dureeMin": 55,
+   "sport": "velo",
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 600,
+     "intensite": [
+      50,
+      65
+     ]
+    },
+    {
+     "type": "repetition",
+     "fois": 10,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 120,
+       "intensite": [
+        56,
+        75
+       ],
+       "note": "section technique"
+      },
+      {
+       "type": "recup",
+       "duree": 120,
+       "intensite": [
+        45,
+        55
+       ],
+       "note": "retour au départ"
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 300,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "toutes"
+   ],
+   "conseils": [
+    "Peu de watts mais une vraie fatigue (bras, attention) : compte-la avec ton effort perçu.",
+    "Répéter la même section avec un retour réfléchi vaut mieux qu'un long parcours."
+   ],
+   "preuve": {
+    "niveau": "pratique",
+    "references": [
+     "Impellizzeri FM 2005",
+     "Impellizzeri FM 2007",
+     "Kirkwood L 2017"
+    ]
+   },
+   "terrain": "vtt",
+   "disciplines": [
+    "xco",
+    "xcm",
+    "enduro",
+    "dh"
+   ]
+  },
+  {
+   "id": "vtt-test-sprints-repetes",
+   "famille": "test",
+   "nom": "Test 5 × 30 s",
+   "objectif": "Mesurer la puissance et la tenue sur sprints répétés",
+   "resume": "5 × 30 s à fond, récupération 30 s : puissance max et moyenne en W/kg, baisse entre le 1er et le 5e.",
+   "unite": "%CP",
+   "zone": "test",
+   "rpe": "10",
+   "niveau": "confirmé",
+   "dureeMin": 40,
+   "sport": "velo",
+   "deroule": [
+    {
+     "type": "echauffement",
+     "duree": 1200,
+     "intensite": [
+      50,
+      75
+     ],
+     "note": "avec 2 sprints de 6 s"
+    },
+    {
+     "type": "repetition",
+     "fois": 5,
+     "etapes": [
+      {
+       "type": "effort",
+       "duree": 30,
+       "max": true,
+       "cadence": "100-120"
+      },
+      {
+       "type": "recup",
+       "duree": 30,
+       "intensite": [
+        40,
+        50
+       ]
+      }
+     ]
+    },
+    {
+     "type": "retour",
+     "duree": 900,
+     "intensite": [
+      45,
+      55
+     ]
+    }
+   ],
+   "phases": [
+    "début et fin de phase"
+   ],
+   "conseils": [
+    "Complète le test CP, ne le remplace pas.",
+    "Ce test n'a pas été validé pour suivre une progression : compare-toi à toi-même."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Inoue A 2012",
+     "Bejder J 2019"
+    ]
+   },
+   "terrain": "vtt",
+   "disciplines": [
+    "xco",
+    "xcc"
+   ]
   },
   {
    "id": "course-footing",
-   "sport": "course",
    "famille": "endurance",
    "nom": "Footing en endurance fondamentale",
    "objectif": "Volume aérobie, économie de course",
@@ -2746,6 +3908,7 @@
    "rpe": "2-3",
    "niveau": "tous",
    "dureeMin": 45,
+   "sport": "course",
    "deroule": [
     {
      "type": "effort",
@@ -2773,7 +3936,6 @@
   },
   {
    "id": "course-sortie-longue",
-   "sport": "course",
    "famille": "endurance",
    "nom": "Sortie longue",
    "objectif": "Endurance de fond",
@@ -2783,6 +3945,7 @@
    "rpe": "3",
    "niveau": "intermédiaire",
    "dureeMin": 75,
+   "sport": "course",
    "deroule": [
     {
      "type": "effort",
@@ -2809,7 +3972,6 @@
   },
   {
    "id": "course-lignes-droites",
-   "sport": "course",
    "famille": "sprint",
    "nom": "Lignes droites (accélérations)",
    "objectif": "Foulée, économie, vitesse sans fatigue",
@@ -2819,6 +3981,7 @@
    "rpe": "4",
    "niveau": "tous",
    "dureeMin": 41,
+   "sport": "course",
    "deroule": [
     {
      "type": "effort",
@@ -2867,7 +4030,6 @@
   },
   {
    "id": "course-tempo-continu",
-   "sport": "course",
    "famille": "tempo",
    "nom": "Tempo continu",
    "objectif": "Seuil, endurance à allure soutenue",
@@ -2877,6 +4039,7 @@
    "rpe": "6",
    "niveau": "intermédiaire",
    "dureeMin": 50,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -2918,7 +4081,6 @@
   },
   {
    "id": "course-seuil-fractionne",
-   "sport": "course",
    "famille": "seuil",
    "nom": "Seuil fractionné (cruise intervals)",
    "objectif": "Seuil, avec plus de volume au seuil qu'en continu",
@@ -2928,6 +4090,7 @@
    "rpe": "7",
    "niveau": "intermédiaire",
    "dureeMin": 55,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -2985,7 +4148,6 @@
   },
   {
    "id": "course-double-seuil",
-   "sport": "course",
    "famille": "seuil",
    "nom": "Double seuil (modèle norvégien)",
    "objectif": "Beaucoup de volume au seuil, contrôlé",
@@ -2995,6 +4157,7 @@
    "rpe": "6-7",
    "niveau": "confirmé",
    "dureeMin": 60,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -3050,7 +4213,6 @@
   },
   {
    "id": "course-vma-30-30",
-   "sport": "course",
    "famille": "vo2max",
    "nom": "VMA courte 30/30",
    "objectif": "VO2max, vitesse maximale aérobie",
@@ -3060,6 +4222,7 @@
    "rpe": "8",
    "niveau": "tous",
    "dureeMin": 58,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -3131,7 +4294,6 @@
   },
   {
    "id": "course-vma-longue",
-   "sport": "course",
    "famille": "vo2max",
    "nom": "VMA longue",
    "objectif": "VO2max, endurance à haute vitesse",
@@ -3141,6 +4303,7 @@
    "rpe": "8-9",
    "niveau": "intermédiaire",
    "dureeMin": 60,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -3197,7 +4360,6 @@
   },
   {
    "id": "course-4x4-helgerud",
-   "sport": "course",
    "famille": "vo2max",
    "nom": "4 × 4 min (Helgerud)",
    "objectif": "VO2max",
@@ -3207,6 +4369,7 @@
    "rpe": "8-9",
    "niveau": "tous",
    "dureeMin": 43,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -3262,7 +4425,6 @@
   },
   {
    "id": "course-10-20-30",
-   "sport": "course",
    "famille": "vo2max",
    "nom": "10-20-30 (Bangsbo)",
    "objectif": "VO2max et performance avec moins de volume",
@@ -3272,6 +4434,7 @@
    "rpe": "8",
    "niveau": "tous",
    "dureeMin": 46,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -3350,7 +4513,6 @@
   },
   {
    "id": "course-sprints-30s",
-   "sport": "course",
    "famille": "anaerobie",
    "nom": "Sprints de 30 s",
    "objectif": "Capacité anaérobie, vitesse",
@@ -3360,6 +4522,7 @@
    "rpe": "9",
    "niveau": "confirmé",
    "dureeMin": 70,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -3413,7 +4576,6 @@
   },
   {
    "id": "course-allure-5km",
-   "sport": "course",
    "famille": "specifique",
    "nom": "Allure 5 km",
    "objectif": "Spécifique 5 km : tenir l'allure de course",
@@ -3423,6 +4585,7 @@
    "rpe": "8",
    "niveau": "intermédiaire",
    "dureeMin": 61,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -3478,7 +4641,6 @@
   },
   {
    "id": "course-allure-10km",
-   "sport": "course",
    "famille": "specifique",
    "nom": "Allure 10 km / semi",
    "objectif": "Spécifique 10 km ou semi-marathon",
@@ -3488,6 +4650,7 @@
    "rpe": "7",
    "niveau": "intermédiaire",
    "dureeMin": 72,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -3543,7 +4706,6 @@
   },
   {
    "id": "course-cotes-courtes",
-   "sport": "course",
    "famille": "sprint",
    "nom": "Côtes courtes (sprints en côte)",
    "objectif": "Force, puissance, foulée",
@@ -3553,6 +4715,7 @@
    "rpe": "8",
    "niveau": "tous",
    "dureeMin": 37,
+   "sport": "course",
    "deroule": [
     {
      "type": "effort",
@@ -3600,7 +4763,6 @@
   },
   {
    "id": "course-cotes-longues",
-   "sport": "course",
    "famille": "vo2max",
    "nom": "Côtes longues",
    "objectif": "VO2max, force-endurance, économie",
@@ -3610,6 +4772,7 @@
    "rpe": "8",
    "niveau": "intermédiaire",
    "dureeMin": 57,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -3666,7 +4829,6 @@
   },
   {
    "id": "course-fartlek",
-   "sport": "course",
    "famille": "vo2max",
    "nom": "Fartlek",
    "objectif": "Variété, VO2max sans pression du chrono",
@@ -3676,6 +4838,7 @@
    "rpe": "6",
    "niveau": "tous",
    "dureeMin": 43,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -3731,7 +4894,6 @@
   },
   {
    "id": "course-test-vma-5min",
-   "sport": "course",
    "famille": "test",
    "nom": "Test VMA 5 min",
    "objectif": "Estimer ta VMA",
@@ -3741,6 +4903,7 @@
    "rpe": "10",
    "niveau": "tous",
    "dureeMin": 35,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -3780,7 +4943,6 @@
   },
   {
    "id": "course-test-vameval",
-   "sport": "course",
    "famille": "test",
    "nom": "Test par paliers (Léger-Boucher / VAMEVAL)",
    "objectif": "VMA par paliers",
@@ -3790,6 +4952,7 @@
    "rpe": "10",
    "niveau": "tous",
    "dureeMin": 40,
+   "sport": "course",
    "deroule": [
     {
      "type": "echauffement",
@@ -3829,7 +4992,6 @@
   },
   {
    "id": "force-lourde-jambes-cycliste",
-   "sport": "renfo",
    "famille": "force-lourde",
    "nom": "Force lourde des jambes (cycliste)",
    "objectif": "Économie et puissance à vélo, tenue en fin d'effort",
@@ -3839,12 +5001,16 @@
    "rpe": "8-9",
    "niveau": "intermédiaire",
    "dureeMin": 45,
+   "sport": "renfo",
    "deroule": [],
    "phases": [
     "base (hiver)",
     "entretien en saison"
    ],
    "conseils": [
+    "Placement : le même jour qu'une séance dure, au moins 3 h après (ou 2 jours avant la suivante) ; ce jour compte comme dur pour les jambes.",
+    "Commence léger (10RM, loin de l'échec) : les courbatures pèsent sur le vélo les premières semaines.",
+    "Faire de l'endurance en même temps ne freine pas la force ; seule l'explosivité baisse un peu, surtout dans la même séance (Schumann 2022).",
     "Montée explosive, descente contrôlée.",
     "L'étude faisait des séries RM (à l'échec ou presque) ; garder 1-2 reps en réserve est une adaptation d'entraîneur.",
     "Découpage des RM par semaines : repris des études du même groupe, à confirmer pour 2010."
@@ -3852,9 +5018,12 @@
    "preuve": {
     "niveau": "prouvé",
     "references": [
+     "Llanos-Lagos C 2025",
+     "Vikmoen O 2016",
      "Rønnestad BR 2010",
      "Rønnestad BR 2014",
-     "Rønnestad BR 2011"
+     "Rønnestad BR 2011",
+     "Schumann M 2022"
     ]
    },
    "exercices": [
@@ -3882,11 +5051,53 @@
      "reps": "idem",
      "repos": 90
     }
+   ],
+   "disciplines": [
+    "route",
+    "xco",
+    "xcc",
+    "xcm",
+    "enduro",
+    "dh"
+   ]
+  },
+  {
+   "id": "force-maxi-coureur",
+   "famille": "force-lourde",
+   "nom": "Force maximale (coureur)",
+   "objectif": "Économie de course",
+   "resume": "Demi-squat 4 × 4RM, 3 fois par semaine pendant 8 semaines, montée la plus rapide possible.",
+   "unite": "%1RM",
+   "zone": "force",
+   "rpe": "8-9",
+   "niveau": "intermédiaire",
+   "dureeMin": 30,
+   "sport": "renfo",
+   "deroule": [],
+   "phases": [
+    "base"
+   ],
+   "conseils": [
+    "Repos de 3 min : choix d'entraîneur."
+   ],
+   "preuve": {
+    "niveau": "prouvé",
+    "references": [
+     "Støren Ø 2008",
+     "Llanos-Lagos C 2024"
+    ]
+   },
+   "exercices": [
+    {
+     "nom": "Demi-squat (barre)",
+     "series": 4,
+     "reps": "4RM, montée explosive",
+     "repos": 180
+    }
    ]
   },
   {
    "id": "force-explosive-coureur",
-   "sport": "renfo",
    "famille": "force-explosive",
    "nom": "Force explosive et pliométrie (coureur)",
    "objectif": "Économie de course, raideur du tendon",
@@ -3896,6 +5107,7 @@
    "rpe": "6-7",
    "niveau": "intermédiaire",
    "dureeMin": 25,
+   "sport": "renfo",
    "deroule": [],
    "phases": [
     "base",
@@ -3940,7 +5152,6 @@
   },
   {
    "id": "force-prevention-genoux",
-   "sport": "renfo",
    "famille": "prevention",
    "nom": "Prévention des blessures (renfo général + ischios)",
    "objectif": "Réduire le risque de blessure",
@@ -3950,6 +5161,7 @@
    "rpe": "5-6",
    "niveau": "tous",
    "dureeMin": 30,
+   "sport": "renfo",
    "deroule": [],
    "phases": [
     "toutes"
@@ -4002,6 +5214,124 @@
      "series": 3,
      "reps": "15 par jambe",
      "repos": 45
+    }
+   ]
+  },
+  {
+   "id": "force-isometrie-tendon-rotulien",
+   "famille": "prevention",
+   "nom": "Isométrie pour tendon rotulien douloureux",
+   "objectif": "Calmer une douleur de tendon rotulien",
+   "resume": "Extension de jambe en isométrie : 5 × 45 s à ~70 % de l'effort max, 2 min de repos.",
+   "unite": "%1RM",
+   "zone": "force",
+   "rpe": "6",
+   "niveau": "tous",
+   "dureeMin": 15,
+   "sport": "renfo",
+   "deroule": [],
+   "phases": [
+    "si douleur"
+   ],
+   "conseils": [
+    "Si la douleur persiste plus de 2 semaines : kiné."
+   ],
+   "preuve": {
+    "niveau": "mitigé",
+    "references": [
+     "Rio E 2015",
+     "Clifford C 2020"
+    ]
+   },
+   "exercices": [
+    {
+     "nom": "Extension de jambe isométrique (ou chaise au mur, adaptation non étudiée)",
+     "series": 5,
+     "reps": "45 s",
+     "repos": 120
+    }
+   ]
+  },
+  {
+   "id": "force-mollets-achille",
+   "famille": "prevention",
+   "nom": "Excentrique des mollets (tendon d'Achille)",
+   "objectif": "Soigner une tendinopathie d'Achille chronique",
+   "resume": "Descentes lentes sur la pointe des pieds, jambe tendue puis genou fléchi : 3 × 15, deux fois par jour, 12 semaines.",
+   "unite": "%1RM",
+   "zone": "force",
+   "rpe": "5-7",
+   "niveau": "tous",
+   "dureeMin": 10,
+   "sport": "renfo",
+   "deroule": [],
+   "phases": [
+    "si douleur"
+   ],
+   "conseils": [
+    "Seulement en cas de douleur au tendon ; dosage vu en source secondaire, à confirmer.",
+    "Avis d'un kiné conseillé."
+   ],
+   "preuve": {
+    "niveau": "mitigé",
+    "references": [
+     "Alfredson H 1998"
+    ]
+   },
+   "exercices": [
+    {
+     "nom": "Descente excentrique jambe tendue",
+     "series": 3,
+     "reps": "15",
+     "repos": 60
+    },
+    {
+     "nom": "Descente excentrique genou fléchi",
+     "series": 3,
+     "reps": "15",
+     "repos": 60
+    }
+   ]
+  },
+  {
+   "id": "force-haut-du-corps-531",
+   "famille": "force-lourde",
+   "nom": "Développé couché 5/3/1 (dans l'appli)",
+   "objectif": "Force du haut du corps",
+   "resume": "Cycle de 4 semaines à partir d'une référence (85-90 % du max), dernière série au maximum en gardant 1 rep en réserve, 5 × 5 en complément.",
+   "unite": "%1RM",
+   "zone": "force",
+   "rpe": "7-9",
+   "niveau": "intermédiaire",
+   "dureeMin": 35,
+   "sport": "renfo",
+   "deroule": [],
+   "phases": [
+    "toutes"
+   ],
+   "conseils": [
+    "N'aide pas la performance à vélo : c'est un objectif de force à part."
+   ],
+   "preuve": {
+    "niveau": "plausible",
+    "references": [
+     "Grgic J 2022",
+     "Helms ER 2016",
+     "Wendler J 2011"
+    ]
+   },
+   "exercices": [
+    {
+     "nom": "Développé couché",
+     "series": 3,
+     "reps": "5/5/5+, 3/3/3+, 5/3/1+, allègement",
+     "repos": 180
+    },
+    {
+     "nom": "Développé couché (5 × 5 à la 1re charge)",
+     "series": 5,
+     "reps": "5",
+     "repos": 120
     }
    ]
   }
