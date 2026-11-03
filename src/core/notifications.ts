@@ -73,7 +73,7 @@ export const testerNotifications = (c: Client) => appeler<{ envoyes: number }>(c
 export async function preferencesNotifications(c: Client, moi: string): Promise<PreferencesNotifications> {
   const { data, error } = await c.from('preferences_notifications').select('*').eq('user_id', moi).maybeSingle()
   if (error) throw error
-  return { ...PREFERENCES_DEFAUT, ...(data ?? {}) }
+  return { ...PREFERENCES_DEFAUT, ...data }
 }
 
 export async function enregistrerPreferences(c: Client, moi: string, p: PreferencesNotifications) {

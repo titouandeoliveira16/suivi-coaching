@@ -2,6 +2,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { adapterAuFeu, raisonDouleur, remplacerCourse, type Allegement } from '../moteur/adaptation'
 import { ajouterJours, jour, lundiDe } from '../moteur/dates'
 import { feuDuJour, type Signal } from '../moteur/feu'
+import { bilanSemaine, nominalSuivant } from '../moteur/charge'
+import { objectifPrincipal, param } from '../moteur/objectifs'
+import { reajusterSemaine } from '../moteur/reajustement'
 import { genererSemaine } from '../moteur/semaine'
 import type { Matin, Objectif, ProfilSportif, Seance, Semaine, Test } from '../moteur/types'
 import type { Client } from './supabase'
@@ -60,7 +63,7 @@ export async function enregistrerObjectifs(c: Client, eleve: string, objectifs: 
   if (objectifs.length) verifier(await c.from('objectifs').upsert(objectifs.map((o) => ({ ...o, eleve_id: eleve }))))
 }
 
-export type SemaineStockee = Semaine & { eleve_id: string; explications: string[] }
+export type SemaineStockee = Semaine & { eleve_id: string; explications: string[]; anticipee?: boolean; reevaluee?: boolean }
 
 export async function semainesDe(c: Client, eleve: string, depuis: string): Promise<SemaineStockee[]> {
   return verifier(await c.from('semaines').select('*').eq('eleve_id', eleve).gte('lundi', depuis).order('lundi')) as SemaineStockee[]
@@ -166,25 +169,60 @@ export async function proposerSemaine(c: Client, eleve: string, lundi: string, a
     objectifsDe(c, eleve),
   ])
   const precedente = semaines.find((s) => s.lundi === ajouterJours(lundi, -7)) ?? null
-  const r = genererSemaine({ profil: p, lundi, aPartirDe, precedente, seances, matins, tests, objectifs })
+  // Semaine préparée avant la fin de la précédente : réajustée (à la baisse seulement) une fois celle-ci terminée
+  const anticipee = lundi > jour()
+  const r = genererSemaine({ profil: p, lundi, aPartirDe, precedente, seances, matins, tests, objectifs, anticipee })
   verifier(await c.from('seances').delete().eq('eleve_id', eleve).eq('statut', 'proposee').gte('date', lundi).lte('date', ajouterJours(lundi, 6)))
-  verifier(await c.from('semaines').upsert({ ...r.semaine, eleve_id: eleve, explications: r.explications }))
+  verifier(await c.from('semaines').upsert({ ...r.semaine, eleve_id: eleve, explications: r.explications, anticipee, reevaluee: false }))
   if (r.seances.length) verifier(await c.from('seances').insert(r.seances.map((s) => ({ ...s, eleve_id: eleve, statut: 'proposee', origine: 'moteur' }))))
   return r
 }
 
-/** Propose automatiquement la semaine en cours (si rien n'existe) et, à partir du dimanche, la suivante. */
+/**
+ * Toujours deux semaines devant l'élève : la semaine en cours (si rien n'existe) et la suivante, préparée à l'avance.
+ * Une semaine préparée à l'avance et pas encore validée quand elle commence est refaite avec le vrai bilan.
+ */
 export async function proposerAutomatiquement(c: Client, eleve: string) {
   const aujourdhui = jour()
   const lundi = lundiDe(aujourdhui)
   const suivant = ajouterJours(lundi, 7)
   const existantes = await semainesDe(c, eleve, lundi)
-  if (!existantes.some((s) => s.lundi === lundi)) {
+  const actuelle = existantes.find((s) => s.lundi === lundi)
+  if (!actuelle) {
     const faites = await seancesEntre(c, eleve, lundi, ajouterJours(lundi, 6))
     if (!faites.length) await proposerSemaine(c, eleve, lundi, aujourdhui)
-  }
-  const dimanche = ajouterJours(lundi, 6) === aujourdhui
-  if (dimanche && !existantes.some((s) => s.lundi === suivant)) await proposerSemaine(c, eleve, suivant, suivant)
+  } else if (actuelle.anticipee && !actuelle.validee) await proposerSemaine(c, eleve, lundi, aujourdhui)
+  else await reevaluerSemaine(c, eleve).catch(() => {})
+  if (!existantes.some((s) => s.lundi === suivant)) await proposerSemaine(c, eleve, suivant, suivant)
+}
+
+/**
+ * Semaine en cours préparée à l'avance et déjà validée : maintenant que la précédente est finie, on recalcule son
+ * volume avec les règles habituelles ; s'il est plus bas, les séances faciles sont raccourcies et le coach prévenu.
+ * Appelée par l'élève comme par le coach ; le serveur ne l'applique qu'une fois.
+ */
+export async function reevaluerSemaine(c: Client, eleve: string) {
+  const lundi = lundiDe(jour())
+  const semaines = await semainesDe(c, eleve, ajouterJours(lundi, -7))
+  const actuelle = semaines.find((s) => s.lundi === lundi)
+  if (!actuelle?.anticipee || actuelle.reevaluee || !actuelle.validee) return
+  const precedente = semaines.find((s) => s.lundi === ajouterJours(lundi, -7)) ?? null
+  const [p, seances, matins, objectifs] = await Promise.all([
+    profilSportif(c, eleve),
+    seancesEntre(c, eleve, ajouterJours(lundi, -7), ajouterJours(lundi, 6)),
+    matinsDepuis(c, eleve, ajouterJours(lundi, -7)),
+    objectifsDe(c, eleve),
+  ])
+  if (!p) return
+  const bilan = precedente ? bilanSemaine(seances, matins, precedente.lundi) : null
+  const juste = nominalSuivant(p, precedente, bilan, param(objectifPrincipal(objectifs, lundi).type).sansProgression)
+  const r = reajusterSemaine(actuelle, juste, seances.filter((s) => s.date >= lundi))
+  verifier(await c.rpc('reajuster_semaine', { p_eleve: eleve, p_lundi: lundi, p_nominal: r?.nominal ?? actuelle.nominal_min, p_seances: r?.seances ?? [], p_raison: juste.raison }))
+}
+
+/** Intervertit les jours de deux séances (coach ou élève ; le serveur vérifie, et prévient le coach si c'est l'élève). */
+export async function intervertirSeances(c: Client, a: Seance, b: Seance) {
+  verifier(await c.rpc('intervertir_seances', { p_a: a.id, p_b: b.id }))
 }
 
 export async function validerSemaine(c: Client, eleve: string, lundi: string) {

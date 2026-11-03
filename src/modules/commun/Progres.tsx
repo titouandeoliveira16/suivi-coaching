@@ -31,9 +31,23 @@ export function Progres({ client, eleve }: { client: Client; eleve: string }) {
     return { lundi: l, minutes: faites.reduce((t, s) => t + (s.duree_reelle_min ?? s.duree_min), 0), nombre: faites.length }
   })
   const max = Math.max(60, ...semaines.map((s) => s.minutes))
+  // Régularité sur les 4 dernières semaines terminées (et la semaine en cours jusqu'à hier)
+  const depuis = ajouterJours(lundi, -28)
+  const passees = donnees.seances.filter((s) => s.date >= depuis && s.date < jour() && s.statut !== 'proposee')
+  const faites = passees.filter((s) => s.statut === 'faite').length
+  const prevues = passees.filter((s) => s.statut === 'faite' || s.statut === 'validee' || (s.statut === 'annulee' && s.avant_ajustement === null)).length
 
   return (
     <>
+      {prevues > 0 && (
+        <Carte titre="Régularité (4 dernières semaines)">
+          <p className="text-3xl font-bold">
+            {faites}
+            <span className="text-lg font-normal text-texte-3"> / {prevues} séances</span>
+          </p>
+          <p className="mt-1 text-sm text-texte-2">{faites / prevues >= 0.9 ? 'Belle régularité : c’est ce qui fait progresser.' : faites / prevues >= 0.7 ? 'Bien. Dis-le à ton coach si les séances ne rentrent pas dans ton emploi du temps.' : 'Plusieurs séances manquées : parles-en à ton coach pour adapter le plan.'}</p>
+        </Carte>
+      )}
       <Carte titre="Minutes faites par semaine">
         <div className="flex h-32 items-end gap-1.5">
           {semaines.map((s) => (

@@ -3,19 +3,29 @@ import { allerA, useAdresse } from '../../core/adresse'
 import { messageErreur, type Profil } from '../../core/compte'
 import { nonLus, objectifsDe, profilSportif, useCharge } from '../../core/donnees'
 import type { Client } from '../../core/supabase'
-import { BarreOnglets, Bouton, Chargement, Message, Page, type Onglet } from '../../core/ui'
+import { BarreOnglets, Chargement, Message, Page, Pastille, type Onglet } from '../../core/ui'
 import { Messages } from '../commun/Messages'
 import { Progres } from '../commun/Progres'
-import { ReglagesNotifications } from '../commun/ReglagesNotifications'
 import { Aujourdhui } from './Aujourdhui'
-import { Programme } from './Programme'
+import { ModeEmploi } from './ModeEmploi'
 import { QuestionnaireArrivee } from './QuestionnaireArrivee'
+import { Reglages } from './Reglages'
+import { Saison } from './Saison'
+import { Semaine } from './Semaine'
 
-const ONGLETS = { '': 'Aujourd’hui', '#/programme': 'Programme', '#/progres': 'Progrès', '#/messages': 'Messages' } as const
+const TITRES = {
+  '': 'Aujourd’hui',
+  '#/semaine': 'Semaine',
+  '#/saison': 'Saison',
+  '#/progres': 'Progrès',
+  '#/messages': 'Messages',
+  '#/reglages': 'Réglages',
+  '#/aide': 'Mode d’emploi',
+} as const
 
 export function EspaceEleve({ client, profil, deconnecter }: { client: Client; profil: Profil; deconnecter: () => void }) {
   const hash = useAdresse()
-  const actif = (hash in ONGLETS ? hash : '') as keyof typeof ONGLETS
+  const actif = (hash in TITRES ? hash : '') as keyof typeof TITRES
   const { donnees: d, erreur, recharger } = useCharge(async () => {
     const [sportif, objectifs] = await Promise.all([profilSportif(client, profil.id), objectifsDe(client, profil.id)])
     return { sportif, objectifs }
@@ -32,36 +42,41 @@ export function EspaceEleve({ client, profil, deconnecter }: { client: Client; p
 
   const onglets: Onglet[] = [
     { cle: '', libelle: 'Aujourd’hui', icone: '☀️' },
-    { cle: '#/programme', libelle: 'Programme', icone: '🗓️' },
+    { cle: '#/semaine', libelle: 'Semaine', icone: '🗓️' },
+    { cle: '#/saison', libelle: 'Saison', icone: '🧭' },
     { cle: '#/progres', libelle: 'Progrès', icone: '📈' },
-    { cle: '#/messages', libelle: 'Messages', icone: '💬', pastille: aLire?.[profil.id] },
   ]
+  const aLireMoi = aLire?.[profil.id] ?? 0
+  const icone = (cle: string, symbole: string, libelle: string, pastille = 0) => (
+    <button type="button" aria-label={libelle} onClick={() => allerA(actif === cle ? '' : cle)} className={`relative rounded-xl px-2 py-1 text-2xl ${actif === cle ? 'bg-surface-2' : ''}`}>
+      {symbole}
+      {pastille > 0 && (
+        <span className="absolute -top-1 -right-1">
+          <Pastille ton="alerte">{pastille}</Pastille>
+        </span>
+      )}
+    </button>
+  )
 
   return (
     <Page
       surtitre={profil.nom ? `Bonjour ${profil.nom}` : 'Bonjour'}
-      titre={ONGLETS[actif]}
-      barre={<BarreOnglets onglets={onglets} actif={actif} choisir={allerA} />}
+      titre={TITRES[actif]}
+      barre={<BarreOnglets onglets={onglets} actif={onglets.some((o) => o.cle === actif) ? actif : 'aucun'} choisir={allerA} />}
       action={
-        actif === '#/progres' ? (
-          <Bouton variante="discret" onClick={deconnecter}>
-            Déconnexion
-          </Bouton>
-        ) : undefined
+        <div className="flex gap-1">
+          {icone('#/messages', '💬', 'Messages', aLireMoi)}
+          {icone('#/reglages', '⚙️', 'Réglages')}
+        </div>
       }
     >
       {actif === '' && <Aujourdhui client={client} eleve={profil.id} profil={sportif} />}
-      {actif === '#/programme' && <Programme client={client} eleve={profil.id} profil={sportif} />}
-      {actif === '#/progres' && (
-        <>
-          <Progres client={client} eleve={profil.id} />
-          <Bouton variante="discret" onClick={() => setEditer(true)}>
-            Modifier mon profil (disponibilités, objectif…)
-          </Bouton>
-          <ReglagesNotifications client={client} moi={profil.id} role="eleve" />
-        </>
-      )}
+      {actif === '#/semaine' && <Semaine client={client} eleve={profil.id} profil={sportif} />}
+      {actif === '#/saison' && <Saison client={client} eleve={profil.id} profil={sportif} />}
+      {actif === '#/progres' && <Progres client={client} eleve={profil.id} />}
       {actif === '#/messages' && <Messages client={client} eleve={profil.id} moi={profil.id} auLu={lus} />}
+      {actif === '#/reglages' && <Reglages client={client} moi={profil.id} modifierProfil={() => setEditer(true)} deconnecter={deconnecter} />}
+      {actif === '#/aide' && <ModeEmploi />}
     </Page>
   )
 }

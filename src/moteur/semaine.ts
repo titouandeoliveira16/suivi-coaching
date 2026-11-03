@@ -16,6 +16,11 @@ export interface EntreesSemaine {
   matins: Matin[]
   tests: Test[]
   objectifs?: Objectif[]
+  /**
+   * Semaine préparée à l'avance, pendant que la précédente se déroule : on la construit comme si la semaine
+   * en cours était réussie ; elle est réajustée (à la baisse seulement) une fois la semaine en cours terminée.
+   */
+  anticipee?: boolean
 }
 
 export interface SemaineProposee {
@@ -311,12 +316,16 @@ export function genererSemaine(e: EntreesSemaine): SemaineProposee {
   if (!actifs.length) return { semaine, seances: [], explications: ['Aucun sport programmable (course suspendue après une fracture de fatigue)'] }
   const sportP = actifs.includes(sportPrincipal(p, principal)) ? sportPrincipal(p, principal) : actifs[0]
 
-  const bilan = e.precedente ? bilanSemaine(e.seances, e.matins, ajouterJours(lundi, -7)) : null
+  const bilan = e.precedente
+    ? e.anticipee
+      ? { prevu: e.precedente.cible_min, realise: e.precedente.cible_min, rouges: 0, oranges: 0 }
+      : bilanSemaine(e.seances, e.matins, ajouterJours(lundi, -7))
+    : null
   const nominal = nominalSuivant(p, e.precedente, bilan, pp.sansProgression)
   semaine.nominal_min = nominal.minutes
   let cible = arrondi5(nominal.minutes * ph.coefficient)
   explications.push(`Objectif principal : ${libelleObjectif(principal)}${principal.date ? ` le ${principal.date.split('-').reverse().join('/')}` : ''}`)
-  explications.push(nominal.raison)
+  explications.push(e.anticipee && e.precedente ? `${nominal.raison} (si la semaine en cours se passe comme prévu ; sinon allégée automatiquement)` : nominal.raison)
   if (ph.recuperation) explications.push('Semaine de récupération après l’objectif : −40 %, pas d’intensité')
   else if (ph.allegee) explications.push('Semaine allégée (1 sur 4) : −35 %')
   if (ph.phase === 'affutage') explications.push(`Affûtage : volume ×${ph.coefficient}, intensité gardée (Bosquet 2007)`)

@@ -29,6 +29,8 @@ const MESSAGES: [RegExp, string][] = [
   [/Password should be at least/i, 'Le mot de passe doit faire au moins 8 caractères.'],
   [/rate limit|too many|security purposes/i, 'Trop de demandes d’affilée : réessaie dans quelques minutes.'],
   [/Failed to fetch|NetworkError|Load failed/i, 'Pas de connexion internet.'],
+  [/echange_impossible/, 'Échange impossible : séances de la même semaine, à venir et pas encore faites seulement.'],
+  [/intervertir_seances|reajuster_semaine/, 'Mise à jour du serveur pas encore installée (SQL 05).'],
 ]
 
 export function messageErreur(e: unknown): string {

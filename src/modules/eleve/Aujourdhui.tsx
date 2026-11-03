@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { messageErreur } from '../../core/compte'
-import { allegementDuJour, appliquerAllegement, matinsDepuis, reconduireSiBesoin, seancesEntre, useCharge } from '../../core/donnees'
+import { allegementDuJour, appliquerAllegement, matinsDepuis, reconduireSiBesoin, reevaluerSemaine, seancesEntre, useCharge } from '../../core/donnees'
 import type { Client } from '../../core/supabase'
 import { Bouton, Carte, Chargement, Message } from '../../core/ui'
 import { ajouterJours, dateLisible, jour } from '../../moteur/dates'
@@ -28,6 +28,8 @@ export function Aujourdhui({ client, eleve, profil }: { client: Client; eleve: s
   // Lundi sans semaine validée par le coach : la précédente est reconduite, sans hausse
   useEffect(() => {
     reconduireSiBesoin(client, eleve).then((fait) => fait && recharger(), () => {})
+    // Semaine préparée à l'avance : allégée si la précédente a été plus dure que prévu
+    reevaluerSemaine(client, eleve).then(recharger, () => {})
   }, [client, eleve, recharger])
 
   const matin = donnees?.matins.find((m) => m.date === aujourdhui) ?? null

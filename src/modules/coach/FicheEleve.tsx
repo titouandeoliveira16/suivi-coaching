@@ -1,4 +1,4 @@
-import { useCallback, useState, type ReactNode } from 'react'
+import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import { allerA } from '../../core/adresse'
 import { messageErreur } from '../../core/compte'
 import {
@@ -13,6 +13,7 @@ import {
   profilSportif,
   proposerSemaine,
   seancesEntre,
+  semainesDe,
   useCharge,
 } from '../../core/donnees'
 import type { Client } from '../../core/supabase'
@@ -25,7 +26,8 @@ import { libelleObjectif, objectifPrincipal, pointsAttention } from '../../moteu
 import type { Categorie, Objectif, ProfilSportif, Sport } from '../../moteur/types'
 import { Messages } from '../commun/Messages'
 import { Progres } from '../commun/Progres'
-import { Semaines } from '../eleve/Programme'
+import { useInterversion } from '../commun/Interversion'
+import { VueSemaines } from '../commun/VueSemaines'
 import { CarteSeance } from '../commun/CarteSeance'
 import { AValider } from './AValider'
 import { ObjectifsEditeur } from '../commun/ObjectifsEditeur'
@@ -141,16 +143,17 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
   const aujourdhui = jour()
   const lundi = lundiDe(aujourdhui)
   const charger = useCallback(async () => {
-    const [nom, profil, seances, matins, alertes, objectifs] = await Promise.all([
+    const [nom, profil, seances, matins, alertes, objectifs, semaines] = await Promise.all([
       client.from('profils').select('nom, cree_le').eq('id', id).eq('role', 'eleve').maybeSingle(),
       profilSportif(client, id),
       seancesEntre(client, id, ajouterJours(aujourdhui, -21), ajouterJours(lundi, 13)),
       matinsDepuis(client, id, ajouterJours(aujourdhui, -60)),
       alertesNonVues(client, id),
       objectifsDe(client, id),
+      semainesDe(client, id, lundi),
     ])
     if (nom.error) throw nom.error
-    return { eleve: nom.data as { nom: string; cree_le: string } | null, profil, seances, matins, alertes, objectifs }
+    return { eleve: nom.data as { nom: string; cree_le: string } | null, profil, seances, matins, alertes, objectifs, semaines }
   }, [client, id, aujourdhui, lundi])
   const { donnees: d, erreur, recharger } = useCharge(charger, [charger])
   const [ouvert, setOuvert] = useState<'' | 'ajout' | 'test' | 'objectifs'>('')
@@ -159,6 +162,8 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
   const [erreurAction, setErreurAction] = useState('')
   const [version, setVersion] = useState(0)
   const rafraichir = () => (recharger(), setVersion((v) => v + 1))
+  const prevues = useMemo(() => d?.seances.filter((s) => s.statut !== 'proposee' && s.date >= lundi) ?? [], [d, lundi])
+  const echange = useInterversion(client, prevues, () => d?.profil ?? undefined, rafraichir)
 
   async function agir(action: () => Promise<unknown>) {
     setOccupe(true)
@@ -294,7 +299,8 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
 
           <AValider key={version} client={client} eleve={id} auChangement={rafraichir} />
 
-          <Semaines seances={d.seances.filter((s) => s.statut !== 'proposee')} profil={p} lundi={lundi} avecStatut />
+          <VueSemaines seances={prevues} profil={p} lundi={lundi} semaines={d.semaines} avecStatut actions={echange.boutons} />
+          {echange.erreur && <Message type="erreur">{echange.erreur}</Message>}
           <div className="flex gap-2">
             <Bouton variante="discret" className="flex-1" disabled={occupe} onClick={() => agir(() => proposerSemaine(client, id, ajouterJours(lundi, 7), ajouterJours(lundi, 7)))}>
               Proposer la semaine prochaine

@@ -29,11 +29,15 @@ https://claude.ai/artifact/VADvDEMvyjDpPsEMoT14fE — les lire avant toute nouve
   charge (règles de Coach, plafond course Nielsen 2014), construction de la semaine, feu du jour (questionnaire du matin,
   VFC), allègements et douleur (Silbernagel 2007), renfo (OMS 2020), course ≤ 1,1 × la plus longue du mois (Frandsen 2025). Banque de séances : `banque.json`, extraite du catalogue de Coach.
 - `src/core/donnees.ts` : accès au serveur (lecture, propositions, validation, allègements via fonctions serveur).
-- `src/modules/eleve/` (Aujourd'hui, Programme, Progrès, Messages, questionnaires) et `src/modules/coach/`
-  (Élèves, À valider, fiche élève).
+- `src/modules/eleve/` : Aujourd'hui · Semaine · Saison · Progrès (barre du bas), 💬 Messages et ⚙️ Réglages
+  (profil, notifications, mode d'emploi) en haut ; `src/modules/coach/` (Élèves, À valider, fiche élève).
+- Deux semaines à l'avance : la suivante est préparée pendant la semaine en cours (`anticipee`, comme si elle était
+  réussie), puis réajustée à la baisse seulement quand elle commence (`moteur/reajustement.ts`, RPC `reajuster_semaine`).
+- Intervertir deux séances (élève ou coach) : garde-fous dans `moteur/echange.ts`, RPC `intervertir_seances` (le coach
+  est prévenu quand c'est l'élève).
 - Le moteur allège seul (feu orange/rouge, maladie, douleur) et prévient le coach ; toute hausse de charge et chaque
   semaine attendent la validation du coach ; sans validation le lundi, la semaine précédente est reconduite.
-- Serveur : projet Supabase **séparé** de celui de Coach ; SQL dans `supabase/sql/` (01 comptes, 02 programme, 03 objectifs, 04 notifications), exécuté
+- Serveur : projet Supabase **séparé** de celui de Coach ; SQL dans `supabase/sql/` (01 comptes, 02 programme, 03 objectifs, 04 notifications, 05 deux semaines), exécuté
   à la main dans le SQL Editor. Toute nouvelle table reçoit ses droits et ses règles RLS explicitement. Les scripts
   se testent sur un PostgreSQL local (schéma `auth` et rôles `anon`/`authenticated` imités).
 - Notifications : fonction serveur `supabase/functions/notifications` (Web Push, clés VAPID créées par elle-même,

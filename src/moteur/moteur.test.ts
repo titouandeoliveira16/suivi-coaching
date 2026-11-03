@@ -8,6 +8,9 @@ import { cible } from './intensite'
 import { coefficientsAffutage, phaseDeLaSemaine } from './phase'
 import { objectifPrincipal, param, pointsAttention } from './objectifs'
 import { intensiteAutorisee, niveau } from './profil'
+import { echangePossible } from './echange'
+import { reajusterSemaine } from './reajustement'
+import { saison } from './saison'
 import { genererSemaine, nombreIntenses, placer, type Creneau } from './semaine'
 import { cpDeuxPoints, vmaCinqMinutes } from './tests'
 import type { Matin, Objectif, ProfilSportif, Seance, Test } from './types'
@@ -424,5 +427,79 @@ describe('placement des tests', () => {
     expect(jourSemaine(test!.date)).toBe(6)
     const veille = r.seances.filter((s) => s.sport === 'renfo' && jourSemaine(s.date) === 5)
     expect(veille.length).toBe(0)
+  })
+})
+
+describe('intervertir deux séances', () => {
+  const p = profil({ minutes_jour: [60, 60, 60, 0, 60, 180, 120] })
+  const v = (o: Partial<Seance>) => seance({ statut: 'validee', ...o })
+  // Lundi 2/11 intense, mardi facile, mercredi facile, samedi longue 180
+  const lun = v({ id: 'lun', date: '2026-11-02', categorie: 'intense', duree_min: 55 })
+  const mar = v({ id: 'mar', date: '2026-11-03', duree_min: 60 })
+  const mer = v({ id: 'mer', date: '2026-11-04', duree_min: 60 })
+  const ven = v({ id: 'ven', date: '2026-11-06', duree_min: 60 })
+  const sam = v({ id: 'sam', date: '2026-11-07', categorie: 'longue', duree_min: 180 })
+  const toutes = [lun, mar, mer, ven, sam]
+  it('accepte un échange qui garde les jours durs espacés', () => {
+    expect(echangePossible(lun, mer, toutes, p, LUNDI)).toEqual({ ok: true })
+  })
+  it('refuse deux jours durs d’affilée', () => {
+    const jeuIntense = v({ id: 'mer2', date: '2026-11-04', categorie: 'intense', duree_min: 50 })
+    const r = echangePossible(lun, mar, [lun, mar, jeuIntense, sam], p, LUNDI)
+    expect(r.ok).toBe(false)
+  })
+  it('refuse une séance trop longue pour le jour, un jour passé, une course, une autre semaine', () => {
+    expect(echangePossible(sam, mar, toutes, p, LUNDI)).toMatchObject({ ok: false, raison: expect.stringContaining('trop long') })
+    expect(echangePossible(lun, mer, toutes, p, '2026-11-03')).toMatchObject({ ok: false, raison: 'Jour passé' })
+    expect(echangePossible(v({ categorie: 'epreuve', date: '2026-11-08' }), mar, toutes, p, LUNDI).ok).toBe(false)
+    expect(echangePossible(lun, v({ date: '2026-11-10' }), toutes, p, LUNDI)).toMatchObject({ ok: false, raison: 'Pas la même semaine' })
+  })
+  it('une sortie avec une sortie, un renfo avec un renfo', () => {
+    expect(echangePossible(lun, v({ sport: 'renfo', categorie: 'renfo', date: '2026-11-04', duree_min: 30 }), toutes, p, LUNDI).ok).toBe(false)
+  })
+  it('compte tout ce qu’il y a déjà dans la journée d’arrivée', () => {
+    const deux = v({ id: 'mer-bis', date: '2026-11-04', duree_min: 30 })
+    expect(echangePossible(mar, ven, [...toutes, deux], p, LUNDI)).toEqual({ ok: true })
+    expect(echangePossible(lun, ven, [...toutes, v({ id: 'ven-bis', date: '2026-11-06', duree_min: 40 })], p, LUNDI)).toMatchObject({ ok: false, raison: expect.stringContaining('trop long') })
+  })
+  it('respecte les jours sans intensité', () => {
+    const q = profil({ minutes_jour: [60, 60, 60, 0, 60, 180, 120], jours_sans_intense: [2] })
+    expect(echangePossible(lun, mer, toutes, q, LUNDI)).toMatchObject({ ok: false, raison: 'Jour sans intensité' })
+  })
+})
+
+describe('semaine préparée à l’avance', () => {
+  it('se construit comme si la semaine en cours était réussie', () => {
+    const p = profil({ debut: '2026-10-26' })
+    const precedente = { lundi: '2026-10-26', phase: 'base' as const, nominal_min: 300, cible_min: 300, allegee: false, validee: true }
+    const r = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente, seances: [], matins: [], tests: [], anticipee: true })
+    expect(r.semaine.nominal_min).toBe(325)
+  })
+  it('est raccourcie si la semaine précédente s’est mal passée, jamais alourdie', () => {
+    const sem = [
+      seance({ id: 'a', statut: 'validee', categorie: 'intense', duree_min: 60 }),
+      seance({ id: 'b', statut: 'validee', duree_min: 90 }),
+      seance({ id: 'c', statut: 'validee', categorie: 'longue', duree_min: 150 }),
+    ]
+    expect(reajusterSemaine({ nominal_min: 300 }, { minutes: 320, raison: '' }, sem)).toBeNull()
+    const r = reajusterSemaine({ nominal_min: 325 }, { minutes: 255, raison: '−15 %' }, sem)!
+    expect(r.seances.map((x) => x.id)).toEqual(['b', 'c'])
+    const retire = 90 + 150 - r.seances.reduce((t, x) => t + x.duree_min, 0)
+    expect(retire).toBeGreaterThanOrEqual(55)
+    expect(retire).toBeLessThanOrEqual(75)
+  })
+})
+
+describe('saison', () => {
+  it('sans date : base 8 semaines puis développement, une allégée sur 4', () => {
+    const { semaines, blocs } = saison(profil({ debut: LUNDI }), [], LUNDI)
+    expect(blocs.map((b) => [b.phase, b.semaines.length])).toEqual([['base', 8], ['developpement', 5]])
+    expect(semaines.filter((s) => s.allegee).map((s) => s.lundi)).toEqual(['2026-11-23', '2026-12-21', '2027-01-18'])
+  })
+  it('avec une course : affûtage la semaine de la course, récupération après', () => {
+    const { semaines } = saison(profil({ debut: LUNDI }), [obj('velo-route', '2027-04-18')], LUNDI)
+    const course = semaines.find((s) => s.courses.length === 1)!
+    expect(course.phase).toBe('affutage')
+    expect(semaines.at(-1)!.recuperation).toBe(true)
   })
 })

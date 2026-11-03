@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { messageErreur } from '../../core/compte'
 import { modifierSeance, proposerSemaine, supprimerSeance, useCharge, validerSemaine, type SemaineStockee } from '../../core/donnees'
 import type { Client } from '../../core/supabase'
@@ -7,6 +7,7 @@ import { ajouterJours, jour, lundiDe, NOMS_JOURS, versDate } from '../../moteur/
 import { LIBELLE_PHASE } from '../../moteur/phase'
 import type { ProfilSportif, Seance } from '../../moteur/types'
 import { CarteSeance } from '../commun/CarteSeance'
+import { useInterversion } from '../commun/Interversion'
 
 type Bloc = { semaine: SemaineStockee; nom: string; profil: ProfilSportif; seances: Seance[] }
 
@@ -40,6 +41,8 @@ export function AValider({ client, eleve, auChangement }: { client: Client; elev
   const { donnees, erreur, recharger } = useCharge(charger, [charger])
   const [occupe, setOccupe] = useState('')
   const [erreurAction, setErreurAction] = useState('')
+  const toutes = useMemo(() => donnees?.flatMap((b) => b.seances) ?? [], [donnees])
+  const echange = useInterversion(client, toutes, (x) => donnees?.find((b) => b.semaine.eleve_id === x.eleve_id)?.profil, () => (recharger(), auChangement?.()))
 
   async function agir(cle: string, action: () => Promise<unknown>) {
     setOccupe(cle)
@@ -56,7 +59,7 @@ export function AValider({ client, eleve, auChangement }: { client: Client; elev
 
   if (erreur) return <Message type="erreur">{messageErreur(erreur)}</Message>
   if (!donnees) return <Chargement />
-  if (!donnees.length) return eleve ? null : <Message>Rien à valider pour l’instant. Les semaines suivantes sont proposées chaque dimanche.</Message>
+  if (!donnees.length) return eleve ? null : <Message>Rien à valider pour l’instant. Chaque élève a toujours sa semaine en cours et la suivante, proposées à l’avance.</Message>
 
   return (
     <>
@@ -103,12 +106,13 @@ export function AValider({ client, eleve, auChangement }: { client: Client; elev
                     Retirer
                   </Bouton>
                 </div>
+                {echange.boutons(x)}
               </CarteSeance>
             ))}
           </div>
         )
       })}
-      {erreurAction && <Message type="erreur">{erreurAction}</Message>}
+      {(erreurAction || echange.erreur) && <Message type="erreur">{erreurAction || echange.erreur}</Message>}
     </>
   )
 }
