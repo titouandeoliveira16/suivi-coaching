@@ -1,7 +1,7 @@
 import { BANQUE, dureeMinutes, formatObligatoire, minutesCourues } from './banque'
 import { arrondi5, bilanSemaine, nominalSuivant, plafondCourse, plafondSeanceCourse } from './charge'
 import { ajouterJours, ecartJours, jourSemaine } from './dates'
-import { epreuvesDeLaSemaine, libelleObjectif, objectifPrincipal, param, paramObjectif, sportPrincipal, type ParamObjectif } from './objectifs'
+import { epreuvesDeLaSemaine, libelleObjectif, objectifPrincipal, param, paramObjectif, sportPrincipal, type ParamObjectif, type Vitesses } from './objectifs'
 import { chargesMuscu, formatMuscu, joursMuscu } from './muscu'
 import { phaseDeLaSemaine, type PhaseSemaine } from './phase'
 import { disciplinesActives, intensiteAutorisee, interieurSeulement, minutesParJour, niveau, pratique } from './profil'
@@ -22,6 +22,8 @@ export interface EntreesSemaine {
    * en cours était réussie ; elle est réajustée (à la baisse seulement) une fois la semaine en cours terminée.
    */
   anticipee?: boolean
+  /** Vitesses équivalent plat mesurées sur les sorties de l'élève (estimation de la durée des épreuves à vélo). */
+  vitesses?: Vitesses
   /** Modules actifs de l'élève (absent : on se fie à l'ancien choix « renfo » du profil). */
   modules?: { module: string; debut: string | null }[]
 }
@@ -313,7 +315,7 @@ export function genererSemaine(e: EntreesSemaine): SemaineProposee {
   const explications: string[] = []
   const ph = phaseDeLaSemaine(p, lundi, objectifs)
   const principal = objectifPrincipal(objectifs, lundi)
-  const pp = paramObjectif(principal)
+  const pp = paramObjectif(principal, e.vitesses)
   const actifs = disciplinesActives(p)
   const semaine: Semaine = { lundi, phase: ph.phase, nominal_min: 0, cible_min: 0, allegee: ph.allegee, validee: false }
   if (!actifs.length) return { semaine, seances: [], explications: ['Aucun sport programmable (course suspendue après une fracture de fatigue)'] }
@@ -350,7 +352,7 @@ export function genererSemaine(e: EntreesSemaine): SemaineProposee {
   for (const o of epreuvesDeLaSemaine(objectifs, lundi)) {
     if (o.date! < e.aPartirDe) continue
     const j = jourSemaine(o.date!)
-    const po = paramObjectif(o)
+    const po = paramObjectif(o, e.vitesses)
     const sport = po.sport && actifs.includes(po.sport) ? po.sport : sportP
     creneaux.push({ categorie: 'epreuve', sport, jour: j, fixe: true, duree: po.dureeEpreuve, titre: `🏁 ${libelleObjectif(o)}`, description: `Objectif ${o.priorite}${o.distance_km ? ` · ${o.distance_km} km` : ''}${o.denivele_m ? ` · D+ ${o.denivele_m} m` : ''}. Bonne course !` })
     sansIntense.add(j - 1)

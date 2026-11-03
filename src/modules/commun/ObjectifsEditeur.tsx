@@ -1,5 +1,5 @@
 import { Bouton, Champ, OuiNon } from '../../core/ui'
-import { dureeEstimee, GROUPES, OBJECTIFS, param, relief, type TypeObjectif } from '../../moteur/objectifs'
+import { dureeEstimee, GROUPES, OBJECTIFS, param, relief, type TypeObjectif, type Vitesses } from '../../moteur/objectifs'
 import type { Objectif } from '../../moteur/types'
 
 export const nouvelObjectif = (priorite: Objectif['priorite'] = 'A'): Objectif => ({
@@ -18,7 +18,7 @@ const AVEC_DENIVELE = ['trail-court', 'trail-long', 'velo-montagne', 'velo-cyclo
 const choix = 'w-full rounded-xl border border-bordure bg-surface-2 px-3 py-3 text-base text-texte'
 
 /** Liste des objectifs de la saison, avec priorité A (le grand objectif), B (important) ou C (préparation). */
-export function ObjectifsEditeur({ objectifs, onChange }: { objectifs: Objectif[]; onChange: (o: Objectif[]) => void }) {
+export function ObjectifsEditeur({ objectifs, onChange, vitesses = {} }: { objectifs: Objectif[]; onChange: (o: Objectif[]) => void; vitesses?: Vitesses }) {
   const maj = (id: string, champs: Partial<Objectif>) => onChange(objectifs.map((o) => (o.id === id ? { ...o, ...champs } : o)))
   return (
     <div className="flex flex-col gap-4">
@@ -71,10 +71,11 @@ export function ObjectifsEditeur({ objectifs, onChange }: { objectifs: Objectif[
                 {AVEC_DENIVELE.includes(o.type) && <Champ etiquette="Dénivelé + (m)" inputMode="numeric" value={o.denivele_m ?? ''} onChange={(e) => maj(o.id, { denivele_m: e.target.value ? Number(e.target.value) : null })} />}
               </div>
             )}
-            {dureeEstimee(o) && (
+            {dureeEstimee(o, vitesses) && (
               <p className="text-xs text-texte-3">
-                Durée estimée ≈ {Math.floor(dureeEstimee(o)! / 60)} h {String(dureeEstimee(o)! % 60).padStart(2, '0')}
-                {relief(o) === 'plat' ? ' · parcours plat : préparation au seuil et au tempo continus' : relief(o) === 'vallonne' ? ' · parcours vallonné : préparation en montées longues' : ''}. Ton programme s’y adapte.
+                Durée estimée ≈ {Math.floor(dureeEstimee(o, vitesses)! / 60)} h {String(dureeEstimee(o, vitesses)! % 60).padStart(2, '0')}
+                {(pp.vtt ? vitesses.vtt : vitesses.route) ? ' (d’après tes sorties)' : ' (estimation de départ, affinée avec tes sorties)'}
+                {relief(o) === 'plat' ? ' · parcours plat : seuil et tempo continus' : relief(o) === 'vallonne' ? ' · parcours vallonné : montées longues' : relief(o) === 'mixte' ? ' · parcours mixte : un peu des deux' : ''}. Ton programme s’y adapte.
               </p>
             )}
             {pp.competitif && (

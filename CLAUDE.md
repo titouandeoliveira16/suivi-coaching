@@ -29,7 +29,7 @@ https://claude.ai/artifact/VADvDEMvyjDpPsEMoT14fE — les lire avant toute nouve
   charge (règles de Coach, plafond course Nielsen 2014), construction de la semaine, feu du jour (questionnaire du matin,
   VFC), allègements et douleur (Silbernagel 2007), renfo (OMS 2020), course ≤ 1,1 × la plus longue du mois (Frandsen 2025). Banque de séances : `banque.json`, extraite du catalogue de Coach par `scripts/extraire-banque.py` (VTT = vélo avec
   `terrain: "vtt"`, jamais tiré au hasard). Disciplines VTT (XCO, XCC, XCM, enduro, DH) et adaptation à la distance et
-  au dénivelé de l'épreuve (`paramObjectif`, `dureeEstimee`, `relief` dans `objectifs.ts`).
+  au dénivelé de l'épreuve (`paramObjectif`, `dureeEstimee` avec la vitesse mesurée sur les sorties, `relief` dans `objectifs.ts`).
 - `src/core/donnees.ts` : accès au serveur (lecture, propositions, validation, allègements via fonctions serveur).
 - `src/modules/eleve/` : Aujourd'hui · Semaine · Saison · Progrès (barre du bas), 💬 Messages et ⚙️ Réglages
   (profil, notifications, mode d'emploi) en haut ; `src/modules/coach/` (Élèves, À valider, fiche élève).

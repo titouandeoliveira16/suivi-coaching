@@ -1,3 +1,4 @@
+import { vitesseMesuree, type Vitesses } from '../moteur/objectifs'
 import type { Client } from './supabase'
 
 /** Sortie importée d'Intervals.icu (jamais de trace GPS). */
@@ -80,4 +81,12 @@ export function resumeActivite(a: Activite): string {
   ]
     .filter(Boolean)
     .join(' · ')
+}
+
+const VTT = ['MountainBikeRide', 'EMountainBikeRide']
+const ROUTE = ['Ride', 'EBikeRide']
+
+/** Vitesses équivalent plat de l'élève, route et VTT, sur ses sorties dehors (home trainer et gravel écartés). */
+export function vitessesDe(activites: Activite[]): Vitesses {
+  return { route: vitesseMesuree(activites.filter((a) => ROUTE.includes(a.type))), vtt: vitesseMesuree(activites.filter((a) => VTT.includes(a.type))) }
 }

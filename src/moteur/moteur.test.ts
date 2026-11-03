@@ -6,7 +6,7 @@ import { ajouterJours, jourSemaine } from './dates'
 import { feuDuJour, seuilRessenti } from './feu'
 import { cible } from './intensite'
 import { coefficientsAffutage, phaseDeLaSemaine } from './phase'
-import { dureeEstimee, objectifPrincipal, param, paramObjectif, pointsAttention } from './objectifs'
+import { dureeEstimee, objectifPrincipal, param, paramObjectif, pointsAttention, relief, vitesseMesuree } from './objectifs'
 import { intensiteAutorisee, niveau } from './profil'
 import { echangePossible } from './echange'
 import { chargesMuscu } from './muscu'
@@ -573,5 +573,26 @@ describe('préparation selon la discipline', () => {
     expect(xco.seances.filter((s) => s.format_id === 'vtt-technique')).toHaveLength(1)
     const route = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: [], matins: [], tests: [], objectifs: [obj('velo-cyclo', null)] })
     expect(route.seances.some((s) => s.format_id?.startsWith('vtt-'))).toBe(false)
+  })
+})
+
+describe('vitesse et relief', () => {
+  it('la vitesse vient des sorties de l’élève (médiane, montées retirées), sinon valeurs de départ', () => {
+    const sortie = (km: number, min: number, dplus = 0) => ({ distance_m: km * 1000, duree_s: min * 60, denivele_m: dplus })
+    // 60 km en 2 h avec 450 m de D+ : 30 min de montée retirées → 60 km en 90 min = 40 km/h équivalent plat
+    expect(vitesseMesuree([sortie(60, 120, 450), sortie(50, 120), sortie(45, 100)])).toBe(27)
+    expect(vitesseMesuree([sortie(50, 120), sortie(45, 100)])).toBeNull()
+    expect(vitesseMesuree([sortie(10, 30), sortie(10, 30), sortie(10, 30)])).toBeNull()
+    const o = { type: 'velo-cyclo', distance_km: 100, denivele_m: 0 }
+    expect(dureeEstimee(o)).toBe(215)
+    expect(dureeEstimee(o, { route: 25 })).toBe(240)
+  })
+  it('relief : seuils différents sur route et en VTT, avec un niveau mixte', () => {
+    expect(relief({ type: 'velo-cyclo', distance_km: 100, denivele_m: 400 })).toBe('plat')
+    expect(relief({ type: 'velo-cyclo', distance_km: 100, denivele_m: 700 })).toBe('mixte')
+    expect(relief({ type: 'velo-cyclo', distance_km: 100, denivele_m: 1200 })).toBe('vallonne')
+    expect(relief({ type: 'vtt-xcm', distance_km: 50, denivele_m: 700 })).toBe('mixte')
+    expect(relief({ type: 'vtt-xcm', distance_km: 35, denivele_m: 1000 })).toBe('vallonne')
+    expect(paramObjectif(obj('velo-cyclo', '2027-05-16', { distance_km: 100, denivele_m: 700 })).noteLongue).toContain('vallonné par endroits')
   })
 })

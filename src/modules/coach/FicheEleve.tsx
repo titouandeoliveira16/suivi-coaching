@@ -26,7 +26,7 @@ import { libelleObjectif, objectifPrincipal, pointsAttention } from '../../moteu
 import type { Categorie, Objectif, ProfilSportif, Sport } from '../../moteur/types'
 import { Messages } from '../commun/Messages'
 import { Progres } from '../commun/Progres'
-import { activitesEntre, importerIntervals, resumeActivite, type Activite } from '../../core/intervals'
+import { activitesEntre, importerIntervals, resumeActivite, vitessesDe, type Activite } from '../../core/intervals'
 import { CarteModules } from '../commun/CarteModules'
 import { useInterversion } from '../commun/Interversion'
 import { VueSemaines } from '../commun/VueSemaines'
@@ -235,7 +235,7 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
           >
             {ouvert === 'objectifs' ? (
               <div className="flex flex-col gap-3">
-                <ObjectifsEditeur objectifs={brouillon} onChange={setBrouillon} />
+                <ObjectifsEditeur objectifs={brouillon} onChange={setBrouillon} vitesses={vitessesDe(d.activites)} />
                 <Bouton disabled={occupe || !brouillon.length} onClick={() => agir(async () => (await enregistrerObjectifs(client, id, brouillon), setOuvert('')))}>
                   Enregistrer les objectifs
                 </Bouton>

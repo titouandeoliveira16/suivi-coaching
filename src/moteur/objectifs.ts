@@ -112,33 +112,65 @@ export function param(type: string): ParamObjectif {
 
 const arrondi5 = (n: number) => Math.round(n / 5) * 5
 
+/** Vitesses « équivalent plat » de l'élève (km/h), mesurées sur ses sorties ; absentes : valeurs de départ. */
+export interface Vitesses {
+  route?: number | null
+  vtt?: number | null
+}
+export const VITESSES_DEPART = { route: 28, vtt: 18 }
+/** Minutes ajoutées par mètre de montée (1 min pour 15 m) : la montée « coûte » ce temps en plus du plat. */
+const MIN_PAR_METRE = 1 / 15
+
 /**
- * Durée estimée d'une épreuve à vélo d'après sa distance et son dénivelé (choix d'entraîneur) : 28 km/h sur route,
- * 18 km/h en VTT sur le plat, plus 1 min par 15 m de montée. Null sans distance.
+ * Vitesse équivalent plat d'un élève sur un terrain : médiane de ses sorties d'au moins 1 h, une fois retiré le temps
+ * que coûtent les montées. Au moins 3 sorties, sinon null (on garde les valeurs de départ). La médiane écarte les
+ * sorties atypiques (vent, groupe, panne) : les conditions varient trop pour une vitesse fixe.
  */
-export function dureeEstimee(o: Pick<Objectif, 'type' | 'distance_km' | 'denivele_m'>): number | null {
-  const pp = param(o.type)
-  if (!o.distance_km || pp.sport !== 'velo') return null
-  return arrondi5((o.distance_km / (pp.vtt ? 18 : 28)) * 60 + (o.denivele_m ?? 0) / 15)
+export function vitesseMesuree(sorties: { duree_s: number; distance_m: number | null; denivele_m: number | null }[]): number | null {
+  const v = sorties
+    .filter((a) => a.duree_s >= 3600 && (a.distance_m ?? 0) > 5000)
+    .map((a) => {
+      const minutesPlat = a.duree_s / 60 - (a.denivele_m ?? 0) * MIN_PAR_METRE
+      return minutesPlat > 20 ? (a.distance_m! / 1000 / minutesPlat) * 60 : null
+    })
+    .filter((x): x is number => x !== null && x > 5 && x < 50)
+    .sort((x, y) => x - y)
+  if (v.length < 3) return null
+  return Math.round(v[Math.floor(v.length / 2)] * 10) / 10
 }
 
-/** Relief d'une épreuve à vélo : moins de 5 m de D+ par km = plat, 12 ou plus = vallonné (choix d'entraîneur). */
-export function relief(o: Pick<Objectif, 'distance_km' | 'denivele_m'>): 'plat' | 'vallonne' | null {
+/**
+ * Durée estimée d'une épreuve à vélo d'après sa distance et son dénivelé : vitesse équivalent plat de l'élève (sinon
+ * 28 km/h sur route, 18 en VTT), plus 1 min par 15 m de montée. Null sans distance.
+ */
+export function dureeEstimee(o: Pick<Objectif, 'type' | 'distance_km' | 'denivele_m'>, vitesses: Vitesses = {}): number | null {
+  const pp = param(o.type)
+  if (!o.distance_km || pp.sport !== 'velo') return null
+  const vitesse = (pp.vtt ? vitesses.vtt : vitesses.route) || (pp.vtt ? VITESSES_DEPART.vtt : VITESSES_DEPART.route)
+  return arrondi5((o.distance_km / vitesse) * 60 + (o.denivele_m ?? 0) * MIN_PAR_METRE)
+}
+
+/**
+ * Relief d'une épreuve à vélo, en mètres de D+ par km (choix d'entraîneur) : route plat sous 5, vallonné dès 10 ;
+ * VTT plat sous 10, vallonné dès 20 (un parcours VTT grimpe presque toujours). Entre les deux : mixte.
+ */
+export function relief(o: Pick<Objectif, 'type' | 'distance_km' | 'denivele_m'>): 'plat' | 'mixte' | 'vallonne' | null {
   if (!o.distance_km || o.denivele_m == null) return null
   const parKm = o.denivele_m / o.distance_km
-  return parKm < 5 ? 'plat' : parKm >= 12 ? 'vallonne' : null
+  const [plat, vallonne] = param(o.type).vtt ? [10, 20] : [5, 10]
+  return parKm < plat ? 'plat' : parKm >= vallonne ? 'vallonne' : 'mixte'
 }
 
 /**
  * Paramètres adaptés à l'épreuve : une même famille d'objectif ne se prépare pas pareil sur 100 km de plat et sur
  * 35 km de VTT avec du dénivelé. La sortie longue suit la durée de l'épreuve (jusqu'à 110 %, entre 2 h et 6 h), les
- * séances clés suivent le relief : seuil et tempo continus sur le plat, montées longues quand ça grimpe.
+ * séances clés suivent le relief : seuil et tempo continus sur le plat, montées longues quand ça grimpe, un peu des deux sinon.
  */
-export function paramObjectif(o: Objectif): ParamObjectif {
+export function paramObjectif(o: Objectif, vitesses: Vitesses = {}): ParamObjectif {
   const pp = param(o.type)
   if (pp.sport !== 'velo' || !pp.competitif) return pp
   const r = { ...pp, specifique: [...pp.specifique] }
-  const duree = dureeEstimee(o)
+  const duree = dureeEstimee(o, vitesses)
   if (duree) {
     r.dureeEpreuve = duree
     if (duree >= 120) r.longueMax = Math.min(360, Math.max(120, arrondi5(duree * 1.1)))
@@ -151,6 +183,9 @@ export function paramObjectif(o: Objectif): ParamObjectif {
   } else if (rel === 'vallonne') {
     ajouter(pp.vtt ? ['vtt-marathon-cotes', 'vtt-hit-inoue'] : ['velo-seuil-2x20', 'velo-force-basse-cadence'])
     r.noteLongue = `Avec des montées de 8 à 15 min à 85-95 % de la CP : ${o.denivele_m} m de D+ le jour J.`
+  } else if (rel === 'mixte') {
+    ajouter(pp.vtt ? ['vtt-hit-inoue', 'velo-sweet-spot-3x15'] : ['velo-seuil-2x20', 'velo-sweet-spot-long'])
+    r.noteLongue = `Parcours vallonné par endroits : glisse 3 ou 4 montées de 5 à 10 min au seuil (${o.denivele_m} m de D+ le jour J).`
   }
   return r
 }
