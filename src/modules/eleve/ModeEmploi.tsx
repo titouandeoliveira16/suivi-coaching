@@ -9,6 +9,7 @@ const SECTIONS: [string, string[]][] = [
   ['🚴 Ta séance', [
     'Touche « Voir le déroulé » : chaque étape a sa durée et sa cible (en watts si tu as un capteur, sinon en fréquence cardiaque ou en sensations).',
     'Après la séance, touche « J’ai fait ma séance » : durée, effort ressenti, et si tu as eu mal quelque part.',
+    'Montre reliée (Réglages → Ma montre) : ta sortie arrive toute seule, environ une heure après. Il ne reste qu’à ajouter ton ressenti.',
     'L’effort ressenti va de 0 (repos) à 10 (maximal) : 3-4 pour une sortie facile, 7-8 pour des intervalles durs.',
   ]],
   ['🗓️ Ta semaine', [

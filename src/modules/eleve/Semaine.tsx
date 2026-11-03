@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { messageErreur } from '../../core/compte'
 import { seancesEntre, semainesDe, useCharge } from '../../core/donnees'
+import { activitesEntre } from '../../core/intervals'
 import type { Client } from '../../core/supabase'
 import { Chargement, Message } from '../../core/ui'
 import { ajouterJours, jour, lundiDe } from '../../moteur/dates'
@@ -12,8 +13,12 @@ import { VueSemaines } from '../commun/VueSemaines'
 export function Semaine({ client, eleve, profil }: { client: Client; eleve: string; profil: ProfilSportif }) {
   const lundi = lundiDe(jour())
   const { donnees, erreur, recharger } = useCharge(async () => {
-    const [seances, semaines] = await Promise.all([seancesEntre(client, eleve, lundi, ajouterJours(lundi, 13)), semainesDe(client, eleve, lundi)])
-    return { seances, semaines }
+    const [seances, semaines, activites] = await Promise.all([
+      seancesEntre(client, eleve, lundi, ajouterJours(lundi, 13)),
+      semainesDe(client, eleve, lundi),
+      activitesEntre(client, eleve, lundi, ajouterJours(lundi, 6)).catch(() => []),
+    ])
+    return { seances, semaines, activites }
   }, [client, eleve, lundi])
   const seances = useMemo(() => donnees?.seances ?? [], [donnees])
   const echange = useInterversion(client, seances, () => profil, recharger)
@@ -22,7 +27,7 @@ export function Semaine({ client, eleve, profil }: { client: Client; eleve: stri
   return (
     <>
       {echange.enCours && <Message>Choisis la séance avec laquelle échanger. Si un échange est impossible, la raison est indiquée.</Message>}
-      <VueSemaines seances={seances} profil={profil} lundi={lundi} semaines={donnees.semaines} actions={(s) => s.statut === 'validee' && echange.boutons(s)} />
+      <VueSemaines seances={seances} profil={profil} lundi={lundi} semaines={donnees.semaines} activites={donnees.activites} actions={(s) => s.statut === 'validee' && echange.boutons(s)} />
       {echange.erreur && <Message type="erreur">{echange.erreur}</Message>}
     </>
   )

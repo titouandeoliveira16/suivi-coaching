@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { messageErreur } from '../../core/compte'
 import { enregistrerMatin } from '../../core/donnees'
+import { bienEtreDuJour } from '../../core/intervals'
 import type { Client } from '../../core/supabase'
 import { Bouton, Carte, Champ, ChoixNote, Message, OuiNon } from '../../core/ui'
 import { jour } from '../../moteur/dates'
@@ -27,6 +28,15 @@ export function QuestionnaireMatin({ client, eleve, profil, termine }: { client:
   const [fcRepos, setFcRepos] = useState('')
   const [occupe, setOccupe] = useState(false)
   const [erreur, setErreur] = useState('')
+
+  // VFC et FC de repos mesurées cette nuit par la montre (via Intervals.icu)
+  useEffect(() => {
+    if (profil.liaison !== 'intervals') return
+    bienEtreDuJour(client, eleve, jour()).then((m) => {
+      if (m?.vfc) setVfc((v) => v || String(Math.round(m.vfc!)))
+      if (m?.fc_repos) setFcRepos((v) => v || String(m.fc_repos))
+    })
+  }, [client, eleve, profil.liaison])
 
   const heures = Number(sommeil.replace(',', '.'))
   const complet = sommeil !== '' && heures >= 0 && heures <= 16 && Object.values(notes).every((n) => n !== null) && douleur !== null && malade !== null && (!malade || fievre !== null)

@@ -18,7 +18,7 @@ import {
 } from '../../core/donnees'
 import type { Client } from '../../core/supabase'
 import { Bouton, Carte, Champ, Chargement, Message, Page, Pastille, Zone } from '../../core/ui'
-import { ajouterJours, jour, lundiDe, NOMS_JOURS, versDate } from '../../moteur/dates'
+import { ajouterJours, dateLisible, jour, lundiDe, NOMS_JOURS, versDate } from '../../moteur/dates'
 import { feuDuJour, LIBELLE_FEU } from '../../moteur/feu'
 import { LIBELLE_PHASE, phaseDeLaSemaine } from '../../moteur/phase'
 import { LIBELLE_NIVEAU, minutesParJour, niveau } from '../../moteur/profil'
@@ -26,6 +26,7 @@ import { libelleObjectif, objectifPrincipal, pointsAttention } from '../../moteu
 import type { Categorie, Objectif, ProfilSportif, Sport } from '../../moteur/types'
 import { Messages } from '../commun/Messages'
 import { Progres } from '../commun/Progres'
+import { activitesEntre, importerIntervals, resumeActivite, type Activite } from '../../core/intervals'
 import { useInterversion } from '../commun/Interversion'
 import { VueSemaines } from '../commun/VueSemaines'
 import { CarteSeance } from '../commun/CarteSeance'
@@ -143,7 +144,7 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
   const aujourdhui = jour()
   const lundi = lundiDe(aujourdhui)
   const charger = useCallback(async () => {
-    const [nom, profil, seances, matins, alertes, objectifs, semaines] = await Promise.all([
+    const [nom, profil, seances, matins, alertes, objectifs, semaines, activites] = await Promise.all([
       client.from('profils').select('nom, cree_le').eq('id', id).eq('role', 'eleve').maybeSingle(),
       profilSportif(client, id),
       seancesEntre(client, id, ajouterJours(aujourdhui, -21), ajouterJours(lundi, 13)),
@@ -151,9 +152,10 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
       alertesNonVues(client, id),
       objectifsDe(client, id),
       semainesDe(client, id, lundi),
+      activitesEntre(client, id, ajouterJours(aujourdhui, -21), ajouterJours(lundi, 13)).catch(() => [] as Activite[]),
     ])
     if (nom.error) throw nom.error
-    return { eleve: nom.data as { nom: string; cree_le: string } | null, profil, seances, matins, alertes, objectifs, semaines }
+    return { eleve: nom.data as { nom: string; cree_le: string } | null, profil, seances, matins, alertes, objectifs, semaines, activites }
   }, [client, id, aujourdhui, lundi])
   const { donnees: d, erreur, recharger } = useCharge(charger, [charger])
   const [ouvert, setOuvert] = useState<'' | 'ajout' | 'test' | 'objectifs'>('')
@@ -190,6 +192,7 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
   const matin = d.matins.find((m) => m.date === aujourdhui)
   const signal = matin ? feuDuJour(matin, d.matins.filter((m) => m.date < aujourdhui), d.seances) : null
   const faites = d.seances.filter((s) => s.statut === 'faite' && s.date < lundi).reverse()
+  const horsProgramme = d.activites.filter((a) => !a.seance_id).reverse()
 
   return (
     <Page surtitre={`Élève · suivi depuis le ${new Date(d.eleve.cree_le).toLocaleDateString('fr-FR')}`} titre={d.eleve.nom || 'Sans prénom'} action={retour} barre={barre}>
@@ -299,7 +302,7 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
 
           <AValider key={version} client={client} eleve={id} auChangement={rafraichir} />
 
-          <VueSemaines seances={prevues} profil={p} lundi={lundi} semaines={d.semaines} avecStatut actions={echange.boutons} />
+          <VueSemaines seances={prevues} profil={p} lundi={lundi} semaines={d.semaines} avecStatut actions={echange.boutons} activites={d.activites} />
           {echange.erreur && <Message type="erreur">{echange.erreur}</Message>}
           <div className="flex gap-2">
             <Bouton variante="discret" className="flex-1" disabled={occupe} onClick={() => agir(() => proposerSemaine(client, id, ajouterJours(lundi, 7), ajouterJours(lundi, 7)))}>
@@ -319,10 +322,39 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
             <div className="flex flex-col gap-2">
               <h2 className="mt-2 text-sm font-semibold text-texte-3 uppercase">Séances faites avant cette semaine</h2>
               {faites.map((s) => (
-                <CarteSeance key={s.id} seance={s} profil={p} avecDate />
+                <CarteSeance key={s.id} seance={s} profil={p} avecDate activite={d.activites.find((a) => a.seance_id === s.id)} />
               ))}
             </div>
           )}
+
+          <Carte
+            titre="⌚ Sorties reçues"
+            action={
+              p.liaison === 'intervals' && (
+                <Bouton variante="lien" className="text-sm" disabled={occupe} onClick={() => agir(() => importerIntervals(client, id))}>
+                  Synchroniser
+                </Bouton>
+              )
+            }
+          >
+            {p.liaison === 'intervals' ? (
+              horsProgramme.length ? (
+                <ul className="flex flex-col divide-y divide-bordure text-sm">
+                  {horsProgramme.map((a) => (
+                    <li key={a.id} className="py-2">
+                      <span className="text-texte-3 capitalize">{dateLisible(a.date)} · hors programme</span>
+                      <span className="block">{a.nom || a.type}</span>
+                      <span className="block text-texte-2">{resumeActivite(a)}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm text-texte-2">Montre reliée par Intervals.icu : chaque sortie s’affiche sur sa séance. Aucune sortie hors programme ces 3 dernières semaines.</p>
+              )
+            ) : (
+              <p className="text-sm text-texte-2">{p.liaison === 'sans' ? 'Pas de montre connectée : l’élève saisit ses séances à la main.' : 'Montre pas encore reliée.'}</p>
+            )}
+          </Carte>
 
           <Progres key={`progres-${version}`} client={client} eleve={id} />
           <Bouton variante="discret" onClick={() => setOuvert(ouvert === 'test' ? '' : 'test')}>

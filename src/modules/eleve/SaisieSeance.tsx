@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { messageErreur } from '../../core/compte'
 import { enregistrerResultat, enregistrerTest } from '../../core/donnees'
+import type { Activite } from '../../core/intervals'
 import type { Client } from '../../core/supabase'
 import { Bouton, Champ, ChoixNote, Message, OuiNon, Zone } from '../../core/ui'
 import { cpDeuxPoints, vmaCinqMinutes } from '../../moteur/tests'
@@ -14,8 +15,8 @@ function secondes(chrono: string): number | null {
 }
 
 /** Après la séance : durée, effort ressenti (Foster 2001), réussite, douleur, et le résultat si c'est un test. */
-export function SaisieSeance({ client, seance: s, termine, annuler }: { client: Client; seance: Seance; termine: () => void; annuler: () => void }) {
-  const [duree, setDuree] = useState(String(s.duree_min))
+export function SaisieSeance({ client, seance: s, activite, termine, annuler }: { client: Client; seance: Seance; activite?: Activite; termine: () => void; annuler: () => void }) {
+  const [duree, setDuree] = useState(String(s.duree_reelle_min ?? (activite ? Math.max(1, Math.round(activite.duree_s / 60)) : s.duree_min)))
   const [rpe, setRpe] = useState<number | null>(null)
   const [reussie, setReussie] = useState<boolean | null>(null)
   const [douleur, setDouleur] = useState<number | null>(0)

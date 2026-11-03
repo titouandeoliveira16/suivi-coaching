@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import type { SemaineStockee } from '../../core/donnees'
+import type { Activite } from '../../core/intervals'
 import { Message } from '../../core/ui'
 import { ajouterJours, NOMS_JOURS, versDate } from '../../moteur/dates'
 import { LIBELLE_PHASE } from '../../moteur/phase'
@@ -16,6 +17,7 @@ export function VueSemaines({
   semaines = [],
   avecStatut,
   actions,
+  activites = [],
 }: {
   seances: Seance[]
   profil: ProfilSportif
@@ -23,6 +25,7 @@ export function VueSemaines({
   semaines?: SemaineStockee[]
   avecStatut?: boolean
   actions?: (s: Seance) => ReactNode
+  activites?: Activite[]
 }) {
   return (
     <>
@@ -50,7 +53,7 @@ export function VueSemaines({
                   <div key={date} className="flex flex-col gap-2">
                     <p className="text-xs text-texte-3 capitalize">{titre}</p>
                     {duJour.map((s) => (
-                      <CarteSeance key={s.id} seance={s} profil={profil} avecStatut={avecStatut ?? s.statut !== 'validee'}>
+                      <CarteSeance key={s.id} seance={s} profil={profil} avecStatut={avecStatut ?? s.statut !== 'validee'} activite={activites.find((a) => a.seance_id === s.id)}>
                         {actions?.(s)}
                       </CarteSeance>
                     ))}

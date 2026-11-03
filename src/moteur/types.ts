@@ -59,6 +59,8 @@ export interface ProfilSportif {
   post_partum: boolean
   regime_restrictif: boolean
   trouble_alimentaire: boolean
+  /** null : tuto montre pas encore fait ; 'intervals' : relié ; 'sans' : pas de montre connectée. */
+  liaison?: 'intervals' | 'sans' | null
 }
 
 export interface Objectif {

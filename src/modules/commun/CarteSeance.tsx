@@ -3,6 +3,7 @@ import { format } from '../../moteur/banque'
 import { dateLisible } from '../../moteur/dates'
 import { cible, duree } from '../../moteur/intensite'
 import type { Categorie, Etape, Exercice, ProfilSportif, Seance, Sport, SportSeance } from '../../moteur/types'
+import { resumeActivite, type Activite } from '../../core/intervals'
 import { Pastille } from '../../core/ui'
 
 export const ICONE_SPORT: Record<SportSeance, string> = { velo: '🚴', course: '🏃', renfo: '🏋️' }
@@ -57,7 +58,7 @@ function Exercices({ exercices }: { exercices: Exercice[] }) {
   )
 }
 
-export function CarteSeance({ seance: s, profil, avecDate, avecStatut, ouverte, children }: { seance: Seance; profil: ProfilSportif; avecDate?: boolean; avecStatut?: boolean; ouverte?: boolean; children?: ReactNode }) {
+export function CarteSeance({ seance: s, profil, avecDate, avecStatut, ouverte, activite, children }: { seance: Seance; profil: ProfilSportif; avecDate?: boolean; avecStatut?: boolean; ouverte?: boolean; activite?: Activite; children?: ReactNode }) {
   const [details, setDetails] = useState(!!ouverte)
   const f = s.format_id ? format(s.format_id) : undefined
   return (
@@ -73,9 +74,10 @@ export function CarteSeance({ seance: s, profil, avecDate, avecStatut, ouverte, 
       {s.description && <p className="mt-1 text-sm text-texte-2">{s.description}</p>}
       {s.ajustement && <p className="mt-2 text-sm text-alerte">↓ {s.ajustement}</p>}
 
+      {activite && <p className="mt-2 text-sm text-texte-2">📡 {resumeActivite(activite)}</p>}
       {s.statut === 'faite' && (
         <p className="mt-2 text-sm text-succes">
-          ✓ {s.duree_reelle_min ?? s.duree_min} min · effort {s.rpe}/10 · {s.reussie ? 'réussie' : 'pas réussie'}
+          ✓ {s.duree_reelle_min ?? s.duree_min} min{s.rpe !== null ? ` · effort ${s.rpe}/10 · ${s.reussie ? 'réussie' : 'pas réussie'}` : ' · ressenti pas encore saisi'}
           {s.douleur ? ` · douleur ${s.douleur}/10${s.douleur_zone ? ` (${s.douleur_zone})` : ''}` : ''}
           {s.note && <span className="block text-texte-2">« {s.note} »</span>}
         </p>

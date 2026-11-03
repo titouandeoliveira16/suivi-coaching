@@ -1,12 +1,13 @@
 import { useCallback, useState } from 'react'
 import { allerA, useAdresse } from '../../core/adresse'
 import { messageErreur, type Profil } from '../../core/compte'
-import { nonLus, objectifsDe, profilSportif, useCharge } from '../../core/donnees'
+import { choisirSansMontre, nonLus, objectifsDe, profilSportif, useCharge } from '../../core/donnees'
 import type { Client } from '../../core/supabase'
 import { BarreOnglets, Chargement, Message, Page, Pastille, type Onglet } from '../../core/ui'
 import { Messages } from '../commun/Messages'
 import { Progres } from '../commun/Progres'
 import { Aujourdhui } from './Aujourdhui'
+import { LierMontre } from './LierMontre'
 import { ModeEmploi } from './ModeEmploi'
 import { QuestionnaireArrivee } from './QuestionnaireArrivee'
 import { Reglages } from './Reglages'
@@ -39,6 +40,15 @@ export function EspaceEleve({ client, profil, deconnecter }: { client: Client; p
   if (!d) return <Page titre="…"><Chargement /></Page>
   if (!sportif || editer)
     return <QuestionnaireArrivee client={client} eleve={profil.id} initial={sportif} objectifsInitiaux={d.objectifs} annuler={sportif ? () => setEditer(false) : undefined} termine={() => (setEditer(false), recharger())} />
+
+  // Avant d'accéder à l'appli : relier sa montre (ou dire qu'on n'en a pas)
+  if (sportif.liaison === null)
+    return (
+      <Page surtitre="Dernière étape" titre="Relie ta montre">
+        <p className="text-sm text-texte-2">Tes sorties arriveront toutes seules dans l’appli et chez ton coach : tu n’auras plus qu’à dire comment s’est passée ta séance. 5 minutes, une seule fois.</p>
+        <LierMontre client={client} fini={() => recharger()} sansMontre={() => choisirSansMontre(client, profil.id)} />
+      </Page>
+    )
 
   const onglets: Onglet[] = [
     { cle: '', libelle: 'Aujourd’hui', icone: '☀️' },
@@ -75,7 +85,7 @@ export function EspaceEleve({ client, profil, deconnecter }: { client: Client; p
       {actif === '#/saison' && <Saison client={client} eleve={profil.id} profil={sportif} />}
       {actif === '#/progres' && <Progres client={client} eleve={profil.id} />}
       {actif === '#/messages' && <Messages client={client} eleve={profil.id} moi={profil.id} auLu={lus} />}
-      {actif === '#/reglages' && <Reglages client={client} moi={profil.id} modifierProfil={() => setEditer(true)} deconnecter={deconnecter} />}
+      {actif === '#/reglages' && <Reglages client={client} moi={profil.id} modifierProfil={() => setEditer(true)} deconnecter={deconnecter} auChangement={recharger} />}
       {actif === '#/aide' && <ModeEmploi />}
     </Page>
   )

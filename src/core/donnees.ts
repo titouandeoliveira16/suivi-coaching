@@ -75,6 +75,11 @@ export async function enregistrerProfilSportif(c: Client, p: Omit<ProfilSportif,
   verifier(await c.from('profils_sportifs').upsert(p))
 }
 
+/** L'élève n'a pas de montre connectée : il saisira ses séances à la main (il pourra la relier plus tard). */
+export async function choisirSansMontre(c: Client, eleve: string) {
+  verifier(await c.from('profils_sportifs').update({ liaison: 'sans' }).eq('eleve_id', eleve))
+}
+
 /** Enregistre le questionnaire du matin et calcule le feu du jour. */
 export async function enregistrerMatin(c: Client, eleve: string, m: Matin): Promise<Signal> {
   const aujourdhui = m.date
