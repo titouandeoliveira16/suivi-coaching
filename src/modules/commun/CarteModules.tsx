@@ -29,7 +29,7 @@ export function CarteModules({ client, eleve, role, auChangement }: { client: Cl
   const statut = (m: NomModule) => lignes.find((l) => l.module === m)?.statut
 
   return (
-    <Carte titre="🧩 Modules">
+    <Carte titre="Modules">
       <p className="mb-3 text-sm text-texte-2">
         {role === 'eleve' ? 'En plus de ton entraînement, sur demande : ton coach valide et les adapte à ton programme.' : 'Demandés par l’élève ou activés par toi ; ils s’intègrent au programme dès la semaine suivante.'}
       </p>

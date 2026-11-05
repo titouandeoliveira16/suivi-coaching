@@ -329,7 +329,7 @@ export function FicheEleve({ client, id, moi, barre }: { client: Client; id: str
           )}
 
           <Carte
-            titre="⌚ Sorties reçues"
+            titre="Sorties reçues"
             action={
               p.liaison === 'intervals' && (
                 <Bouton variante="lien" className="text-sm" disabled={occupe} onClick={() => agir(() => importerIntervals(client, id))}>

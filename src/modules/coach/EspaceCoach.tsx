@@ -4,7 +4,9 @@ import type { Profil } from '../../core/compte'
 import { proposerAutomatiquement } from '../../core/donnees'
 import type { Client } from '../../core/supabase'
 import { jour, lundiDe } from '../../moteur/dates'
-import { BarreOnglets, Bouton, Page, type Onglet } from '../../core/ui'
+import { Bouton, Page } from '../../core/ui'
+import { BarreBas } from '../../core/ui/cadre'
+import { IconeEleves, IconeValider } from '../../core/ui/icones'
 import { AValider } from './AValider'
 import { FicheEleve } from './FicheEleve'
 import { MesEleves } from './MesEleves'
@@ -39,13 +41,18 @@ export function EspaceCoach({ client, profil, deconnecter }: { client: Client; p
       .then(({ count }) => setAValider(count ?? 0))
   }, [client, version, hash])
 
-  const onglets: Onglet[] = [
-    { cle: '', libelle: 'Élèves', icone: '👥' },
-    { cle: '#/a-valider', libelle: 'À valider', icone: '✅', pastille: aValider },
-  ]
   const eleve = eleveDepuisAdresse(hash)
   const actif = hash === '#/a-valider' ? '#/a-valider' : ''
-  const barre = <BarreOnglets onglets={onglets} actif={eleve ? '' : actif} choisir={allerA} />
+  const barre = (
+    <BarreBas
+      entrees={[
+        { cle: '', nom: 'Élèves', Icone: IconeEleves },
+        { cle: '#/a-valider', nom: 'À valider', Icone: IconeValider, pastille: aValider },
+      ]}
+      actif={eleve ? '' : actif}
+      choisir={allerA}
+    />
+  )
 
   if (eleve) return <FicheEleve key={`${eleve}-${version}`} client={client} id={eleve} moi={profil.id} barre={barre} />
 

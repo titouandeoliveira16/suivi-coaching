@@ -61,19 +61,20 @@ function Exercices({ exercices }: { exercices: Exercice[] }) {
   )
 }
 
-export function CarteSeance({ seance: s, profil, avecDate, avecStatut, ouverte, activite, children }: { seance: Seance; profil: ProfilSportif; avecDate?: boolean; avecStatut?: boolean; ouverte?: boolean; activite?: Activite; children?: ReactNode }) {
+export function CarteSeance({ seance: s, profil, avecDate, avecStatut, ouverte, activite, etiquette, children }: { seance: Seance; profil: ProfilSportif; avecDate?: boolean; avecStatut?: boolean; ouverte?: boolean; activite?: Activite; etiquette?: string; children?: ReactNode }) {
   const [details, setDetails] = useState(!!ouverte)
   const f = s.format_id ? format(s.format_id) : undefined
   const nutrition = useModulesActifs().includes('nutrition') && s.sport !== 'renfo' && s.statut !== 'faite' && s.statut !== 'annulee'
   const conseils = nutrition ? conseilsPourSeance(s, interieurSeulement(profil)) : null
   return (
-    <section className={`rounded-2xl border bg-surface p-5 ${s.statut === 'annulee' ? 'border-bordure opacity-70' : s.categorie === 'intense' || s.categorie === 'test' ? 'border-accent/60' : 'border-bordure'}`}>
-      <div className="mb-1 flex flex-wrap items-center gap-2 text-sm text-texte-3">
-        <span className="text-lg">{ICONE_SPORT[s.sport]}</span>
-        {avecDate && <span className="capitalize">{dateLisible(s.date)}</span>}
-        <Pastille ton={s.categorie === 'epreuve' ? 'succes' : s.categorie === 'intense' || s.categorie === 'test' ? 'accent' : 'neutre'}>{LIBELLE_CATEGORIE[s.categorie]}</Pastille>
-        <span>{s.duree_min} min</span>
-        {avecStatut && <Pastille ton={s.statut === 'faite' ? 'succes' : 'neutre'}>{LIBELLE_STATUT[s.statut]}</Pastille>}
+    <section className={`rounded-2xl border bg-surface p-3 ${s.statut === 'annulee' ? 'border-bordure opacity-70' : ouverte ? 'border-accent' : 'border-bordure'}`}>
+      <div className="mb-1 flex items-baseline justify-between gap-2">
+        <p className="text-xs font-semibold tracking-wider text-texte-3 uppercase">{etiquette ?? (avecDate ? dateLisible(s.date) : LIBELLE_CATEGORIE[s.categorie])}</p>
+        <span className="flex shrink-0 items-center gap-1.5 text-xs text-texte-2">
+          {ICONE_SPORT[s.sport]} {s.duree_min} min
+          {(etiquette || avecDate) && <Pastille ton={s.categorie === 'epreuve' ? 'succes' : s.categorie === 'intense' || s.categorie === 'test' ? 'accent' : 'neutre'}>{LIBELLE_CATEGORIE[s.categorie]}</Pastille>}
+          {avecStatut && <Pastille ton={s.statut === 'faite' ? 'succes' : 'neutre'}>{LIBELLE_STATUT[s.statut]}</Pastille>}
+        </span>
       </div>
       <h3 className="text-lg font-semibold">{s.titre}</h3>
       {s.description && <p className="mt-1 text-sm text-texte-2">{s.description}</p>}

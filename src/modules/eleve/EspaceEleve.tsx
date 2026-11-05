@@ -4,7 +4,9 @@ import { messageErreur, type Profil } from '../../core/compte'
 import { choisirSansMontre, nonLus, objectifsDe, profilSportif, useCharge } from '../../core/donnees'
 import { ModulesActifs, modulesDe } from '../../core/modules'
 import type { Client } from '../../core/supabase'
-import { BarreOnglets, Chargement, Message, Page, Pastille, type Onglet } from '../../core/ui'
+import { Chargement, Message, Page } from '../../core/ui'
+import { BarreBas, Cadre, EnTete, OngletsHaut } from '../../core/ui/cadre'
+import { IconeAide, IconeEntrainement, IconeMessages, IconeReglages } from '../../core/ui/icones'
 import { Messages } from '../commun/Messages'
 import { Progres } from '../commun/Progres'
 import { Aujourdhui } from './Aujourdhui'
@@ -51,37 +53,39 @@ export function EspaceEleve({ client, profil, deconnecter }: { client: Client; p
       </Page>
     )
 
-  const onglets: Onglet[] = [
-    { cle: '', libelle: 'Aujourd’hui', icone: '☀️' },
-    { cle: '#/semaine', libelle: 'Semaine', icone: '🗓️' },
-    { cle: '#/saison', libelle: 'Saison', icone: '🧭' },
-    { cle: '#/progres', libelle: 'Progrès', icone: '📈' },
-  ]
-  const aLireMoi = aLire?.[profil.id] ?? 0
-  const icone = (cle: string, symbole: string, libelle: string, pastille = 0) => (
-    <button type="button" aria-label={libelle} onClick={() => allerA(actif === cle ? '' : cle)} className={`relative rounded-xl px-2 py-1 text-2xl ${actif === cle ? 'bg-surface-2' : ''}`}>
-      {symbole}
-      {pastille > 0 && (
-        <span className="absolute -top-1 -right-1">
-          <Pastille ton="alerte">{pastille}</Pastille>
-        </span>
-      )}
-    </button>
+  const entrainement = ['', '#/semaine', '#/saison', '#/progres'].includes(actif)
+  const barre = (
+    <BarreBas
+      entrees={[
+        { cle: '', nom: 'Entraînement', Icone: IconeEntrainement },
+        { cle: '#/messages', nom: 'Messages', Icone: IconeMessages, pastille: aLire?.[profil.id] ?? 0 },
+        { cle: '#/aide', nom: 'Mode d’emploi', Icone: IconeAide },
+        { cle: '#/reglages', nom: 'Réglages', Icone: IconeReglages },
+      ]}
+      actif={entrainement ? '' : actif}
+      choisir={allerA}
+    />
+  )
+  const entete = entrainement ? (
+    <EnTete titre="Entraînement" aDroite={new Date().toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' })}>
+      <OngletsHaut
+        onglets={[
+          { cle: '', libelle: 'Aujourd’hui' },
+          { cle: '#/semaine', libelle: 'Semaine' },
+          { cle: '#/saison', libelle: 'Saison' },
+          { cle: '#/progres', libelle: 'Progrès' },
+        ]}
+        actif={actif}
+        choisir={allerA}
+      />
+    </EnTete>
+  ) : (
+    <EnTete titre={TITRES[actif]} />
   )
 
   return (
     <ModulesActifs.Provider value={d.actifs}>
-    <Page
-      surtitre={profil.nom ? `Bonjour ${profil.nom}` : 'Bonjour'}
-      titre={TITRES[actif]}
-      barre={<BarreOnglets onglets={onglets} actif={onglets.some((o) => o.cle === actif) ? actif : 'aucun'} choisir={allerA} />}
-      action={
-        <div className="flex gap-1">
-          {icone('#/messages', '💬', 'Messages', aLireMoi)}
-          {icone('#/reglages', '⚙️', 'Réglages')}
-        </div>
-      }
-    >
+    <Cadre entete={entete} barre={barre}>
       {actif === '' && <Aujourdhui client={client} eleve={profil.id} profil={sportif} />}
       {actif === '#/semaine' && <Semaine client={client} eleve={profil.id} profil={sportif} />}
       {actif === '#/saison' && <Saison client={client} eleve={profil.id} profil={sportif} />}
@@ -89,7 +93,7 @@ export function EspaceEleve({ client, profil, deconnecter }: { client: Client; p
       {actif === '#/messages' && <Messages client={client} eleve={profil.id} moi={profil.id} auLu={lus} />}
       {actif === '#/reglages' && <Reglages client={client} moi={profil.id} modifierProfil={() => setEditer(true)} deconnecter={deconnecter} auChangement={recharger} />}
       {actif === '#/aide' && <ModeEmploi />}
-    </Page>
+    </Cadre>
     </ModulesActifs.Provider>
   )
 }

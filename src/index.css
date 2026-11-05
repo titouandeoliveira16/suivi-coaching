@@ -37,3 +37,7 @@ body {
 .pb-sur {
   padding-bottom: max(env(safe-area-inset-bottom), 8px);
 }
+/* Barre du bas : collée en bas comme une barre d'iPhone, les libellés juste au-dessus de la barre d'accueil */
+.pb-barre {
+  padding-bottom: max(calc(env(safe-area-inset-bottom) - 22px), 6px);
+}

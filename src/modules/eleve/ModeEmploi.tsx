@@ -13,8 +13,8 @@ const SECTIONS: [string, string[]][] = [
     'L’effort ressenti va de 0 (repos) à 10 (maximal) : 3-4 pour une sortie facile, 7-8 pour des intervalles durs.',
   ]],
   ['🗓️ Ta semaine', [
-    'Tu vois toujours la semaine en cours et la suivante, préparées par ton coach.',
-    'Un empêchement ? Touche « ⇄ Intervertir » sur une séance, puis choisis le jour avec lequel échanger. L’appli refuse ce qui serait mauvais pour toi (deux jours durs d’affilée, un jour trop court…) et ton coach est prévenu.',
+    'Tu vois toujours la semaine en cours et la suivante (flèche ›), préparées par ton coach.',
+    'Un empêchement ? Dans Semaine, touche la séance, puis choisis celle avec laquelle l’échanger. L’appli grise ce qui serait mauvais pour toi (deux jours durs d’affilée, un jour trop court…), avec la raison, et ton coach est prévenu.',
     'Si ta semaine a été plus dure que prévu, la suivante est allégée automatiquement. Elle n’est jamais alourdie sans ton coach.',
   ]],
   ['📈 Ta saison et tes progrès', [
@@ -32,8 +32,8 @@ const SECTIONS: [string, string[]][] = [
     'Malade avec de la fièvre : repos complet, l’appli le gère pour toi.',
   ]],
   ['💬 Ton coach', [
-    'L’icône 💬 en haut ouvre tes messages. Une question, un empêchement, une course ajoutée : écris-lui.',
-    'Réglages (⚙️) : ton profil, tes disponibilités, tes notifications.',
+    'Messages, en bas de l’écran : une question, un empêchement, une course ajoutée, écris-lui.',
+    'Réglages, en bas : ton profil, tes disponibilités, ta montre, les modules, tes notifications.',
   ]],
 ]
 

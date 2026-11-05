@@ -27,7 +27,7 @@ export function MaMontre({ client, auChangement }: { client: Client; auChangemen
   }
 
   return (
-    <Carte titre="⌚ Ma montre">
+    <Carte titre="Ma montre">
       {erreur ? (
         <Message type="erreur">{erreur instanceof Error ? erreur.message : messageErreur(erreur)}</Message>
       ) : !etat ? null : etat.connecte ? (

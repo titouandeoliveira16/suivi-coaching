@@ -5,13 +5,13 @@ import { activitesEntre, importerSiBesoin } from '../../core/intervals'
 import type { Client } from '../../core/supabase'
 import { Bouton, Carte, Chargement, Message } from '../../core/ui'
 import { ajouterJours, dateLisible, jour } from '../../moteur/dates'
-import { feuDuJour, LIBELLE_FEU } from '../../moteur/feu'
-import type { Feu, ProfilSportif, Seance } from '../../moteur/types'
+import { feuDuJour } from '../../moteur/feu'
+import type { ProfilSportif, Seance } from '../../moteur/types'
 import { CarteSeance } from '../commun/CarteSeance'
+import { CarteForme } from './CarteForme'
 import { QuestionnaireMatin } from './QuestionnaireMatin'
 import { SaisieSeance } from './SaisieSeance'
 
-const COULEUR_FEU: Record<Feu, string> = { vert: 'bg-succes', orange: 'bg-alerte', rouge: 'bg-[#f87171]', repos: 'bg-[#f87171]' }
 
 export function Aujourdhui({ client, eleve, profil }: { client: Client; eleve: string; profil: ProfilSportif }) {
   const aujourdhui = jour()
@@ -68,8 +68,8 @@ export function Aujourdhui({ client, eleve, profil }: { client: Client; eleve: s
   const aCompleter = donnees.seances.filter(
     (s) => s.date < aujourdhui && s.date >= ajouterJours(aujourdhui, -3) && ((s.statut === 'validee' && activiteDe(s.id)) || (s.statut === 'faite' && s.rpe === null)),
   )
-  const carte = (s: Seance, saisissable: boolean) => (
-    <CarteSeance key={s.id} seance={s} profil={profil} ouverte={s.statut === 'validee' && s.date === aujourdhui} activite={activiteDe(s.id)} avecDate={s.date !== aujourdhui}>
+  const carte = (s: Seance, saisissable: boolean, etiquette?: string) => (
+    <CarteSeance key={s.id} seance={s} profil={profil} ouverte={s.statut === 'validee' && s.date === aujourdhui} activite={activiteDe(s.id)} avecDate={s.date !== aujourdhui} etiquette={etiquette}>
       {saisissable &&
         (saisie === s.id ? (
           <SaisieSeance client={client} seance={s} activite={activiteDe(s.id)} annuler={() => setSaisie(null)} termine={() => (setSaisie(null), recharger())} />
@@ -84,42 +84,27 @@ export function Aujourdhui({ client, eleve, profil }: { client: Client; eleve: s
       {!matin ? (
         <QuestionnaireMatin client={client} eleve={eleve} profil={profil} termine={() => ((dejaTente.current = false), recharger())} />
       ) : (
-        signal && (
-          <Carte>
-            <div className="flex items-start gap-3">
-              <span className={`mt-1 h-4 w-4 shrink-0 rounded-full ${COULEUR_FEU[signal.feu]}`} />
-              <div>
-                <p className="font-semibold">{LIBELLE_FEU[signal.feu]}</p>
-                {signal.raisons.length > 0 && <p className="text-sm text-texte-2">{signal.raisons.join(' · ')}</p>}
-              </div>
-            </div>
-          </Carte>
-        )
+        signal && <CarteForme matin={matin} signal={signal} />
       )}
       {erreurAjustement && <Message type="erreur">{erreurAjustement}</Message>}
 
       {aCompleter.length > 0 && (
         <div className="flex flex-col gap-2">
-          <p className="text-sm text-texte-3">À compléter : ton ressenti sur ces séances</p>
+          <p className="px-1 text-xs font-semibold tracking-wider text-texte-3 uppercase">À compléter : ton ressenti</p>
           {aCompleter.map((s) => carte(s, true))}
         </div>
       )}
 
       {duJour.length ? (
-        duJour.map((s) => carte(s, s.statut === 'validee'))
+        duJour.map((s, i) => carte(s, s.statut === 'validee', i === 0 ? 'Séance du jour' : 'Encore prévu'))
       ) : (
-        <Carte>
-          <p className="font-semibold">Pas de séance aujourd’hui</p>
-          <p className="text-sm text-texte-2">Repos : c’est là que le corps progresse.</p>
+        <Carte titre="Séance du jour">
+          <p className="font-semibold">Repos</p>
+          <p className="text-sm text-texte-2">C’est là que le corps assimile le travail et progresse.</p>
         </Carte>
       )}
 
-      {prochaine && (
-        <div className="flex flex-col gap-2">
-          <p className="text-sm text-texte-3">Prochaine séance · {dateLisible(prochaine.date)}</p>
-          <CarteSeance seance={prochaine} profil={profil} />
-        </div>
-      )}
+      {prochaine && <CarteSeance seance={prochaine} profil={profil} etiquette={`Prochaine séance · ${dateLisible(prochaine.date)}`} />}
       {!prochaine && !duJour.length && <Message>Ton coach prépare tes prochaines séances.</Message>}
     </>
   )

@@ -570,7 +570,9 @@ describe('préparation selon la discipline', () => {
   it('VTT : une séance technique sur le terrain, jamais tirée au hasard pour un routier', () => {
     const p = profil({ cp: 260, minutes_jour: [90, 90, 90, 0, 90, 210, 180], jour_longue: 5 })
     const xco = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: [], matins: [], tests: [], objectifs: [obj('velo-vtt-xc', null)] })
-    expect(xco.seances.filter((s) => s.format_id === 'vtt-technique')).toHaveLength(1)
+    const technique = xco.seances.filter((s) => s.format_id === 'vtt-technique')
+    expect(technique).toHaveLength(1)
+    expect(technique[0].duree_min).toBeLessThanOrEqual(80)
     const route = genererSemaine({ profil: p, lundi: LUNDI, aPartirDe: LUNDI, precedente: null, seances: [], matins: [], tests: [], objectifs: [obj('velo-cyclo', null)] })
     expect(route.seances.some((s) => s.format_id?.startsWith('vtt-'))).toBe(false)
   })

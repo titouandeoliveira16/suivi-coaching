@@ -19,12 +19,13 @@ export function Page({ titre, surtitre, action, barre, children }: { titre: stri
   )
 }
 
-export function Carte({ titre, action, children }: { titre?: string; action?: ReactNode; children: ReactNode }) {
+/** Bloc de contenu (comme Coach) : titre en petites majuscules grises, action éventuelle à droite. */
+export function Carte({ titre, action, children, className = '' }: { titre?: ReactNode; action?: ReactNode; children: ReactNode; className?: string }) {
   return (
-    <section className="rounded-2xl border border-bordure bg-surface p-5">
+    <section className={`rounded-2xl border border-bordure bg-surface p-4 ${className}`}>
       {(titre || action) && (
-        <div className="mb-3 flex items-center justify-between gap-2">
-          {titre && <h2 className="text-lg font-semibold">{titre}</h2>}
+        <div className="mb-2 flex items-center justify-between gap-2">
+          {titre && <h2 className="text-xs font-semibold tracking-wider text-texte-3 uppercase">{titre}</h2>}
           {action}
         </div>
       )}
@@ -74,30 +75,41 @@ export function Message({ type = 'info', children }: { type?: 'info' | 'erreur' 
   return <p className={`text-sm ${couleur}`}>{children}</p>
 }
 
-/** Rangée de boutons pour une note (ex. 1 à 5, 0 à 10). */
+/** Couleur de chaque note de 1 à 5, du rouge (1) au vert (5), comme dans Coach. */
+export const COULEURS_NOTE = ['#f87171', '#fb923c', '#facc15', '#a3e635', '#4ade80']
+
+/** Grosses cases à toucher pour une note (1 à 5 colorées du rouge au vert, ou 0 à 10), comme dans Coach. */
 export function ChoixNote({ etiquette, min, max, valeur, onChange, bas, haut }: { etiquette: string; min: number; max: number; valeur: number | null; onChange: (v: number) => void; bas?: string; haut?: string }) {
   const notes = Array.from({ length: max - min + 1 }, (_, i) => min + i)
+  const cinq = notes.length === 5
   return (
-    <div className="flex flex-col gap-1">
-      <span className="text-sm text-texte-2">{etiquette}</span>
-      <div className="flex gap-1">
-        {notes.map((n) => (
-          <button
-            key={n}
-            type="button"
-            onClick={() => onChange(n)}
-            className={`h-10 flex-1 rounded-lg text-sm ${n === valeur ? 'bg-accent font-semibold text-fond' : 'bg-surface-2 text-texte-2'}`}
-          >
-            {n}
-          </button>
-        ))}
+    <div className="py-1">
+      <div className="mb-1.5 flex items-baseline justify-between gap-2">
+        <span className="text-texte-2">{etiquette}</span>
+        {(bas || haut) && (
+          <span className="shrink-0 text-xs text-texte-3">
+            {bas} → {haut}
+          </span>
+        )}
       </div>
-      {(bas || haut) && (
-        <div className="flex justify-between text-xs text-texte-3">
-          <span>{bas}</span>
-          <span>{haut}</span>
-        </div>
-      )}
+      <div className={`grid gap-1.5 ${cinq ? 'grid-cols-5' : 'grid-cols-6'}`}>
+        {notes.map((n, i) => {
+          const actif = n === valeur
+          const couleur = cinq ? COULEURS_NOTE[i] : 'var(--color-accent)'
+          return (
+            <button
+              key={n}
+              type="button"
+              aria-pressed={actif}
+              onClick={() => onChange(n)}
+              className={`rounded-xl border font-bold active:scale-95 ${cinq ? 'h-12 text-lg' : 'h-11'}`}
+              style={actif ? { background: couleur, borderColor: couleur, color: '#0b0d10' } : { borderColor: 'var(--color-bordure)', background: 'var(--color-surface-2)', color: 'var(--color-texte-2)' }}
+            >
+              {n}
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -105,7 +117,7 @@ export function ChoixNote({ etiquette, min, max, valeur, onChange, bas, haut }: 
 export function OuiNon({ etiquette, valeur, onChange }: { etiquette: string; valeur: boolean | null; onChange: (v: boolean) => void }) {
   return (
     <div className="flex items-center justify-between gap-3">
-      <span className="text-sm text-texte-2">{etiquette}</span>
+      <span className="text-texte-2">{etiquette}</span>
       <div className="flex shrink-0 gap-1 rounded-xl bg-surface-2 p-1">
         {([
           [true, 'Oui'],
@@ -123,34 +135,6 @@ export function OuiNon({ etiquette, valeur, onChange }: { etiquette: string; val
 export function Pastille({ children, ton = 'accent' }: { children: ReactNode; ton?: 'accent' | 'alerte' | 'succes' | 'neutre' }) {
   const c = { accent: 'bg-accent text-fond', alerte: 'bg-alerte text-fond', succes: 'bg-succes text-fond', neutre: 'bg-surface-2 text-texte-2' }[ton]
   return <span className={`inline-flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-xs font-semibold ${c}`}>{children}</span>
-}
-
-export type Onglet = { cle: string; libelle: string; icone: string; pastille?: number }
-
-/** Barre d'onglets fixée en bas de l'écran. */
-export function BarreOnglets({ onglets, actif, choisir }: { onglets: Onglet[]; actif: string; choisir: (cle: string) => void }) {
-  return (
-    <nav className="pb-sur fixed inset-x-0 bottom-0 border-t border-bordure bg-surface/95 backdrop-blur">
-      <div className="mx-auto flex max-w-md">
-        {onglets.map((o) => (
-          <button
-            key={o.cle}
-            type="button"
-            onClick={() => choisir(o.cle)}
-            className={`relative flex flex-1 flex-col items-center gap-0.5 py-2 text-xs ${o.cle === actif ? 'text-accent' : 'text-texte-3'}`}
-          >
-            <span className="text-xl leading-none">{o.icone}</span>
-            {o.libelle}
-            {!!o.pastille && (
-              <span className="absolute top-1 left-1/2 ml-2">
-                <Pastille ton="alerte">{o.pastille}</Pastille>
-              </span>
-            )}
-          </button>
-        ))}
-      </div>
-    </nav>
-  )
 }
 
 export function Chargement() {

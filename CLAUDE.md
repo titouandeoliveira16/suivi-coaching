@@ -31,8 +31,10 @@ https://claude.ai/artifact/VADvDEMvyjDpPsEMoT14fE — les lire avant toute nouve
   `terrain: "vtt"`, jamais tiré au hasard). Disciplines VTT (XCO, XCC, XCM, enduro, DH) et adaptation à la distance et
   au dénivelé de l'épreuve (`paramObjectif`, `dureeEstimee` avec la vitesse mesurée sur les sorties, `relief` dans `objectifs.ts`).
 - `src/core/donnees.ts` : accès au serveur (lecture, propositions, validation, allègements via fonctions serveur).
-- `src/modules/eleve/` : Aujourd'hui · Semaine · Saison · Progrès (barre du bas), 💬 Messages et ⚙️ Réglages
-  (profil, notifications, mode d'emploi) en haut ; `src/modules/coach/` (Élèves, À valider, fiche élève).
+- `src/modules/eleve/` : même look que l'Entraînement de Coach (accent violet) — en-tête « Entraînement » + onglets
+  Aujourd'hui · Semaine · Saison · Progrès, barre du bas Entraînement · Messages · Mode d'emploi · Réglages
+  (`core/ui/cadre.tsx`, `core/ui/icones.tsx`, `core/ui/graphiques.tsx` repris de Coach) ; `src/modules/coach/`
+  (Élèves, À valider, fiche élève).
 - Deux semaines à l'avance : la suivante est préparée pendant la semaine en cours (`anticipee`, comme si elle était
   réussie), puis réajustée à la baisse seulement quand elle commence (`moteur/reajustement.ts`, RPC `reajuster_semaine`).
 - Intervertir deux séances (élève ou coach) : garde-fous dans `moteur/echange.ts`, RPC `intervertir_seances` (le coach

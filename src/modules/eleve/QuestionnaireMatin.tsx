@@ -3,16 +3,16 @@ import { messageErreur } from '../../core/compte'
 import { enregistrerMatin } from '../../core/donnees'
 import { bienEtreDuJour } from '../../core/intervals'
 import type { Client } from '../../core/supabase'
-import { Bouton, Carte, Champ, ChoixNote, Message, OuiNon } from '../../core/ui'
+import { Bouton, Carte, ChoixNote, Message, OuiNon } from '../../core/ui'
 import { jour } from '../../moteur/dates'
 import type { ProfilSportif } from '../../moteur/types'
 
 const QUESTIONS = [
-  ['sommeil_q', 'Qualité de ton sommeil', 'très mauvaise', 'excellente'],
-  ['fatigue', 'Ton niveau d’énergie', 'épuisé', 'en pleine forme'],
-  ['courbatures', 'Tes jambes', 'très courbaturées', 'aucune courbature'],
-  ['stress', 'Ton stress', 'très stressé', 'serein'],
-  ['humeur', 'Ton humeur', 'très mauvaise', 'excellente'],
+  ['sommeil_q', 'Sommeil', 'Très mauvais', 'Excellent'],
+  ['fatigue', 'Énergie', 'À plat', 'Plein de jus'],
+  ['courbatures', 'Jambes', 'Très lourdes', 'Légères'],
+  ['stress', 'Calme', 'Stress fort', 'Au calme'],
+  ['humeur', 'Humeur', 'Très mauvaise', 'Excellente'],
 ] as const
 
 type Notes = Record<(typeof QUESTIONS)[number][0], number | null>
@@ -66,22 +66,37 @@ export function QuestionnaireMatin({ client, eleve, profil, termine }: { client:
     }
   }
 
+  const ligne = (libelle: string, valeur: string, changer: (v: string) => void, unite: string, mode: 'decimal' | 'numeric', exemple?: string) => (
+    <label className="flex items-center justify-between gap-3 py-1.5">
+      <span className="text-texte-2">{libelle}</span>
+      <span className="flex items-center gap-2">
+        <input
+          inputMode={mode}
+          placeholder={exemple}
+          value={valeur}
+          onChange={(e) => changer(e.target.value)}
+          className="h-12 w-24 rounded-xl border border-bordure bg-surface-2 px-3 text-center text-lg text-texte outline-none focus:border-accent"
+        />
+        <span className="w-8 text-sm text-texte-3">{unite}</span>
+      </span>
+    </label>
+  )
+
   return (
-    <Carte titre="Comment vas-tu ce matin ?">
-      <div className="flex flex-col gap-4">
-        <Champ etiquette="Heures de sommeil cette nuit" inputMode="decimal" placeholder="ex. 7,5" value={sommeil} onChange={(e) => setSommeil(e.target.value)} />
-        {QUESTIONS.map(([cle, libelle, bas, haut]) => (
-          <ChoixNote key={cle} etiquette={libelle} min={1} max={5} bas={bas} haut={haut} valeur={notes[cle]} onChange={(v) => setNotes({ ...notes, [cle]: v })} />
-        ))}
+    <Carte titre="Ton matin">
+      {profil.liaison === 'intervals' && <p className="mb-1 text-xs text-texte-3">VFC et FC de repos reprises de ta montre quand elle les mesure.</p>}
+      {profil.montre_vfc && ligne('VFC', vfc, setVfc, 'ms', 'decimal')}
+      {profil.montre_vfc && ligne('FC de repos', fcRepos, setFcRepos, 'bpm', 'numeric')}
+      {ligne('Durée de sommeil', sommeil, setSommeil, 'h', 'decimal', '7,5')}
+      <div className="my-3 border-t border-bordure" />
+      {QUESTIONS.map(([cle, libelle, bas, haut]) => (
+        <ChoixNote key={cle} etiquette={libelle} min={1} max={5} bas={bas} haut={haut} valeur={notes[cle]} onChange={(v) => setNotes({ ...notes, [cle]: v })} />
+      ))}
+      <div className="my-3 border-t border-bordure" />
+      <div className="flex flex-col gap-3">
         <OuiNon etiquette="Une douleur (pas juste des courbatures) ?" valeur={douleur} onChange={setDouleur} />
         <OuiNon etiquette="Malade ?" valeur={malade} onChange={setMalade} />
         {malade && <OuiNon etiquette="De la fièvre, ou des symptômes sous le cou (toux, poitrine, courbatures générales) ?" valeur={fievre} onChange={setFievre} />}
-        {profil.montre_vfc && (
-          <div className="grid grid-cols-2 gap-2">
-            <Champ etiquette="VFC (ms, facultatif)" inputMode="decimal" value={vfc} onChange={(e) => setVfc(e.target.value)} />
-            <Champ etiquette="FC de repos (facultatif)" inputMode="numeric" value={fcRepos} onChange={(e) => setFcRepos(e.target.value)} />
-          </div>
-        )}
         <Bouton onClick={envoyer} disabled={!complet || occupe}>
           {occupe ? 'Envoi…' : 'Voir ma séance du jour'}
         </Bouton>

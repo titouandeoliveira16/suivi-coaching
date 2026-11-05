@@ -490,9 +490,10 @@ export function genererSemaine(e: EntreesSemaine): SemaineProposee {
   // choix d'entraîneur) ; les intervalles restent là où la puissance est facile à tenir (home trainer, route)
   if (pp.vtt && sportP === 'velo') {
     const faciles = seances.map((x, k) => ({ x, k })).filter(({ x }) => x.categorie === 'facile' && x.sport === 'velo' && x.duree_min >= 30)
-    const plusLongue = faciles.sort((a, b) => b.x.duree_min - a.x.duree_min)[0]
-    const i = pp.technique && ph.phase !== 'affutage' && !ph.recuperation && plusLongue ? plusLongue.k : -1
-    if (i >= 0) seances[i] = seanceDepuisFormat(formatObligatoire('vtt-technique'), seances[i].date, 'facile', seances[i].duree_min)
+    // La sortie facile la plus proche d'une heure ; une séance technique ne dépasse pas 75 min (45-60 min au catalogue)
+    const proche = faciles.sort((a, b) => Math.abs(a.x.duree_min - 60) - Math.abs(b.x.duree_min - 60))[0]
+    const i = pp.technique && ph.phase !== 'affutage' && !ph.recuperation && proche ? proche.k : -1
+    if (i >= 0) seances[i] = seanceDepuisFormat(formatObligatoire('vtt-technique'), seances[i].date, 'facile', Math.min(75, seances[i].duree_min))
     explications.push(`VTT : intervalles sur home trainer ou route (puissance précise)${i >= 0 ? ', 1 séance technique sur le terrain' : ''}`)
   }
 

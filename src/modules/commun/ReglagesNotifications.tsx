@@ -62,7 +62,7 @@ export function ReglagesNotifications({ client, moi, role }: { client: Client; m
     })
 
   return (
-    <Carte titre="🔔 Notifications">
+    <Carte titre="Notifications">
       <div className="flex flex-col gap-3">
         {surIphone() && !appliInstallee() && !actif && (
           <Message>Sur iPhone, les notifications ne marchent que depuis l’écran d’accueil : dans Safari, touche Partager puis « Sur l’écran d’accueil », et ouvre l’appli depuis l’icône.</Message>
